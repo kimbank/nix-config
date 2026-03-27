@@ -1,0 +1,13 @@
+#!/bin/sh -e
+
+GREEN='\033[1;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m'
+
+echo "${YELLOW}Cleaning up old generations...${NC}"
+sudo nix-collect-garbage --delete-older-than 7d
+
+echo "${YELLOW}Running store garbage collection...${NC}"
+nix store gc
+
+echo "${GREEN}Cleanup complete.${NC}"
