@@ -79,7 +79,10 @@ in
 
     plugins = with pkgs.vimPlugins; [
       plenary-nvim
+      nui-nvim
+      nvim-web-devicons
       telescope-nvim
+      neo-tree-nvim
       nvim-treesitter
       lualine-nvim
       vim-tmux-navigator
@@ -88,6 +91,15 @@ in
     initLua = ''
       dofile(vim.fn.stdpath("config") .. "/local-init.lua")
     '';
+  };
+
+  vscode = {
+    enable = true;
+    package = null;
+    pname = "vscode";
+    mutableExtensionsDir = true;
+
+    profiles.default.extensions = with pkgs.vscode-extensions; [ ];
   };
 
   zoxide = {
