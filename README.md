@@ -55,14 +55,22 @@ nix --extra-experimental-features 'nix-command flakes' run .#build-switch
 
 ### 4. Clone this repository
 
+This repository uses git submodules for app-specific config under `modules/shared/config/`.
+
 The clone path is not special. Any location is fine as long as you run commands from the repository root.
 
 Example:
 
 ```sh
 cd ~
-git clone https://github.com/kimbank/nix-config.git
+git clone --recurse-submodules https://github.com/kimbank/nix-config.git
 cd nix-config
+```
+
+If you already cloned without submodules, run:
+
+```sh
+git submodule update --init --recursive
 ```
 
 ### 5. Set your git identity first
@@ -142,9 +150,16 @@ nix run .#build-switch
 General workflow:
 
 1. Edit the Nix files.
-2. Run `git add .` if you created or changed tracked files.
-3. Run `nix run .#build` to verify.
-4. Run `nix run .#build-switch` to apply.
+2. If you changed files inside `modules/shared/config/nvim` or `modules/shared/config/wezterm`, commit and push those submodule repositories too.
+3. Run `git add .` if you created or changed tracked files.
+4. Run `nix run .#build` to verify.
+5. Run `nix run .#build-switch` to apply.
+
+If you pulled changes that moved submodule pointers, resync them before building:
+
+```sh
+git submodule update --init --recursive
+```
 
 Examples:
 
