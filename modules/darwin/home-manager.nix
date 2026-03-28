@@ -1,4 +1,10 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  zen-browser,
+  ...
+}:
 
 let
   loginUser = "kimbank";
@@ -31,6 +37,8 @@ in
     users.${loginUser} =
       { pkgs, config, lib, ... }:
       {
+        imports = [ zen-browser.homeModules.twilight ];
+
         home = {
           enableNixpkgsReleaseCheck = false;
           packages = pkgs.callPackage ./packages.nix { };
@@ -41,7 +49,21 @@ in
           stateVersion = "24.11";
         };
 
-        programs = import ../shared/home-manager.nix { inherit lib; };
+        programs =
+          (import ../shared/home-manager.nix { inherit lib; })
+          // {
+            "zen-browser" = {
+              enable = true;
+              nativeMessagingHosts = [ pkgs._1password-gui ];
+              policies.ExtensionSettings = {
+                "{d634138d-c276-4fc8-924b-40a0ea21d284}" = {
+                  install_url =
+                    "https://addons.mozilla.org/firefox/downloads/latest/1password-x-password-manager/latest.xpi";
+                  installation_mode = "force_installed";
+                };
+              };
+            };
+          };
         manual.manpages.enable = false;
       };
   };
