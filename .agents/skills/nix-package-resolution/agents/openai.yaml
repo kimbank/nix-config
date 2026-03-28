@@ -1,0 +1,4 @@
+interface:
+  display_name: "Nix Package Resolution"
+  short_description: "Resolve the right Nix package path."
+  default_prompt: "Use $nix-package-resolution to decide whether software belongs in nixpkgs, a third-party flake, Homebrew, or another Nix integration path."

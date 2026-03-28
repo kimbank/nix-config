@@ -1,5 +1,6 @@
 {
   config,
+  firefox-addons,
   pkgs,
   lib,
   zen-browser,
@@ -7,6 +8,7 @@
 }:
 
 let
+  firefoxAddons = (import "${firefox-addons}/../../default.nix" { inherit pkgs; }).firefox-addons;
   loginUser = "kimbank";
   sharedFiles = import ../shared/files.nix { inherit config pkgs; };
   additionalFiles = import ./files.nix { user = loginUser; inherit config pkgs; };
@@ -55,13 +57,9 @@ in
             "zen-browser" = {
               enable = true;
               nativeMessagingHosts = [ pkgs._1password-gui ];
-              policies.ExtensionSettings = {
-                "{d634138d-c276-4fc8-924b-40a0ea21d284}" = {
-                  install_url =
-                    "https://addons.mozilla.org/firefox/downloads/latest/1password-x-password-manager/latest.xpi";
-                  installation_mode = "force_installed";
-                };
-              };
+              profiles.default.extensions.packages = with firefoxAddons; [
+                onepassword-password-manager
+              ];
             };
           };
         manual.manpages.enable = false;

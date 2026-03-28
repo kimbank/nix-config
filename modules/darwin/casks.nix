@@ -1,7 +1,7 @@
 _:
 
 [
-  "1password"
+  "codex-app"
   "google-chrome"
   "raycast"
   "visual-studio-code"
