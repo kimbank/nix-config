@@ -46,6 +46,13 @@ nix --extra-experimental-features 'nix-command flakes' <command>
 # nix --extra-experimental-features 'nix-command flakes' run .#build-switch
 ```
 
+troubleshoot: nix notfound
+
+```sh
+source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+nix --extra-experimental-features 'nix-command flakes' run .#build-switch
+```
+
 ### 4. Clone this repository
 
 The clone path is not special. Any location is fine as long as you run commands from the repository root.
