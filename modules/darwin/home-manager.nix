@@ -7,8 +7,10 @@
 
 let
   loginUser = "kimbank";
-  sharedFiles = import ../shared/files.nix { inherit config pkgs; };
-  additionalFiles = import ./files.nix { user = loginUser; inherit config pkgs; };
+  additionalFiles = import ./files.nix {
+    user = loginUser;
+    inherit config pkgs;
+  };
 in
 {
   imports = [ ./dock ];
@@ -32,9 +34,18 @@ in
 
   home-manager = {
     useGlobalPkgs = true;
+    backupFileExtension = "hm-backup";
 
     users.${loginUser} =
-      { pkgs, config, lib, ... }:
+      {
+        pkgs,
+        config,
+        lib,
+        ...
+      }:
+      let
+        sharedFiles = import ../shared/files.nix { inherit config; };
+      in
       {
         home = {
           enableNixpkgsReleaseCheck = false;
@@ -51,7 +62,7 @@ in
           linkApps.enable = false;
         };
 
-        programs = import ../shared/home-manager.nix { inherit lib; };
+        programs = import ../shared/home-manager.nix { inherit lib pkgs; };
         manual.manpages.enable = false;
       };
   };
@@ -60,7 +71,7 @@ in
     enable = true;
     username = loginUser;
     entries = [
-      { path = "/System/Applications/Zen.app/"; }
+      { path = "/Applications/Zen.app/"; }
       { path = "/System/Applications/Notes.app/"; }
       { path = "/System/Applications/Utilities/Terminal.app/"; }
       { path = "/System/Applications/System Settings.app/"; }

@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib, pkgs, ... }:
 
 let
   name = "kimbank";
@@ -40,7 +40,7 @@ in
       init.defaultBranch = "main";
       pull.rebase = true;
       rebase.autoStash = true;
-      core.editor = "vim";
+      core.editor = "nvim";
     };
   };
 
@@ -56,19 +56,24 @@ in
     enableZshIntegration = true;
   };
 
-  vim = {
+  neovim = {
     enable = true;
     defaultEditor = true;
+    viAlias = true;
+    vimAlias = true;
+    vimdiffAlias = true;
 
-    settings = {
-      expandtab = true;
-      ignorecase = true;
-      number = true;
-      relativenumber = true;
-      shiftwidth = 2;
-      smartcase = true;
-      tabstop = 2;
-    };
+    plugins = with pkgs.vimPlugins; [
+      plenary-nvim
+      telescope-nvim
+      nvim-treesitter
+      lualine-nvim
+      vim-tmux-navigator
+    ];
+
+    initLua = ''
+      dofile(vim.fn.stdpath("config") .. "/local-init.lua")
+    '';
   };
 
   zoxide = {

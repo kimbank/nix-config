@@ -2,6 +2,7 @@
   description = "Kimbank macOS-first Nix configuration";
 
   inputs = {
+    self.submodules = true;
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     home-manager.url = "github:nix-community/home-manager";
     darwin = {
@@ -41,7 +42,8 @@
       darwinSystems = [ "aarch64-darwin" ];
       forAllSystems = f: nixpkgs.lib.genAttrs darwinSystems f;
 
-      devShell = system:
+      devShell =
+        system:
         let
           pkgs = nixpkgs.legacyPackages.${system};
         in
@@ -53,7 +55,7 @@
             ];
 
             shellHook = ''
-              export EDITOR=vim
+              export EDITOR=nvim
             '';
           };
         };

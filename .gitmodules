@@ -1,0 +1,6 @@
+[submodule "modules/shared/config/nvim"]
+	path = modules/shared/config/nvim
+	url = https://github.com/kimbank/nvim-config.git
+[submodule "modules/shared/config/wezterm"]
+	path = modules/shared/config/wezterm
+	url = https://github.com/kimbank/wezterm-config.git
