@@ -20,8 +20,10 @@ in
       export PATH="$HOME/.local/bin:$PATH"
     '';
 
+    # custom alias
     shellAliases = {
       ll = "ls -lah";
+      cls = "clear";
     };
   };
 

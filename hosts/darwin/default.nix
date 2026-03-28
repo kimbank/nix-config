@@ -42,14 +42,6 @@ in
 
   environment.systemPackages = import ../../modules/shared/packages.nix { inherit pkgs; };
 
-  environment.etc = {
-    "1password/custom_allowed_browsers" = {
-      text = ''
-        .zen-wrapped
-      '';
-    };
-  };
-
   system = {
     checks.verifyNixPath = false;
     primaryUser = loginUser;

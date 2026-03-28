@@ -1,14 +1,11 @@
 {
   config,
-  firefox-addons,
   pkgs,
   lib,
-  zen-browser,
   ...
 }:
 
 let
-  firefoxAddons = (import "${firefox-addons}/../../default.nix" { inherit pkgs; }).firefox-addons;
   loginUser = "kimbank";
   sharedFiles = import ../shared/files.nix { inherit config pkgs; };
   additionalFiles = import ./files.nix { user = loginUser; inherit config pkgs; };
@@ -39,8 +36,6 @@ in
     users.${loginUser} =
       { pkgs, config, lib, ... }:
       {
-        imports = [ zen-browser.homeModules.twilight ];
-
         home = {
           enableNixpkgsReleaseCheck = false;
           packages = pkgs.callPackage ./packages.nix { };
@@ -51,17 +46,12 @@ in
           stateVersion = "24.11";
         };
 
-        programs =
-          (import ../shared/home-manager.nix { inherit lib; })
-          // {
-            "zen-browser" = {
-              enable = true;
-              nativeMessagingHosts = [ pkgs._1password-gui ];
-              profiles.default.extensions.packages = with firefoxAddons; [
-                onepassword-password-manager
-              ];
-            };
-          };
+        targets.darwin = {
+          copyApps.enable = true;
+          linkApps.enable = false;
+        };
+
+        programs = import ../shared/home-manager.nix { inherit lib; };
         manual.manpages.enable = false;
       };
   };
@@ -70,7 +60,7 @@ in
     enable = true;
     username = loginUser;
     entries = [
-      { path = "/System/Applications/Safari.app/"; }
+      { path = "/System/Applications/Zen.app/"; }
       { path = "/System/Applications/Notes.app/"; }
       { path = "/System/Applications/Utilities/Terminal.app/"; }
       { path = "/System/Applications/System Settings.app/"; }
