@@ -42,6 +42,8 @@ Or use:
 
 ```sh
 nix --extra-experimental-features 'nix-command flakes' <command>
+# ex
+# nix --extra-experimental-features 'nix-command flakes' run .#build-switch
 ```
 
 ### 4. Clone this repository
@@ -51,10 +53,9 @@ The clone path is not special. Any location is fine as long as you run commands 
 Example:
 
 ```sh
-mkdir -p ~/Desktop/nix-lab
-cd ~/Desktop/nix-lab
-git clone <your-repo-url> kimbank-nix-config
-cd ~/Desktop/nix-lab/kimbank-nix-config
+cd ~
+git clone https://github.com/kimbank/nix-config.git
+cd nix-config
 ```
 
 ### 5. Set your git identity first
