@@ -49,5 +49,11 @@
         "key": "ctrl+shift+-",
         "command": "-workbench.action.navigateForward",
         "when": "canNavigateForward"
+    },
+    {
+        // Keep Cmd+Shift+G for Source Control, but don't steal Find Previous in the find widget.
+        "key": "cmd+shift+g",
+        "command": "workbench.view.scm",
+        "when": "!findWidgetVisible"
     }
 ]

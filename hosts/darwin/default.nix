@@ -66,7 +66,7 @@ in
         NSGlobalDomain = {
           # Undocumented macOS preference that enables:
           # "Use the Caps Lock key to switch to and from the last used Latin input source".
-          TISRomanSwitchState = 1;
+          # TISRomanSwitchState = 1; # for change input source
         };
       };
 
@@ -107,7 +107,7 @@ in
 
     keyboard = {
       enableKeyMapping = true;
-      remapCapsLockToControl = true;
+      remapCapsLockToControl = true; # for leader vim, wezterm etc.
     };
   };
 }

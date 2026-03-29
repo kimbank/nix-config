@@ -87,7 +87,7 @@ in
     enable = true;
     package = null;
     pname = "vscode";
-    mutableExtensionsDir = false;
+    mutableExtensionsDir = true;
 
     profiles.default = {
       extensions = import ./config/vscode/extensions.nix { inherit pkgs; };

@@ -12,13 +12,12 @@ with pkgs.vscode-extensions;
   docker.docker
   eamodio.gitlens
   esbenp.prettier-vscode
-  github.copilot-chat
   Google.gemini-cli-vscode-ide-companion
   graphql.vscode-graphql
+  graphql.vscode-graphql-syntax
   jnoortheen.nix-ide
   james-yu.latex-workshop
   jock.svg
-  leonardssh.vscord
   mechatroner.rainbow-csv
   ms-ceintl.vscode-language-pack-ko
   ms-python.debugpy

@@ -17,6 +17,7 @@ with pkgs; [
   nixd
   nixfmt
   nodejs_24
+  pnpm
   ripgrep
   tmux
   tree
