@@ -100,9 +100,6 @@ in
         TrackpadThreeFingerDrag = true;
       };
 
-      universalaccess = {
-        closeViewScrollWheelToggle = true;
-      };
     };
 
     keyboard = {

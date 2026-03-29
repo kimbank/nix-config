@@ -89,6 +89,10 @@ in
           currentHostDefaults = {
             NSGlobalDomain."com.apple.mouse.tapBehavior" = 0;
             "com.apple.screensaver".idleTime = 0;
+            # Accessibility prefs under com.apple.universalaccess are host-scoped
+            # on fresh macOS installs and can fail during nix-darwin's
+            # system.defaults activation step.
+            "com.apple.universalaccess".closeViewScrollWheelToggle = true;
           };
         };
 
