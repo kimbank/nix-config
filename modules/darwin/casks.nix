@@ -2,6 +2,7 @@ _:
 
 [
   "codex-app"
+  "brave-browser"
   "google-chrome"
   "raycast"
   "wezterm"

@@ -20,5 +20,6 @@ with pkgs; [
   tree
   unzip
   wget
+  ytsurf
   zip
 ]
