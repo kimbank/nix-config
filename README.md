@@ -6,10 +6,39 @@ macOS-first Nix configuration that follows the same high-level layout as the ref
 
 ```text
 .
-├── apps         # Helper commands exposed through `nix run`
-├── hosts        # Host-level nix-darwin entrypoint
-├── modules      # Darwin-specific and shared modules
-└── overlays     # Optional local overlays
+├── flake.nix
+├── apps/
+│   └── aarch64-darwin/       # `nix run .#...` helper scripts
+│       ├── apply
+│       ├── build
+│       ├── build-switch
+│       ├── clean
+│       └── rollback
+├── hosts/
+│   └── darwin/
+│       └── default.nix       # Host-level nix-darwin entrypoint
+├── modules/
+│   ├── darwin/               # macOS-only packages, files, Dock, Homebrew
+│   │   ├── casks.nix
+│   │   ├── dock/
+│   │   │   └── default.nix
+│   │   ├── files.nix
+│   │   ├── home-manager.nix
+│   │   └── packages.nix
+│   └── shared/               # Shared packages, shell config, files
+│       ├── config/           # App config submodules and tracked config trees
+│       │   ├── nvim/
+│       │   ├── vscode/
+│       │   └── wezterm/
+│       ├── pkgs/             # Small repo-local packages missing from nixpkgs
+│       │   └── im-select.nix
+│       ├── default.nix
+│       ├── files.nix
+│       ├── home-manager.nix
+│       └── packages.nix
+└── overlays/
+    ├── README.md
+    └── ytsurf.nix
 ```
 
 ## For macOS
@@ -113,6 +142,7 @@ Review these files:
 Current split:
 
 - Shared CLI packages: `modules/shared/packages.nix`
+- Small repo-local shared packages: `modules/shared/pkgs/`
 - macOS-specific Nix packages: `modules/darwin/packages.nix`
 - Homebrew casks: `modules/darwin/casks.nix`
 
@@ -145,6 +175,12 @@ nix run .#build
 nix run .#build-switch
 ```
 
+`build-switch` usually reaches a macOS `sudo` password prompt. If you changed shell configuration, refresh the session with:
+
+```sh
+exec zsh -l
+```
+
 ## Updating After First Install
 
 General workflow:
@@ -164,6 +200,7 @@ git submodule update --init --recursive
 Examples:
 
 - Add CLI tools in `modules/shared/packages.nix`
+- Add small repo-local CLI packages in `modules/shared/pkgs/`
 - Add GUI apps in `modules/darwin/casks.nix`
 - Adjust shell settings in `modules/shared/home-manager.nix`
 - Adjust macOS defaults in `hosts/darwin/default.nix`
@@ -173,4 +210,5 @@ Examples:
 - The current target platform is `aarch64-darwin`, not `arm64-darwin`.
 - `nix run .#apply` is for initial personalization of the template.
 - Day-to-day changes are applied with `nix run .#build-switch`.
+- If you change repo structure, workflow, or user-visible behavior, update this README alongside the code so the documented layout and commands stay current.
 - On a fresh Mac this should be straightforward. On an already-used Mac, existing `/etc` files, old Homebrew state, or existing shell dotfiles can still conflict during first activation.

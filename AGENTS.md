@@ -100,6 +100,7 @@ If you cannot run a verification step, say so explicitly.
 ## Documentation Expectations
 
 - After completing a task, review whether the change should also update documentation such as `AGENTS.md`, `README.md`, inline comments, or app-specific notes.
+- Treat `README.md` as part of the deliverable when repository layout, install surfaces, commands, workflow, or user-visible behavior changes.
 - If behavior, commands, install surfaces, caveats, or workflow expectations changed, update the relevant docs in the same task when practical instead of leaving the repo in a code-updated but doc-stale state.
 - When updating `AGENTS.md`, prefer reusable guidance and maintenance heuristics over one-off task notes so future work benefits from the change.
 
