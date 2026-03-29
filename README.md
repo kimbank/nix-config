@@ -28,9 +28,12 @@ macOS-first Nix configuration that follows the same high-level layout as the ref
 │   └── shared/               # Shared packages, shell config, files
 │       ├── config/           # App config submodules and tracked config trees
 │       │   ├── dev-infra/
+│       │   │   ├── README.md
 │       │   │   ├── compose.yml
 │       │   │   └── mysql-init/
-│       │   │       └── 001-admin-superuser.sql
+│       │   │   │   └── 001-admin-superuser.sql
+│       │   │   └── portainer-init/
+│       │   │       └── admin-password.txt
 │       │   ├── nvim/
 │       │   ├── vscode/
 │       │   └── wezterm/
@@ -218,6 +221,7 @@ This repo installs Docker tooling with a split that matches the existing package
 - `modules/shared/packages.nix`: Docker CLI from nixpkgs
 - `modules/darwin/home-manager.nix`: Colima login-time service and profile settings
 - `modules/shared/config/dev-infra/compose.yml`: Portainer, MySQL, PostgreSQL, Redis stack linked under `~/.config/dev-infra/`
+- `modules/shared/config/dev-infra/README.md`: detailed usage guide for the local stack
 
 Typical first run after `nix run .#build-switch`:
 
@@ -230,6 +234,7 @@ The local DB services bind only to `127.0.0.1` on ports `3306`, `5432`, and `637
 The default MySQL and PostgreSQL database name is `playground`. PostgreSQL uses `admin` as the superuser, the MySQL stack initializes both `root` and a local `admin` account with full privileges for local development, and Portainer initializes the `admin` account with the password `adminadmin!!`.
 Colima is configured to start automatically at user login through Home Manager's macOS `launchd` integration. If you want it immediately in the current session before your next login, you can still run `colima start` once manually.
 If you change the initial DB usernames, passwords, or database names later, remove the related Docker volumes before recreating the containers so the new initialization values can take effect.
+For the full command reference and reset workflow, see [`modules/shared/config/dev-infra/README.md`](/Users/kimbank/nix-config/modules/shared/config/dev-infra/README.md).
 
 ## Notes
 
