@@ -28,6 +28,8 @@ macOS-first Nix configuration that follows the same high-level layout as the ref
 │   └── shared/               # Shared packages, shell config, files
 │       ├── config/           # App config submodules and tracked config trees
 │       │   ├── nvim/
+│       │   ├── portainer/
+│       │   │   └── compose.yaml
 │       │   ├── vscode/
 │       │   └── wezterm/
 │       ├── pkgs/             # Small repo-local packages missing from nixpkgs
@@ -202,8 +204,26 @@ Examples:
 - Add CLI tools in `modules/shared/packages.nix`
 - Add small repo-local CLI packages in `modules/shared/pkgs/`
 - Add GUI apps in `modules/darwin/casks.nix`
+- Adjust the Portainer stack in `modules/shared/config/portainer/compose.yaml`
 - Adjust shell settings in `modules/shared/home-manager.nix`
 - Adjust macOS defaults in `hosts/darwin/default.nix`
+
+## Docker On macOS
+
+This repo installs Docker tooling with a split that matches the existing package layout:
+
+- `modules/shared/packages.nix`: Docker CLI from nixpkgs
+- `modules/darwin/packages.nix`: Colima runtime for macOS
+- `modules/shared/config/portainer/compose.yaml`: Portainer Compose stack linked to `~/.config/portainer/compose.yaml`
+
+Typical first run after `nix run .#build-switch`:
+
+```sh
+colima start
+docker compose -f ~/.config/portainer/compose.yaml up -d
+```
+
+Portainer will then be available at [https://localhost:9443](https://localhost:9443). The initial certificate is self-signed, so the browser may show a warning the first time.
 
 ## Notes
 

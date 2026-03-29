@@ -8,6 +8,7 @@ with pkgs; [
   coreutils
   curl
   direnv
+  docker
   fd
   fzf
   gh

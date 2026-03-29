@@ -17,12 +17,12 @@ This repository is a macOS-first `nix-darwin` flake for a single Apple Silicon h
 - `hosts/darwin/`: top-level `nix-darwin` host module
 - `modules/shared/`: cross-cutting packages, Home Manager programs, overlays
 - `modules/darwin/`: macOS-only packages, casks, files, dock behavior
-- `modules/shared/config/`: app-specific config tracked as git submodules
+- `modules/shared/config/`: app-specific config stored as git submodules or repo-managed config trees
 - `overlays/`: optional local overlays auto-imported by [`modules/shared/default.nix`](/Users/kimbank/nix-config/modules/shared/default.nix)
 
 ## Clone And Submodules
 
-- This repository uses git submodules under `modules/shared/config/`.
+- This repository uses git submodules for some app config under `modules/shared/config/`.
 - Clone with `git clone --recurse-submodules ...` or run `git submodule update --init --recursive` after cloning.
 - [`flake.nix`](/Users/kimbank/nix-config/flake.nix) sets `inputs.self.submodules = true;` so Nix includes submodule contents during evaluation.
 - If a task edits files inside `modules/shared/config/nvim` or `modules/shared/config/wezterm`, commit and push those repositories first, then stage the updated gitlink in the parent repo.
@@ -54,6 +54,7 @@ Important:
 - Managed home files and app config links: [`modules/shared/files.nix`](/Users/kimbank/nix-config/modules/shared/files.nix) and [`modules/darwin/files.nix`](/Users/kimbank/nix-config/modules/darwin/files.nix)
 - App-specific config content:
   - Neovim: [`modules/shared/config/nvim`](/Users/kimbank/nix-config/modules/shared/config/nvim)
+  - Portainer Compose stack: [`modules/shared/config/portainer/compose.yaml`](/Users/kimbank/nix-config/modules/shared/config/portainer/compose.yaml)
   - WezTerm: [`modules/shared/config/wezterm`](/Users/kimbank/nix-config/modules/shared/config/wezterm)
   - VS Code user config: [`modules/shared/config/vscode`](/Users/kimbank/nix-config/modules/shared/config/vscode)
   - VS Code extension declarations: [`modules/shared/config/vscode/extensions.nix`](/Users/kimbank/nix-config/modules/shared/config/vscode/extensions.nix)
@@ -70,6 +71,7 @@ Important:
 - Zen is installed via Homebrew cask, not via a Zen flake.
 - WezTerm is installed via Homebrew cask, and [`modules/shared/files.nix`](/Users/kimbank/nix-config/modules/shared/files.nix) links the whole [`modules/shared/config/wezterm`](/Users/kimbank/nix-config/modules/shared/config/wezterm) directory into `~/.config/wezterm`.
 - Neovim is installed by Home Manager, but the config is dotfile-style and lives in the [`modules/shared/config/nvim`](/Users/kimbank/nix-config/modules/shared/config/nvim) submodule. [`modules/shared/files.nix`](/Users/kimbank/nix-config/modules/shared/files.nix) links that whole directory into `~/.config/nvim`, and plugins are bootstrapped inside the config via `lazy.nvim` rather than `programs.neovim.plugins`.
+- Docker CLI comes from nixpkgs, Colima is the macOS runtime backend, and [`modules/shared/files.nix`](/Users/kimbank/nix-config/modules/shared/files.nix) links the Portainer Compose file from [`modules/shared/config/portainer/compose.yaml`](/Users/kimbank/nix-config/modules/shared/config/portainer/compose.yaml) to `~/.config/portainer/compose.yaml`.
 - VS Code is managed declaratively through Home Manager with `package = null`, which means settings/extensions are managed but the actual GUI app is expected to come from outside the HM package install path.
 - VS Code settings and keybindings are linked via [`modules/shared/files.nix`](/Users/kimbank/nix-config/modules/shared/files.nix), while extension selection lives in [`modules/shared/config/vscode/extensions.nix`](/Users/kimbank/nix-config/modules/shared/config/vscode/extensions.nix).
 - Because `programs.vscode.mutableExtensionsDir = true`, VS Code can install, remove, and update extensions from the UI. Declarative defaults still live in [`modules/shared/config/vscode/extensions.nix`](/Users/kimbank/nix-config/modules/shared/config/vscode/extensions.nix), so the live extension set may diverge from the repo until the next explicit cleanup.
