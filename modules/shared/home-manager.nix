@@ -28,7 +28,8 @@ in
         im-select com.apple.keylayout.ABC >/dev/null 2>&1 || true
       fi
 
-      export PATH="$HOME/.local/bin:$PATH"
+      # Keep Toolbox-generated IDE launchers available from new shells.
+      export PATH="$HOME/.local/bin:$HOME/Library/Application Support/JetBrains/Toolbox/scripts:$PATH"
     '';
 
     # custom alias

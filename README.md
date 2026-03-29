@@ -152,6 +152,7 @@ Current split:
 - Small repo-local shared packages: `modules/shared/pkgs/`
 - macOS-specific Nix packages: `modules/darwin/packages.nix`
 - Homebrew casks: `modules/darwin/casks.nix`
+- JetBrains IDEs: install `jetbrains-toolbox` as a cask, then let Toolbox manage IDE installs and updates
 
 ### 8. Review shell configuration
 
@@ -161,6 +162,8 @@ This config manages your shell through Home Manager. Review:
 - `modules/darwin/home-manager.nix`
 
 Like the reference `nixos-config`, this setup assumes your Nix-managed shell config replaces the previous one. Bring over anything important before switching.
+
+JetBrains Toolbox users can keep IDE launchers such as `webstorm` and `datagrip` on `PATH` by enabling Toolbox shell scripts. This repo includes the default Toolbox scripts directory in shell startup so aliases such as `we` and `dg` work in new shells once Toolbox has created those launchers.
 
 ### 9. Stage the repo before building
 
@@ -209,6 +212,7 @@ Examples:
 - Add CLI tools in `modules/shared/packages.nix`
 - Add small repo-local CLI packages in `modules/shared/pkgs/`
 - Add GUI apps in `modules/darwin/casks.nix`
+- Add `jetbrains-toolbox` in `modules/darwin/casks.nix`, then manage WebStorm/DataGrip installs inside Toolbox
 - Adjust the local Docker stack in `modules/shared/config/dev-infra/compose.yml`
 - Adjust Colima auto-start and profile settings in `modules/darwin/home-manager.nix`
 - Adjust shell settings in `modules/shared/home-manager.nix`

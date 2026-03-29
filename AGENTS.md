@@ -72,6 +72,8 @@ Important:
 - `zsh` uses Home Manager's `oh-my-zsh` integration. Do not assume a user-managed `~/.oh-my-zsh` tree exists or should be edited.
 - Existing unmanaged dotfiles can block activation. This repo sets `home-manager.backupFileExtension = "hm-backup"` in [`modules/darwin/home-manager.nix`](/Users/kimbank/nix-config/modules/darwin/home-manager.nix), so first-time activation may move conflicting files aside instead of failing.
 - `homebrew.onActivation.autoUpdate` and `upgrade` are enabled, so `build-switch` may update managed casks.
+- JetBrains IDEs are expected to be installed and updated through JetBrains Toolbox, which is managed as a Homebrew cask in [`modules/darwin/casks.nix`](/Users/kimbank/nix-config/modules/darwin/casks.nix).
+- Shell aliases such as `webstorm` or `datagrip` rely on Toolbox-generated launchers, so keep the Toolbox shell scripts feature enabled and ensure the scripts live in a PATH directory such as `~/Library/Application Support/JetBrains/Toolbox/scripts` or `~/.local/bin`.
 - Zen is installed via Homebrew cask, not via a Zen flake.
 - WezTerm is installed via Homebrew cask, and [`modules/shared/files.nix`](/Users/kimbank/nix-config/modules/shared/files.nix) links the whole [`modules/shared/config/wezterm`](/Users/kimbank/nix-config/modules/shared/config/wezterm) directory into `~/.config/wezterm`.
 - Neovim is installed by Home Manager, but the config is dotfile-style and lives in the [`modules/shared/config/nvim`](/Users/kimbank/nix-config/modules/shared/config/nvim) submodule. [`modules/shared/files.nix`](/Users/kimbank/nix-config/modules/shared/files.nix) links that whole directory into `~/.config/nvim`, and plugins are bootstrapped inside the config via `lazy.nvim` rather than `programs.neovim.plugins`.
