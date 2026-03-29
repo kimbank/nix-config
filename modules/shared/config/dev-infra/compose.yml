@@ -1,0 +1,56 @@
+services:
+  portainer:
+    image: portainer/portainer-ce:sts
+    container_name: portainer
+    command: --admin-password-file /run/secrets/portainer-admin-password
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+      - "9443:9443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./portainer-init/admin-password.txt:/run/secrets/portainer-admin-password:ro
+      - portainer_data:/data
+
+  mysql:
+    image: mysql:8.4
+    container_name: local-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_HOST: "%"
+      MYSQL_ROOT_PASSWORD: adminadmin!!
+      MYSQL_DATABASE: playground
+    ports:
+      - "127.0.0.1:3306:3306"
+    volumes:
+      - ./mysql-init:/docker-entrypoint-initdb.d:ro
+      - mysql_data:/var/lib/mysql
+
+  postgres:
+    image: postgres:16
+    container_name: local-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: playground
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: adminadmin!!
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7
+    container_name: local-redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    ports:
+      - "127.0.0.1:6379:6379"
+    volumes:
+      - redis_data:/data
+
+volumes:
+  portainer_data:
+  mysql_data:
+  postgres_data:
+  redis_data:

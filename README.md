@@ -27,9 +27,11 @@ macOS-first Nix configuration that follows the same high-level layout as the ref
 │   │   └── packages.nix
 │   └── shared/               # Shared packages, shell config, files
 │       ├── config/           # App config submodules and tracked config trees
+│       │   ├── dev-infra/
+│       │   │   ├── compose.yml
+│       │   │   └── mysql-init/
+│       │   │       └── 001-admin-superuser.sql
 │       │   ├── nvim/
-│       │   ├── portainer/
-│       │   │   └── compose.yaml
 │       │   ├── vscode/
 │       │   └── wezterm/
 │       ├── pkgs/             # Small repo-local packages missing from nixpkgs
@@ -204,7 +206,8 @@ Examples:
 - Add CLI tools in `modules/shared/packages.nix`
 - Add small repo-local CLI packages in `modules/shared/pkgs/`
 - Add GUI apps in `modules/darwin/casks.nix`
-- Adjust the Portainer stack in `modules/shared/config/portainer/compose.yaml`
+- Adjust the local Docker stack in `modules/shared/config/dev-infra/compose.yml`
+- Adjust Colima auto-start and profile settings in `modules/darwin/home-manager.nix`
 - Adjust shell settings in `modules/shared/home-manager.nix`
 - Adjust macOS defaults in `hosts/darwin/default.nix`
 
@@ -213,17 +216,20 @@ Examples:
 This repo installs Docker tooling with a split that matches the existing package layout:
 
 - `modules/shared/packages.nix`: Docker CLI from nixpkgs
-- `modules/darwin/packages.nix`: Colima runtime for macOS
-- `modules/shared/config/portainer/compose.yaml`: Portainer Compose stack linked to `~/.config/portainer/compose.yaml`
+- `modules/darwin/home-manager.nix`: Colima login-time service and profile settings
+- `modules/shared/config/dev-infra/compose.yml`: Portainer, MySQL, PostgreSQL, Redis stack linked under `~/.config/dev-infra/`
 
 Typical first run after `nix run .#build-switch`:
 
 ```sh
-colima start
-docker compose -f ~/.config/portainer/compose.yaml up -d
+docker compose -f ~/.config/dev-infra/compose.yml up -d
 ```
 
 Portainer will then be available at [https://localhost:9443](https://localhost:9443). The initial certificate is self-signed, so the browser may show a warning the first time.
+The local DB services bind only to `127.0.0.1` on ports `3306`, `5432`, and `6379`.
+The default MySQL and PostgreSQL database name is `playground`. PostgreSQL uses `admin` as the superuser, the MySQL stack initializes both `root` and a local `admin` account with full privileges for local development, and Portainer initializes the `admin` account with the password `adminadmin!!`.
+Colima is configured to start automatically at user login through Home Manager's macOS `launchd` integration. If you want it immediately in the current session before your next login, you can still run `colima start` once manually.
+If you change the initial DB usernames, passwords, or database names later, remove the related Docker volumes before recreating the containers so the new initialization values can take effect.
 
 ## Notes
 

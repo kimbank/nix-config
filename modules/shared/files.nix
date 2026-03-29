@@ -1,8 +1,8 @@
 { ... }:
 
 {
+  ".config/dev-infra".source = ./config/dev-infra;
   ".config/nvim".source = ./config/nvim;
-  ".config/portainer/compose.yaml".source = ./config/portainer/compose.yaml;
   ".config/wezterm".source = ./config/wezterm;
   # Prefer ` over won-sign in Korean input for Cocoa text-system apps.
   "Library/KeyBindings/DefaultKeyBinding.dict".text = ''

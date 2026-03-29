@@ -51,10 +51,13 @@ Important:
 - macOS-only Nix packages: [`modules/darwin/packages.nix`](/Users/kimbank/nix-config/modules/darwin/packages.nix)
 - Homebrew GUI apps: [`modules/darwin/casks.nix`](/Users/kimbank/nix-config/modules/darwin/casks.nix)
 - Shell behavior, aliases, and `oh-my-zsh`: [`modules/shared/home-manager.nix`](/Users/kimbank/nix-config/modules/shared/home-manager.nix)
+- Docker/Colima user services: [`modules/darwin/home-manager.nix`](/Users/kimbank/nix-config/modules/darwin/home-manager.nix)
 - Managed home files and app config links: [`modules/shared/files.nix`](/Users/kimbank/nix-config/modules/shared/files.nix) and [`modules/darwin/files.nix`](/Users/kimbank/nix-config/modules/darwin/files.nix)
 - App-specific config content:
+  - Local Docker stack: [`modules/shared/config/dev-infra/compose.yml`](/Users/kimbank/nix-config/modules/shared/config/dev-infra/compose.yml)
+  - Local MySQL init SQL: [`modules/shared/config/dev-infra/mysql-init/001-admin-superuser.sql`](/Users/kimbank/nix-config/modules/shared/config/dev-infra/mysql-init/001-admin-superuser.sql)
+  - Local Portainer init password: [`modules/shared/config/dev-infra/portainer-init/admin-password.txt`](/Users/kimbank/nix-config/modules/shared/config/dev-infra/portainer-init/admin-password.txt)
   - Neovim: [`modules/shared/config/nvim`](/Users/kimbank/nix-config/modules/shared/config/nvim)
-  - Portainer Compose stack: [`modules/shared/config/portainer/compose.yaml`](/Users/kimbank/nix-config/modules/shared/config/portainer/compose.yaml)
   - WezTerm: [`modules/shared/config/wezterm`](/Users/kimbank/nix-config/modules/shared/config/wezterm)
   - VS Code user config: [`modules/shared/config/vscode`](/Users/kimbank/nix-config/modules/shared/config/vscode)
   - VS Code extension declarations: [`modules/shared/config/vscode/extensions.nix`](/Users/kimbank/nix-config/modules/shared/config/vscode/extensions.nix)
@@ -71,7 +74,8 @@ Important:
 - Zen is installed via Homebrew cask, not via a Zen flake.
 - WezTerm is installed via Homebrew cask, and [`modules/shared/files.nix`](/Users/kimbank/nix-config/modules/shared/files.nix) links the whole [`modules/shared/config/wezterm`](/Users/kimbank/nix-config/modules/shared/config/wezterm) directory into `~/.config/wezterm`.
 - Neovim is installed by Home Manager, but the config is dotfile-style and lives in the [`modules/shared/config/nvim`](/Users/kimbank/nix-config/modules/shared/config/nvim) submodule. [`modules/shared/files.nix`](/Users/kimbank/nix-config/modules/shared/files.nix) links that whole directory into `~/.config/nvim`, and plugins are bootstrapped inside the config via `lazy.nvim` rather than `programs.neovim.plugins`.
-- Docker CLI comes from nixpkgs, Colima is the macOS runtime backend, and [`modules/shared/files.nix`](/Users/kimbank/nix-config/modules/shared/files.nix) links the Portainer Compose file from [`modules/shared/config/portainer/compose.yaml`](/Users/kimbank/nix-config/modules/shared/config/portainer/compose.yaml) to `~/.config/portainer/compose.yaml`.
+- Docker CLI comes from nixpkgs, Colima is managed as a Home Manager user service in [`modules/darwin/home-manager.nix`](/Users/kimbank/nix-config/modules/darwin/home-manager.nix), and [`modules/shared/files.nix`](/Users/kimbank/nix-config/modules/shared/files.nix) links the entire local Docker stack directory from [`modules/shared/config/dev-infra`](/Users/kimbank/nix-config/modules/shared/config/dev-infra) to `~/.config/dev-infra`.
+- The local Docker stack uses a single [`compose.yml`](/Users/kimbank/nix-config/modules/shared/config/dev-infra/compose.yml) to start Portainer, MySQL, PostgreSQL, and Redis together, with MySQL bootstrap SQL stored under [`mysql-init/`](/Users/kimbank/nix-config/modules/shared/config/dev-infra/mysql-init/001-admin-superuser.sql) and Portainer's initial admin password file stored under [`portainer-init/`](/Users/kimbank/nix-config/modules/shared/config/dev-infra/portainer-init/admin-password.txt).
 - VS Code is managed declaratively through Home Manager with `package = null`, which means settings/extensions are managed but the actual GUI app is expected to come from outside the HM package install path.
 - VS Code settings and keybindings are linked via [`modules/shared/files.nix`](/Users/kimbank/nix-config/modules/shared/files.nix), while extension selection lives in [`modules/shared/config/vscode/extensions.nix`](/Users/kimbank/nix-config/modules/shared/config/vscode/extensions.nix).
 - Because `programs.vscode.mutableExtensionsDir = true`, VS Code can install, remove, and update extensions from the UI. Declarative defaults still live in [`modules/shared/config/vscode/extensions.nix`](/Users/kimbank/nix-config/modules/shared/config/vscode/extensions.nix), so the live extension set may diverge from the repo until the next explicit cleanup.

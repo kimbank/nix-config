@@ -92,6 +92,16 @@ in
           };
         };
 
+        services.colima = {
+          enable = true;
+          profiles.default = {
+            isActive = true;
+            isService = true;
+            setDockerHost = true;
+            settings.runtime = "docker";
+          };
+        };
+
         programs = import ../shared/home-manager.nix { inherit lib pkgs; };
         manual.manpages.enable = false;
       };
