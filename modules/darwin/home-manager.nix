@@ -65,6 +65,7 @@ in
           };
           currentHostDefaults = {
             NSGlobalDomain."com.apple.mouse.tapBehavior" = 0;
+            "com.apple.screensaver".idleTime = 0;
           };
         };
 

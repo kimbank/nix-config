@@ -13,6 +13,7 @@ with pkgs; [
   gh
   git
   jq
+  nixd
   nixfmt
   ripgrep
   tmux

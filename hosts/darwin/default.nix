@@ -42,6 +42,8 @@ in
 
   environment.systemPackages = import ../../modules/shared/packages.nix { inherit pkgs; };
 
+  power.sleep.display = 60;
+
   system = {
     checks.verifyNixPath = false;
     primaryUser = loginUser;
@@ -76,6 +78,7 @@ in
       };
 
       menuExtraClock = {
+        IsAnalog = true;
         Show24Hour = true;
         ShowAMPM = false;
         ShowDate = 2;

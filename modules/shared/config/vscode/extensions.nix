@@ -15,6 +15,7 @@ with pkgs.vscode-extensions;
   github.copilot-chat
   Google.gemini-cli-vscode-ide-companion
   graphql.vscode-graphql
+  jnoortheen.nix-ide
   james-yu.latex-workshop
   jock.svg
   leonardssh.vscord
