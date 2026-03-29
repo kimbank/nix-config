@@ -77,6 +77,15 @@ Important:
 - Overlays are auto-loaded from `overlays/`; avoid adding broken or partial overlay files there.
 - This worktree may contain uncommitted user edits under `modules/shared/config/vscode` or other config directories. Do not revert them unless explicitly asked.
 
+## macOS Integration Guidance
+
+- Prefer first-class `nix-darwin` or Home Manager options when they exist. If macOS behavior is controlled by a preference key without a dedicated typed option, use [`system.defaults.CustomUserPreferences`] or [`system.defaults.CustomSystemPreferences`] rather than inventing unsupported `system.defaults.*` keys.
+- If a macOS preference key is undocumented or community-discovered, keep the configuration declarative but add a short comment explaining what it does and that it is not an Apple-documented key.
+- For user-level files that do not have a first-class module option, prefer Home Manager-managed files (`home.file`) over editing live files in `$HOME`.
+- For small Darwin-only helper CLIs that are missing from `nixpkgs`, prefer a local Nix package in the repo over ad hoc install scripts or adding extra Homebrew taps, especially when the upstream source is small and easy to build reproducibly.
+- Use the existing Homebrew path primarily for GUI apps and other cases where Nix packaging is weak. Do not add third-party Homebrew taps when a simple local derivation is more reproducible and easier to maintain.
+- Shell startup hooks only affect newly started shells. Do not assume they will retroactively change behavior in already-open terminals or on app focus changes.
+
 ## Validation Expectations
 
 For most config changes:
@@ -87,6 +96,12 @@ For most config changes:
 4. If the user wants the config applied, run `nix run .#build-switch`.
 
 If you cannot run a verification step, say so explicitly.
+
+## Documentation Expectations
+
+- After completing a task, review whether the change should also update documentation such as `AGENTS.md`, `README.md`, inline comments, or app-specific notes.
+- If behavior, commands, install surfaces, caveats, or workflow expectations changed, update the relevant docs in the same task when practical instead of leaving the repo in a code-updated but doc-stale state.
+- When updating `AGENTS.md`, prefer reusable guidance and maintenance heuristics over one-off task notes so future work benefits from the change.
 
 ## Editing Guidance
 

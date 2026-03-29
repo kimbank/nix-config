@@ -23,6 +23,11 @@ in
         . /nix/var/nix/profiles/default/etc/profile.d/nix.sh
       fi
 
+      # Keep newly spawned shells on ABC so terminal editing starts in English.
+      if command -v im-select >/dev/null 2>&1; then
+        im-select com.apple.keylayout.ABC >/dev/null 2>&1 || true
+      fi
+
       export PATH="$HOME/.local/bin:$PATH"
     '';
 

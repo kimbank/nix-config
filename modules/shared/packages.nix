@@ -13,6 +13,7 @@ with pkgs; [
   gh
   git
   jq
+  (callPackage ./pkgs/im-select.nix { })
   nixd
   nixfmt
   ripgrep
