@@ -16,6 +16,7 @@ with pkgs; [
   (callPackage ./pkgs/im-select.nix { })
   nixd
   nixfmt
+  nodejs_24
   ripgrep
   tmux
   tree
