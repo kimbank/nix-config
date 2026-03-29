@@ -1,6 +1,7 @@
 _:
 
 [
+  "1password"
   "codex-app"
   "brave-browser"
   "google-chrome"
