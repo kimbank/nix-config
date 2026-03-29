@@ -62,6 +62,13 @@ in
           linkApps.enable = false;
           defaults = {
             NSGlobalDomain."com.apple.mouse.tapBehavior" = 0;
+            # Brave enterprise policies on macOS are applied via user defaults.
+            "com.brave.Browser" = {
+              TranslateEnabled = false;
+              DefaultSearchProviderEnabled = true;
+              DefaultSearchProviderName = "Brave Search";
+              DefaultSearchProviderSearchURL = "https://search.brave.com/search?q={searchTerms}";
+            };
           };
           currentHostDefaults = {
             NSGlobalDomain."com.apple.mouse.tapBehavior" = 0;

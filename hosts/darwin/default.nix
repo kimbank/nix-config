@@ -62,6 +62,14 @@ in
         "com.apple.sound.beep.volume" = 0.0;
       };
 
+      CustomUserPreferences = {
+        NSGlobalDomain = {
+          # Undocumented macOS preference that enables:
+          # "Use the Caps Lock key to switch to and from the last used Latin input source".
+          TISRomanSwitchState = 1;
+        };
+      };
+
       dock = {
         autohide = true;
         show-recents = false;
