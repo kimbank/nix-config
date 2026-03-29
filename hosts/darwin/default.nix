@@ -67,13 +67,30 @@ in
         tilesize = 40;
       };
 
+      controlcenter = {
+        BatteryShowPercentage = false;
+      };
+
       finder = {
         _FXShowPosixPathInTitle = true;
       };
 
+      menuExtraClock = {
+        Show24Hour = true;
+        ShowAMPM = false;
+        ShowDate = 2;
+        ShowDayOfMonth = false;
+        ShowDayOfWeek = false;
+        ShowSeconds = false;
+      };
+
       trackpad = {
-        Clicking = true;
+        Clicking = false;
         TrackpadThreeFingerDrag = true;
+      };
+
+      universalaccess = {
+        closeViewScrollWheelToggle = true;
       };
     };
 

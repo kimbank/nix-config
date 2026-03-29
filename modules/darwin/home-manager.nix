@@ -60,6 +60,12 @@ in
         targets.darwin = {
           copyApps.enable = true;
           linkApps.enable = false;
+          defaults = {
+            NSGlobalDomain."com.apple.mouse.tapBehavior" = 0;
+          };
+          currentHostDefaults = {
+            NSGlobalDomain."com.apple.mouse.tapBehavior" = 0;
+          };
         };
 
         programs = import ../shared/home-manager.nix { inherit lib pkgs; };
@@ -71,10 +77,11 @@ in
     enable = true;
     username = loginUser;
     entries = [
-      { path = "/Applications/Zen.app/"; }
-      { path = "/System/Applications/Notes.app/"; }
-      { path = "/System/Applications/Utilities/Terminal.app/"; }
       { path = "/System/Applications/System Settings.app/"; }
+      # { path = "/System/Applications/Notes.app/"; }
+      # { path = "/System/Applications/Utilities/Terminal.app/"; }
+      { path = "/Applications/Zen.app/"; }
+      { path = "/Applications/WezTerm.app/"; }
       {
         path = "${config.users.users.${loginUser}.home}/Downloads";
         section = "others";
