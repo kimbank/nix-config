@@ -6,6 +6,7 @@ _:
   "google-chrome"
   "obsidian"
   "raycast"
+  "tailscale-app"
   "wezterm"
   "zen"
   "visual-studio-code"
