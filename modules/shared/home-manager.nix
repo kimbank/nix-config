@@ -76,21 +76,6 @@ in
     viAlias = true;
     vimAlias = true;
     vimdiffAlias = true;
-
-    plugins = with pkgs.vimPlugins; [
-      plenary-nvim
-      nui-nvim
-      nvim-web-devicons
-      telescope-nvim
-      neo-tree-nvim
-      nvim-treesitter
-      lualine-nvim
-      vim-tmux-navigator
-    ];
-
-    initLua = ''
-      dofile(vim.fn.stdpath("config") .. "/local-init.lua")
-    '';
   };
 
   vscode = {

@@ -50,7 +50,7 @@ Important:
 - Shared CLI packages: [`modules/shared/packages.nix`](/Users/kimbank/nix-config/modules/shared/packages.nix)
 - macOS-only Nix packages: [`modules/darwin/packages.nix`](/Users/kimbank/nix-config/modules/darwin/packages.nix)
 - Homebrew GUI apps: [`modules/darwin/casks.nix`](/Users/kimbank/nix-config/modules/darwin/casks.nix)
-- Shell behavior, aliases, `oh-my-zsh`, and Neovim plugin wiring: [`modules/shared/home-manager.nix`](/Users/kimbank/nix-config/modules/shared/home-manager.nix)
+- Shell behavior, aliases, and `oh-my-zsh`: [`modules/shared/home-manager.nix`](/Users/kimbank/nix-config/modules/shared/home-manager.nix)
 - Managed home files and app config links: [`modules/shared/files.nix`](/Users/kimbank/nix-config/modules/shared/files.nix) and [`modules/darwin/files.nix`](/Users/kimbank/nix-config/modules/darwin/files.nix)
 - App-specific config content:
   - Neovim: [`modules/shared/config/nvim`](/Users/kimbank/nix-config/modules/shared/config/nvim)
@@ -68,8 +68,8 @@ Important:
 - Existing unmanaged dotfiles can block activation. This repo sets `home-manager.backupFileExtension = "hm-backup"` in [`modules/darwin/home-manager.nix`](/Users/kimbank/nix-config/modules/darwin/home-manager.nix), so first-time activation may move conflicting files aside instead of failing.
 - `homebrew.onActivation.autoUpdate` and `upgrade` are enabled, so `build-switch` may update managed casks.
 - Zen is installed via Homebrew cask, not via a Zen flake.
-- WezTerm is installed via Homebrew cask, but its config comes from [`modules/shared/config/wezterm`](/Users/kimbank/nix-config/modules/shared/config/wezterm) through [`modules/shared/files.nix`](/Users/kimbank/nix-config/modules/shared/files.nix).
-- Neovim is installed and wrapped by Home Manager. [`modules/shared/home-manager.nix`](/Users/kimbank/nix-config/modules/shared/home-manager.nix) owns the generated `~/.config/nvim/init.lua`, which sources `~/.config/nvim/local-init.lua`. Do not try to replace the whole `~/.config/nvim/init.lua` target directly through `home.file`.
+- WezTerm is installed via Homebrew cask, and [`modules/shared/files.nix`](/Users/kimbank/nix-config/modules/shared/files.nix) links the whole [`modules/shared/config/wezterm`](/Users/kimbank/nix-config/modules/shared/config/wezterm) directory into `~/.config/wezterm`.
+- Neovim is installed by Home Manager, but the config is dotfile-style and lives in the [`modules/shared/config/nvim`](/Users/kimbank/nix-config/modules/shared/config/nvim) submodule. [`modules/shared/files.nix`](/Users/kimbank/nix-config/modules/shared/files.nix) links that whole directory into `~/.config/nvim`, and plugins are bootstrapped inside the config via `lazy.nvim` rather than `programs.neovim.plugins`.
 - VS Code is managed declaratively through Home Manager with `package = null`, which means settings/extensions are managed but the actual GUI app is expected to come from outside the HM package install path.
 - VS Code settings and keybindings are linked via [`modules/shared/files.nix`](/Users/kimbank/nix-config/modules/shared/files.nix), while extension selection lives in [`modules/shared/config/vscode/extensions.nix`](/Users/kimbank/nix-config/modules/shared/config/vscode/extensions.nix).
 - Because `programs.vscode.mutableExtensionsDir = false`, UI-installed or UI-removed extensions will not persist once the Home Manager config is applied again.
