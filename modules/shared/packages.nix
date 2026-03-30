@@ -1,6 +1,7 @@
 { pkgs }:
 
 with pkgs; [
+  android-tools
   bash-completion
   bat
   btop
