@@ -1,19 +1,26 @@
+name: dev-infra
+
 services:
   portainer:
     image: portainer/portainer-ce:sts
     container_name: portainer
-    command: --admin-password-file /run/secrets/portainer-admin-password
+    command:
+      - --admin-password
+      - '$$2y$$10$$jrhGT44cae3CwxwtOEY5reSLUCj/bZ.c3dFrjXDr.CwsZtSvq1Cmi'
+      # The above hash corresponds to the password "adminadmin!!"
     restart: unless-stopped
     ports:
       - "8000:8000"
       - "9443:9443"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./portainer-init/admin-password.txt:/run/secrets/portainer-admin-password:ro
       - portainer_data:/data
 
   mysql:
-    image: mysql:8.4
+    build:
+      context: .
+      dockerfile: ./mysql/Dockerfile
+    image: local-mysql-dev:8.4
     container_name: local-mysql
     restart: unless-stopped
     environment:
@@ -23,7 +30,6 @@ services:
     ports:
       - "127.0.0.1:3306:3306"
     volumes:
-      - ./mysql-init:/docker-entrypoint-initdb.d:ro
       - mysql_data:/var/lib/mysql
 
   postgres:

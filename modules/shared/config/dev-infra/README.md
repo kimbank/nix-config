@@ -3,6 +3,7 @@
 Local Docker stack for day-to-day development on macOS.
 
 This directory is linked to `~/.config/dev-infra` by Home Manager and is meant to be used with `docker compose`.
+Because Home Manager links it into the Nix store, this stack avoids bind-mounting tracked local files at runtime so it works cleanly with Colima.
 
 ## What It Starts
 
@@ -16,8 +17,8 @@ All services are defined in [`compose.yml`](/Users/kimbank/nix-config/modules/sh
 ## Files
 
 - [`compose.yml`](/Users/kimbank/nix-config/modules/shared/config/dev-infra/compose.yml): main Docker Compose stack
+- [`mysql/Dockerfile`](/Users/kimbank/nix-config/modules/shared/config/dev-infra/mysql/Dockerfile): builds the local MySQL image with bootstrap SQL baked in
 - [`mysql-init/001-admin-superuser.sql`](/Users/kimbank/nix-config/modules/shared/config/dev-infra/mysql-init/001-admin-superuser.sql): grants the MySQL `admin` user full privileges for local development
-- [`portainer-init/admin-password.txt`](/Users/kimbank/nix-config/modules/shared/config/dev-infra/portainer-init/admin-password.txt): initial Portainer admin password file
 
 ## Default Access
 
@@ -63,7 +64,7 @@ exec zsh -l
 2. Start the stack.
 
 ```sh
-docker compose -f ~/.config/dev-infra/compose.yml up -d
+docker compose -f ~/.config/dev-infra/compose.yml up -d --build
 ```
 
 3. Open Portainer.
@@ -80,6 +81,12 @@ Start everything:
 
 ```sh
 docker compose -f ~/.config/dev-infra/compose.yml up -d
+```
+
+Rebuild after changing the dev stack definition:
+
+```sh
+docker compose -f ~/.config/dev-infra/compose.yml up -d --build
 ```
 
 Stop everything:
@@ -144,4 +151,5 @@ docker info
 
 - This stack is intentionally local-only and optimized for convenience, not security.
 - MySQL and PostgreSQL defaults are meant for development.
-- Portainer password initialization only applies to a fresh Portainer data volume.
+- Portainer admin initialization uses a baked bcrypt hash for `adminadmin!!` and only applies to a fresh Portainer data volume.
+- The stack is designed to run from the Home Manager symlink at `~/.config/dev-infra`, so avoid reintroducing relative bind mounts for tracked files unless they point to a real non-store path.

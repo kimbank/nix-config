@@ -30,10 +30,10 @@ macOS-first Nix configuration that follows the same high-level layout as the ref
 │       │   ├── dev-infra/
 │       │   │   ├── README.md
 │       │   │   ├── compose.yml
+│       │   │   ├── mysql/
+│       │   │   │   └── Dockerfile
 │       │   │   └── mysql-init/
 │       │   │   │   └── 001-admin-superuser.sql
-│       │   │   └── portainer-init/
-│       │   │       └── admin-password.txt
 │       │   ├── nvim/
 │       │   ├── vscode/
 │       │   └── wezterm/
@@ -215,8 +215,11 @@ Examples:
 - Add `jetbrains-toolbox` in `modules/darwin/casks.nix`, then manage WebStorm/DataGrip installs inside Toolbox
 - Adjust the local Docker stack in `modules/shared/config/dev-infra/compose.yml`
 - Adjust Colima auto-start and profile settings in `modules/darwin/home-manager.nix`
+- Adjust the local MySQL image bootstrap in `modules/shared/config/dev-infra/mysql/Dockerfile`
 - Adjust shell settings in `modules/shared/home-manager.nix`
 - Adjust macOS defaults in `hosts/darwin/default.nix`
+
+The local Docker stack is intended to be run from the Home Manager-managed path `~/.config/dev-infra/compose.yml`. Because that path is a symlink into the Nix store, avoid adding relative bind mounts for tracked repo files; prefer image-baked assets or other approaches that do not require Colima to mount store-backed paths at runtime.
 
 ## Docker On macOS
 
