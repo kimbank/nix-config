@@ -13,4 +13,6 @@ _:
   "wezterm"
   "zen"
   "visual-studio-code"
+  "libreoffice"
+  "postman"
 ]
