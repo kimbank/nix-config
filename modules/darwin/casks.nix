@@ -3,6 +3,7 @@ _:
 [
   "1password"
   "codex-app"
+  "codexbar"
   "brave-browser"
   "google-chrome"
   "jetbrains-toolbox"
