@@ -245,6 +245,7 @@ For the full command reference and reset workflow, see [`modules/shared/config/d
 
 ## Notes
 
+- For local-only GitHub bucket setup that should stay out of the Nix modules, use [`scripts/setup-github-local-auth.sh`](/Users/kimbank/nix-config/scripts/setup-github-local-auth.sh). It reads the configured 1Password items, writes local `~/.ssh` and `~/.gitconfig` state, and updates bucket-level `~/Github/*/.envrc` files.
 - The current target platform is `aarch64-darwin`, not `arm64-darwin`.
 - `nix run .#apply` is for initial personalization of the template.
 - Day-to-day changes are applied with `nix run .#build-switch`.
