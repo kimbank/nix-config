@@ -2,6 +2,7 @@ _:
 
 [
   "1password"
+  "claude"
   "codex-app"
   "codexbar"
   "brave-browser"
