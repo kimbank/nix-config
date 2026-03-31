@@ -16,4 +16,6 @@ _:
   "visual-studio-code"
   "libreoffice"
   "postman"
+  "keepingyouawake"
+  "bettermouse"
 ]
