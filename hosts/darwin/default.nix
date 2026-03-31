@@ -68,6 +68,23 @@ in
           # "Use the Caps Lock key to switch to and from the last used Latin input source".
           # TISRomanSwitchState = 1; # for change input source
         };
+        "com.apple.finder" = {
+          DesktopViewSettings = {
+            IconViewSettings = {
+              arrangeBy = "name";
+            };
+          };
+          StandardViewSettings = {
+            IconViewSettings = {
+              arrangeBy = "name";
+            };
+          };
+          FK_StandardViewSettings = {
+            IconViewSettings = {
+              arrangeBy = "name";
+            };
+          };
+        };
         "com.apple.WindowManager" = {
           # Controls "Click wallpaper to reveal desktop" on newer macOS releases.
           EnableStandardClickToShowDesktop = false;
