@@ -212,6 +212,18 @@ for i in "${!bucket_specs[@]}"; do
     exit 1
   fi
 
+  if [[ -n "$git_name" || -n "$git_email" ]]; then
+    if [[ -z "$git_name" || -z "$git_email" ]]; then
+      echo "Invalid Git identity in bucket spec: ${spec}" >&2
+      echo "If you set git_name or git_email, you must set both." >&2
+      echo "Expected identity order: ...|git_name|git_email" >&2
+      if [[ -z "$git_email" && "$git_name" == *"@"* ]]; then
+        echo "Hint: git_name looks like an email address. Did you swap the last two fields?" >&2
+      fi
+      exit 1
+    fi
+  fi
+
   prefix="${bucket_var_names[$i]}"
   token_field_var="${prefix}_TOKEN_FIELD"
   public_key_field_var="${prefix}_PUBLIC_KEY_FIELD"

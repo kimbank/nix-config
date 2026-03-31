@@ -24,9 +24,9 @@ in
       fi
 
       # Keep newly spawned shells on ABC so terminal editing starts in English.
-      if command -v im-select >/dev/null 2>&1; then
-        im-select com.apple.keylayout.ABC >/dev/null 2>&1 || true
-      fi
+      # if command -v im-select >/dev/null 2>&1; then
+      #   im-select com.apple.keylayout.ABC >/dev/null 2>&1 || true
+      # fi
 
       # Keep Toolbox-generated IDE launchers available from new shells.
       export PATH="$HOME/.local/bin:$HOME/Library/Application Support/JetBrains/Toolbox/scripts:$PATH"

@@ -104,7 +104,7 @@ in
 
     keyboard = {
       enableKeyMapping = true;
-      remapCapsLockToControl = true; # for leader vim, wezterm etc.
+      # remapCapsLockToControl = true; # for leader vim, wezterm etc.
     };
   };
 }
