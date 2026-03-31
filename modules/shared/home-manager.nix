@@ -40,6 +40,7 @@ in
       "ㅊㅣㄴ" = "clear";
       "히" = "gl";
       "ㅎㅣ" = "gl";
+      "ㅣㅣ" = "ll";
       wd = "while true; do tput cup 0 0; command duf; sleep 2; done";
       dp = "watch -n 1 \"docker ps -a --format \\\"table {{.ID}}\\t{{.Names}}\\t{{.Status}}\\\"\"";
       we = "webstorm .";
