@@ -96,8 +96,8 @@ in
         show-recents = false;
         orientation = "bottom";
         tilesize = 40;
-        wvous-bl-corner = 4;
-        wvous-br-corner = 1;
+        wvous-bl-corner = 4; # show desktop
+        wvous-br-corner = 1; # Default: do nothing
       };
 
       controlcenter = {
