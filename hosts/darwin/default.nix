@@ -88,7 +88,28 @@ in
       };
 
       finder = {
+        # 창 아래 경로 바 표시
+        ShowPathbar = true;
+        # 하단 상태바 표시
+        ShowStatusBar = false;
+        #기본 보기 모드: Nlsv = 리스트, clmv = 컬럼, icnv = 아이콘, Flwv = 갤러리
+        FXPreferredViewStyle = "clmv";
+        # 검색 기본 범위를 “현재 폴더”로
+        FXDefaultSearchScope = "SCcf";
+        # 새 Finder 창 기본 위치: 바탕화면
+        NewWindowTarget = "Desktop";
+        # 창 제목에 전체 경로 표시
         _FXShowPosixPathInTitle = true;
+        # 이름순 정렬 시 폴더를 위로
+        _FXSortFoldersFirst = true;
+        # 바탕화면에서도 폴더 먼저
+        _FXSortFoldersFirstOnDesktop = true;
+        # 숨김 파일 항상 표시
+        AppleShowAllFiles = true;
+        # 휴지통 30일 후 자동 비움
+        # FXRemoveOldTrashItems = true;
+        # Finder 종료 메뉴 허용
+        QuitMenuItem = true;
       };
 
       menuExtraClock = {
