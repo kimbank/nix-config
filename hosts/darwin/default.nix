@@ -59,7 +59,7 @@ in
         ApplePressAndHoldEnabled = false;
         KeyRepeat = 2;
         InitialKeyRepeat = 15;
-        "com.apple.sound.beep.volume" = 0.0;
+        "com.apple.sound.beep.volume" = 0.5;
       };
 
       CustomUserPreferences = {
@@ -68,6 +68,10 @@ in
           # "Use the Caps Lock key to switch to and from the last used Latin input source".
           # TISRomanSwitchState = 1; # for change input source
         };
+        "com.apple.WindowManager" = {
+          # Controls "Click wallpaper to reveal desktop" on newer macOS releases.
+          EnableStandardClickToShowDesktop = false;
+        };
       };
 
       dock = {
@@ -75,6 +79,8 @@ in
         show-recents = false;
         orientation = "bottom";
         tilesize = 40;
+        wvous-bl-corner = 4;
+        wvous-br-corner = 1;
       };
 
       controlcenter = {

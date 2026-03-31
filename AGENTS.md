@@ -93,6 +93,7 @@ Important:
 ## macOS Integration Guidance
 
 - Prefer first-class `nix-darwin` or Home Manager options when they exist. If macOS behavior is controlled by a preference key without a dedicated typed option, use [`system.defaults.CustomUserPreferences`] or [`system.defaults.CustomSystemPreferences`] rather than inventing unsupported `system.defaults.*` keys.
+- `system.defaults.*`, `CustomUserPreferences`, and `CustomSystemPreferences` primarily write preferences; removing or commenting out a previously set key does not necessarily delete the existing macOS `defaults` value. If a setting seems to "stick" after being removed from Nix, check whether the host still has the old value and clear it explicitly when needed.
 - Accessibility preferences under `com.apple.universalaccess` may behave as host-scoped user defaults on fresh macOS installs. Prefer Home Manager's `targets.darwin.currentHostDefaults` for those keys instead of `system.defaults.universalaccess` when initial activation reliability matters.
 - If a macOS preference key is undocumented or community-discovered, keep the configuration declarative but add a short comment explaining what it does and that it is not an Apple-documented key.
 - For user-level files that do not have a first-class module option, prefer Home Manager-managed files (`home.file`) over editing live files in `$HOME`.
