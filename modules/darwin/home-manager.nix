@@ -79,7 +79,9 @@ in
             isActive = true;
             isService = true;
             setDockerHost = true;
-            settings.runtime = "docker";
+            # Keep profile settings empty here so Home Manager does not
+            # manage ~/.colima/default/colima.yaml as an immutable symlink.
+            # Colima rewrites that file during startup.
           };
         };
 

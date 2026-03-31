@@ -138,6 +138,7 @@ Colima is configured in the main Nix config as a Home Manager `launchd` user ser
 
 - it should start automatically when the macOS user logs in after the config is applied
 - if you want it immediately in the current session before the next login, run `colima start` manually once
+- avoid declaratively pinning `~/.colima/default/colima.yaml` via Home Manager profile settings unless the file can stay writable, because Colima rewrites it during startup
 
 Useful checks:
 
