@@ -60,6 +60,7 @@ in
         KeyRepeat = 2;
         InitialKeyRepeat = 15;
         "com.apple.sound.beep.volume" = 0.5;
+        "com.apple.keyboard.fnState" = true; # F1, F2, ... 키를 기본 기능으로 사용
       };
 
       CustomUserPreferences = {
