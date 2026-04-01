@@ -97,6 +97,10 @@ in
           # Hides the Battery menu bar item while keeping battery prefs declarative.
           "NSStatusItem Visible Battery" = false;
         };
+        "com.apple.TextInputMenu" = {
+          # Controls "Show Input menu in menu bar" in Keyboard > Text Input.
+          visible = false;
+        };
       };
 
       dock = {

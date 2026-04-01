@@ -70,6 +70,7 @@ in
             # on fresh macOS installs and can fail during nix-darwin's
             # system.defaults activation step.
             "com.apple.universalaccess".closeViewScrollWheelToggle = true;
+            "com.apple.universalaccess".reduceMotion = true;
           };
         };
 
