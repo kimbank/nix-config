@@ -59,6 +59,7 @@ in
         ApplePressAndHoldEnabled = false;
         KeyRepeat = 2;
         InitialKeyRepeat = 15;
+        NSAutomaticPeriodSubstitutionEnabled = false;
         "com.apple.sound.beep.volume" = 0.5;
         "com.apple.keyboard.fnState" = true; # F1, F2, ... 키를 기본 기능으로 사용
       };
