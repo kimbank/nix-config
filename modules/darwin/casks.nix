@@ -21,4 +21,5 @@ _:
   "stats"
   "dockdoor"
   "antigravity"
+  "cursor"
 ]
