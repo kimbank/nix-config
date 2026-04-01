@@ -19,4 +19,6 @@ _:
   # "keepingyouawake"
   "bettermouse"
   "stats"
+  "dockdoor"
+  "antigravity"
 ]
