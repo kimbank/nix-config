@@ -19,7 +19,7 @@ _:
   # "keepingyouawake"
   "bettermouse"
   "stats"
-  "dockdoor"
+  "dockdoor" # for alt + tab
   "antigravity"
   "cursor"
 ]
