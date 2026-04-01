@@ -55,6 +55,8 @@ in
       };
 
       NSGlobalDomain = {
+        # AppleEnableMouseSwipeNavigateWithScrolls = false;
+        AppleEnableSwipeNavigateWithScrolls = false;
         AppleShowAllExtensions = true;
         ApplePressAndHoldEnabled = false;
         KeyRepeat = 2;
