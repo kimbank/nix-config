@@ -93,6 +93,10 @@ in
           # Controls "Click wallpaper to reveal desktop" on newer macOS releases.
           EnableStandardClickToShowDesktop = false;
         };
+        "com.apple.controlcenter" = {
+          # Hides the Battery menu bar item while keeping battery prefs declarative.
+          "NSStatusItem Visible Battery" = false;
+        };
       };
 
       dock = {
