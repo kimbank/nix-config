@@ -18,4 +18,5 @@ _:
   "postman"
   "keepingyouawake"
   "bettermouse"
+  "stats"
 ]

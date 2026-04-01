@@ -3,5 +3,4 @@
 with pkgs; [
   mas
   shottr
-  stats
 ]
