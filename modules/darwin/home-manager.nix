@@ -65,6 +65,10 @@ in
           };
           currentHostDefaults = {
             NSGlobalDomain."com.apple.mouse.tapBehavior" = 0;
+            # Hidden menu bar spacing prefs. Use currentHost because macOS reads
+            # these from `defaults -currentHost read -globalDomain ...`.
+            NSGlobalDomain.NSStatusItemSpacing = 6;
+            NSGlobalDomain.NSStatusItemSelectionPadding = 3;
             "com.apple.screensaver".idleTime = 0;
             # Accessibility prefs under com.apple.universalaccess are host-scoped
             # on fresh macOS installs and can fail during nix-darwin's
