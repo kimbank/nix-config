@@ -3,12 +3,15 @@ set -euo pipefail
 
 script_name="$(basename "$0")"
 script_dir="$(cd "$(dirname "$0")" && pwd)"
+repo_root="$(cd "${script_dir}/../.." && pwd)"
 begin_marker="# >>> github-local-auth (managed by ${script_name}) >>>"
 end_marker="# <<< github-local-auth (managed by ${script_name}) <<<"
 
 home_dir="${HOME}"
 github_root="${home_dir}/Github"
-env_file="${script_dir}/github-local-auth.env"
+env_file="${script_dir}/.env"
+legacy_subdir_env_file="${script_dir}/github-local-auth.env"
+legacy_env_file="${repo_root}/scripts/github-local-auth.env"
 dry_run=0
 verify=1
 danger_plaintext_envrc=0
@@ -73,6 +76,14 @@ while [[ $# -gt 0 ]]; do
       ;;
   esac
 done
+
+if [[ "$env_file" == "${script_dir}/.env" && ! -f "$env_file" ]]; then
+  if [[ -f "$legacy_subdir_env_file" ]]; then
+    env_file="$legacy_subdir_env_file"
+  elif [[ -f "$legacy_env_file" ]]; then
+    env_file="$legacy_env_file"
+  fi
+fi
 
 require_cmd() {
   if ! command -v "$1" >/dev/null 2>&1; then
@@ -176,7 +187,13 @@ load_env_file() {
 
   if [[ ! -f "$path" ]]; then
     echo "Config env file not found: $path" >&2
-    echo "Copy ${script_dir}/github-local-auth.env.example to ${path} and edit it." >&2
+    echo "Copy ${script_dir}/.env.example to ${path} and edit it." >&2
+    if [[ "$path" != "$legacy_subdir_env_file" ]]; then
+      echo "Legacy fallback path: ${legacy_subdir_env_file}" >&2
+    fi
+    if [[ "$path" != "$legacy_env_file" ]]; then
+      echo "Legacy fallback path: ${legacy_env_file}" >&2
+    fi
     exit 1
   fi
 

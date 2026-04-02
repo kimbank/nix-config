@@ -1,4 +1,5 @@
 result
 
+.env
+
 .DS_Store
-scripts/github-local-auth.env

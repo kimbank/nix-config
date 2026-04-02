@@ -6,7 +6,7 @@ on:
       - main
     paths:
       - modules/shared/config/**
-      - .github/scripts/publish-config-mirrors.sh
+      - .github/scripts/dot-config-mirror/publish-config-mirrors.sh
       - .github/workflows/publish-dot-config-mirror-repo.yml
   workflow_dispatch:
     inputs:
@@ -61,4 +61,4 @@ jobs:
         run: |
           set -euo pipefail
           target="${TARGET_INPUT:-config}"
-          bash ./.github/scripts/publish-config-mirrors.sh "$target" --ref "$GITHUB_SHA"
+          bash ./.github/scripts/dot-config-mirror/publish-config-mirrors.sh "$target" --ref "$GITHUB_SHA"
