@@ -1,0 +1,25 @@
+# Global Worktrunk defaults managed by Home Manager.
+# Keep this file user-specific and broadly safe across repositories.
+
+[pre-start]
+env = """
+  if [ ! -e .env ] && [ -n "{{ base_worktree_path }}" ] && [ -f {{ base_worktree_path }}/.env ]; then
+    cp {{ base_worktree_path }}/.env .env
+  fi
+"""
+
+pnpm = """
+  if [ -f package.json ]; then
+    if [ ! -f pnpm-lock.yaml ] && { [ -f package-lock.json ] || [ -f npm-shrinkwrap.json ] || [ -f yarn.lock ]; }; then
+      pnpm import
+    fi
+
+    pnpm install
+  fi
+"""
+
+prisma = """
+  if [ -f package.json ] && [ -f prisma/schema.prisma ]; then
+    npx prisma generate
+  fi
+"""

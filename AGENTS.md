@@ -62,6 +62,7 @@ Important:
   - Ghostty/cmux terminal config: [`modules/shared/config/ghostty`](modules/shared/config/ghostty)
   - Neovim: [`modules/shared/config/nvim`](modules/shared/config/nvim)
   - WezTerm: [`modules/shared/config/wezterm`](modules/shared/config/wezterm)
+  - Worktrunk user config: [`modules/shared/config/worktrunk/config.toml`](modules/shared/config/worktrunk/config.toml)
   - VS Code user config: [`modules/shared/config/vscode`](modules/shared/config/vscode)
   - VS Code extension declarations: [`modules/shared/config/vscode/extensions.nix`](modules/shared/config/vscode/extensions.nix)
 - macOS system defaults: [`hosts/darwin/default.nix`](hosts/darwin/default.nix)
@@ -80,6 +81,7 @@ Important:
 - Ghostty-compatible config for Ghostty and `cmux` lives in [`modules/shared/config/ghostty`](modules/shared/config/ghostty), and [`modules/shared/files.nix`](modules/shared/files.nix) links that whole directory into `~/.config/ghostty`.
 - Keep the primary Ghostty config file named `config` for `cmux` compatibility, and use `config.ghostty` only as a shim when you need Ghostty tooling to resolve the same settings.
 - WezTerm is installed via Homebrew cask, and [`modules/shared/files.nix`](modules/shared/files.nix) links the whole [`modules/shared/config/wezterm`](modules/shared/config/wezterm) directory into `~/.config/wezterm`.
+- Worktrunk user config is stored in [`modules/shared/config/worktrunk/config.toml`](modules/shared/config/worktrunk/config.toml) and linked as the single file `~/.config/worktrunk/config.toml`; do not link the whole `~/.config/worktrunk` directory because Worktrunk needs that directory to remain writable for runtime state such as `approvals.toml`.
 - Neovim is installed by Home Manager, but the config is dotfile-style and lives in the [`modules/shared/config/nvim`](modules/shared/config/nvim) submodule. [`modules/shared/files.nix`](modules/shared/files.nix) links that whole directory into `~/.config/nvim`, and plugins are bootstrapped inside the config via `lazy.nvim` rather than `programs.neovim.plugins`.
 - Docker CLI comes from nixpkgs, Colima is managed as a Home Manager user service in [`modules/darwin/home-manager.nix`](modules/darwin/home-manager.nix), and [`modules/shared/files.nix`](modules/shared/files.nix) links the entire local Docker stack directory from [`modules/shared/config/dev-infra`](modules/shared/config/dev-infra) to `~/.config/dev-infra`.
 - The local Docker stack uses a single [`compose.yml`](modules/shared/config/dev-infra/compose.yml) to start Portainer, MySQL, PostgreSQL, and Redis together, and it is meant to be run from the Home Manager symlink at `~/.config/dev-infra`.

@@ -5,6 +5,7 @@
   ".config/ghostty".source = ./config/ghostty;
   ".config/nvim".source = ./config/nvim;
   ".config/wezterm".source = ./config/wezterm;
+  ".config/worktrunk/config.toml".source = ./config/worktrunk/config.toml;
   # Prefer ` over won-sign in Korean input for Cocoa text-system apps.
   "Library/KeyBindings/DefaultKeyBinding.dict".text = ''
     {
