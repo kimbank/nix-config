@@ -22,4 +22,6 @@ _:
   "dockdoor" # for alt + tab
   "antigravity"
   "cursor"
+  "protonvpn"
+  "cmux"
 ]
