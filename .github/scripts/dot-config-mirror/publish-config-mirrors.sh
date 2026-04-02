@@ -3,7 +3,7 @@ set -euo pipefail
 
 script_name="$(basename "$0")"
 script_dir="$(cd "$(dirname "$0")" && pwd)"
-repo_root="$(cd "${script_dir}/.." && pwd)"
+repo_root="$(git -C "${script_dir}" rev-parse --show-toplevel)"
 
 branch="main"
 ref="HEAD"
