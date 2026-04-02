@@ -26,6 +26,8 @@ concurrency:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    environment:
+      name: publish dot config mirror repo
     permissions:
       contents: read
 

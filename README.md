@@ -211,7 +211,9 @@ The publish flow uses `git subtree split` on `modules/shared/config` and force-p
 
 ### GitHub Actions setup
 
-Create a repository secret in `nix-config` named `DOT_CONFIG_MIRROR_REPO_TOKEN`.
+Create a secret in `nix-config` named `DOT_CONFIG_MIRROR_REPO_TOKEN`.
+
+If you store it as an environment secret instead of a repository secret, attach it to the GitHub environment named `publish dot config mirror repo`, which is the environment used by the workflow.
 
 Recommended scope:
 
