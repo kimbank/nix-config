@@ -10,6 +10,7 @@ _:
   "jetbrains-toolbox"
   "obsidian"
   "raycast"
+  "slack-cli"
   "tailscale-app"
   "wezterm"
   "zen"
