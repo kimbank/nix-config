@@ -1,0 +1,3 @@
+# Some Ghostty tooling looks for config.ghostty while cmux reads config.
+# Keep this as a tiny shim so both apps share the same source of truth.
+config-file = config

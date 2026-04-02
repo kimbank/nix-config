@@ -34,6 +34,7 @@ macOS-first Nix configuration that follows the same high-level layout as the ref
 │       │   │   │   └── Dockerfile
 │       │   │   └── mysql-init/
 │       │   │   │   └── 001-admin-superuser.sql
+│       │   ├── ghostty/
 │       │   ├── nvim/
 │       │   ├── vscode/
 │       │   └── wezterm/
@@ -162,6 +163,7 @@ This config manages your shell through Home Manager. Review:
 
 - `modules/shared/home-manager.nix`
 - `modules/darwin/home-manager.nix`
+- `modules/shared/config/ghostty` for Ghostty-compatible terminal appearance that `cmux` reads from `~/.config/ghostty/config`
 
 Like the reference `nixos-config`, this setup assumes your Nix-managed shell config replaces the previous one. Bring over anything important before switching.
 
@@ -198,7 +200,7 @@ exec zsh -l
 General workflow:
 
 1. Edit the Nix files.
-2. If you changed files inside `modules/shared/config/nvim` or `modules/shared/config/wezterm`, commit and push those submodule repositories too.
+2. If you changed files inside `modules/shared/config/nvim` or `modules/shared/config/wezterm`, commit and push those submodule repositories too. `modules/shared/config/ghostty` is repo-managed in this parent repository, not a submodule.
 3. Run `git add .` if you created or changed tracked files.
 4. Run `nix run .#build` to verify.
 5. Run `nix run .#build-switch` to apply.
@@ -216,6 +218,7 @@ Examples:
 - Add GUI apps in `modules/darwin/casks.nix`
 - Add `jetbrains-toolbox` in `modules/darwin/casks.nix`, then manage WebStorm/DataGrip installs inside Toolbox
 - Adjust the local Docker stack in `modules/shared/config/dev-infra/compose.yml`
+- Adjust Ghostty or `cmux` terminal appearance in `modules/shared/config/ghostty`
 - Adjust Colima auto-start and profile settings in `modules/darwin/home-manager.nix`
 - Adjust the local MySQL image bootstrap in `modules/shared/config/dev-infra/mysql/Dockerfile`
 - Adjust shell settings in `modules/shared/home-manager.nix`

@@ -53,11 +53,13 @@ Important:
 - Shell behavior, aliases, and `oh-my-zsh`: [`modules/shared/home-manager.nix`](modules/shared/home-manager.nix)
 - Docker/Colima user services: [`modules/darwin/home-manager.nix`](modules/darwin/home-manager.nix)
 - Managed home files and app config links: [`modules/shared/files.nix`](modules/shared/files.nix) and [`modules/darwin/files.nix`](modules/darwin/files.nix)
+- Ghostty-compatible terminal appearance for Ghostty/cmux: [`modules/shared/config/ghostty`](modules/shared/config/ghostty)
 - App-specific config content:
   - Local Docker stack guide: [`modules/shared/config/dev-infra/README.md`](modules/shared/config/dev-infra/README.md)
   - Local Docker stack: [`modules/shared/config/dev-infra/compose.yml`](modules/shared/config/dev-infra/compose.yml)
   - Local MySQL image build: [`modules/shared/config/dev-infra/mysql/Dockerfile`](modules/shared/config/dev-infra/mysql/Dockerfile)
   - Local MySQL init SQL: [`modules/shared/config/dev-infra/mysql-init/001-admin-superuser.sql`](modules/shared/config/dev-infra/mysql-init/001-admin-superuser.sql)
+  - Ghostty/cmux terminal config: [`modules/shared/config/ghostty`](modules/shared/config/ghostty)
   - Neovim: [`modules/shared/config/nvim`](modules/shared/config/nvim)
   - WezTerm: [`modules/shared/config/wezterm`](modules/shared/config/wezterm)
   - VS Code user config: [`modules/shared/config/vscode`](modules/shared/config/vscode)
@@ -75,6 +77,8 @@ Important:
 - JetBrains IDEs are expected to be installed and updated through JetBrains Toolbox, which is managed as a Homebrew cask in [`modules/darwin/casks.nix`](modules/darwin/casks.nix).
 - Shell aliases such as `webstorm` or `datagrip` rely on Toolbox-generated launchers, so keep the Toolbox shell scripts feature enabled and ensure the scripts live in a PATH directory such as `~/Library/Application Support/JetBrains/Toolbox/scripts` or `~/.local/bin`.
 - Zen is installed via Homebrew cask, not via a Zen flake.
+- Ghostty-compatible config for Ghostty and `cmux` lives in [`modules/shared/config/ghostty`](modules/shared/config/ghostty), and [`modules/shared/files.nix`](modules/shared/files.nix) links that whole directory into `~/.config/ghostty`.
+- Keep the primary Ghostty config file named `config` for `cmux` compatibility, and use `config.ghostty` only as a shim when you need Ghostty tooling to resolve the same settings.
 - WezTerm is installed via Homebrew cask, and [`modules/shared/files.nix`](modules/shared/files.nix) links the whole [`modules/shared/config/wezterm`](modules/shared/config/wezterm) directory into `~/.config/wezterm`.
 - Neovim is installed by Home Manager, but the config is dotfile-style and lives in the [`modules/shared/config/nvim`](modules/shared/config/nvim) submodule. [`modules/shared/files.nix`](modules/shared/files.nix) links that whole directory into `~/.config/nvim`, and plugins are bootstrapped inside the config via `lazy.nvim` rather than `programs.neovim.plugins`.
 - Docker CLI comes from nixpkgs, Colima is managed as a Home Manager user service in [`modules/darwin/home-manager.nix`](modules/darwin/home-manager.nix), and [`modules/shared/files.nix`](modules/shared/files.nix) links the entire local Docker stack directory from [`modules/shared/config/dev-infra`](modules/shared/config/dev-infra) to `~/.config/dev-infra`.

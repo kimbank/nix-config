@@ -1,0 +1,24 @@
+# cmux reads ~/.config/ghostty/config, so keep the primary config here.
+# Browse built-in themes:
+# - Ghostty docs: https://ghostty.org/docs/features/theme
+# - Theme gallery: https://iterm2colorschemes.com/
+
+# Change this one line when you want a different dark/light pair later.
+# Example:
+# theme = dark:Catppuccin Frappe,light:Catppuccin Latte
+theme = dark:kimbank-ashes-dark,light:kimbank-ashes-light
+
+# Keep cmux visually closer to the repo's terminal/editor setup instead of
+# Ghostty's stock JetBrains Mono default.
+font-family = D2Coding ligature
+font-family = JetBrains Mono
+font-size = 14
+
+# Keep window chrome aligned with the active macOS appearance.
+window-theme = system
+
+# Give pane-heavy cmux sessions a little breathing room.
+window-padding-x = 6
+window-padding-y = 6
+
+scrollback-limit = 50000

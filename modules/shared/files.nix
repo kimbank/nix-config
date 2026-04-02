@@ -2,6 +2,7 @@
 
 {
   ".config/dev-infra".source = ./config/dev-infra;
+  ".config/ghostty".source = ./config/ghostty;
   ".config/nvim".source = ./config/nvim;
   ".config/wezterm".source = ./config/wezterm;
   # Prefer ` over won-sign in Korean input for Cocoa text-system apps.
