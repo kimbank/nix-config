@@ -11,15 +11,21 @@ github_root="${home_dir}/Github"
 env_file="${script_dir}/github-local-auth.env"
 dry_run=0
 verify=1
+danger_plaintext_envrc=0
 
 usage() {
   cat <<EOF
 Usage: ${script_name} [--dry-run] [--no-verify] [--env-file PATH] [--home-dir PATH] [--github-root PATH]
+       ${script_name} [-d|--danger] [--dry-run] [--no-verify] [--env-file PATH] [--home-dir PATH] [--github-root PATH]
 
 Creates local-only GitHub auth setup from 1Password:
 - bucket-level direnv .envrc files under \$HOME/Github/*
 - public key files under \$HOME/.ssh/
 - git includeIf config under ~/.gitconfig
+
+Options:
+  -d, --danger  resolve the GitHub token immediately and write plaintext GH_TOKEN
+                into each bucket's .envrc instead of using an op:// reference
 
 Configuration is loaded from an env file with entries like:
   GITHUB_1="bucket|vault|gh_item|ssh_item|git_name|git_email"
@@ -34,6 +40,10 @@ while [[ $# -gt 0 ]]; do
   case "$1" in
     --dry-run)
       dry_run=1
+      shift
+      ;;
+    -d|--danger)
+      danger_plaintext_envrc=1
       shift
       ;;
     --no-verify)
@@ -99,6 +109,14 @@ write_file() {
 
   mkdir -p "$(dirname "$path")"
   printf '%s' "$content" > "$path"
+}
+
+shell_escape() {
+  local value="$1"
+  local escaped
+
+  printf -v escaped '%q' "$value"
+  printf '%s\n' "$escaped"
 }
 
 update_managed_block() {
@@ -241,11 +259,25 @@ for i in "${!bucket_specs[@]}"; do
     printf 'Would ensure directory %s\n' "$bucket_dir"
   fi
 
-  envrc_content=$(cat <<EOF
+  if [[ $danger_plaintext_envrc -eq 1 ]]; then
+    if [[ $dry_run -eq 1 ]]; then
+      gh_token_value="<dry-run-danger-token>"
+    else
+      gh_token_value="$(op read --no-newline "op://${vault}/${gh_item}/${token_field}")"
+    fi
+    gh_token_escaped="$(shell_escape "$gh_token_value")"
+    envrc_content=$(cat <<EOF
+# WARNING: plaintext GH_TOKEN written by ${script_name} --danger
+export GH_TOKEN=${gh_token_escaped}
+EOF
+)
+  else
+    envrc_content=$(cat <<EOF
 export GH_TOKEN_REF="op://${vault}/${gh_item}/${token_field}"
 export GH_TOKEN="\$(op read --no-newline "\$GH_TOKEN_REF")"
 EOF
 )
+  fi
   write_file "$envrc_path" "$envrc_content"
 
   if [[ $dry_run -eq 1 ]]; then

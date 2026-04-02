@@ -17,4 +17,12 @@ cp ./scripts/github-local-auth.env.example ./scripts/github-local-auth.env
 bash ./scripts/setup-github-local-auth.sh
 ```
 
+If you want each bucket's `.envrc` to contain a plaintext `GH_TOKEN` instead of an `op://...` reference, run:
+
+```sh
+bash ./scripts/setup-github-local-auth.sh --danger
+```
+
+`--danger` reads the token from 1Password at script runtime and writes it directly into `~/Github/*/.envrc`, so use it only when you explicitly want local plaintext secrets on disk.
+
 The actual `scripts/github-local-auth.env` file is ignored by git. Use `--env-file /path/to/file` if you want to keep the config elsewhere.
