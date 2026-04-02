@@ -1,12 +1,22 @@
 # GitHub Workflow Scripts
 
-Use `.github/workflows/` for workflow YAML and `.github/scripts/` for scripts that support those workflows.
+`.github/scripts/` contains helper scripts that exist to support GitHub workflow automation. These scripts are not general local setup tools; they exist to keep workflow logic readable, reusable, and easier to test outside inline YAML shell blocks.
 
-Inside `.github/scripts/`, prefer a workflow-specific subdirectory when a workflow has more than one helper script or is likely to grow over time.
+This directory is organized by workflow concern, not by individual file. Prefer a workflow-specific subdirectory when a workflow has helper scripts today or is likely to gain more later.
 
-Current layout:
+Current conventions:
 
-- `dot-config-mirror/publish-config-mirrors.sh`: exports the repo-managed config tree to the standalone `kimbank/.config` mirror repository
+- Keep workflow support code under a subdirectory named after the automation or integration it serves.
+- Let the top-level README act as the index for `.github/scripts/`.
+- Add a task-local `README.md` only when a specific workflow directory grows enough to need its own operational notes.
+
+## dot-config-mirror
+
+`dot-config-mirror/` contains the helper script used to publish `modules/shared/config` from this repository into the standalone `kimbank/.config` mirror repository.
+
+Files:
+
+- `dot-config-mirror/publish-config-mirrors.sh`: subtree split/push helper used by the publish workflow
 
 Example:
 
