@@ -100,6 +100,8 @@ Example:
 ```sh
 cd ~
 git clone --recurse-submodules https://github.com/kimbank/nix-config.git
+# or ssh
+# git clone --recurse-submodules git@github.com:kimbank/nix-config.git
 cd nix-config
 ```
 
