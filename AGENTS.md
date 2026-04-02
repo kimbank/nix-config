@@ -14,6 +14,8 @@ This repository is a macOS-first `nix-darwin` flake for a single Apple Silicon h
 ## Repository Layout
 
 - `apps/aarch64-darwin/`: helper scripts exposed through `nix run`
+- `.github/workflows/`: GitHub Actions workflow definitions only
+- `.github/scripts/`: scripts that support GitHub workflow automation
 - `hosts/darwin/`: top-level `nix-darwin` host module
 - `modules/shared/`: cross-cutting packages, Home Manager programs, overlays
 - `modules/darwin/`: macOS-only packages, casks, files, dock behavior
@@ -29,10 +31,10 @@ This repository is a macOS-first `nix-darwin` flake for a single Apple Silicon h
 ## Mirror Publishing
 
 - `modules/shared/config/` is a source-of-truth tree in this repo and can be mirrored to the standalone `kimbank/.config` GitHub repo.
-- Local mirror publishing lives in `scripts/publish-config-mirrors.sh`.
+- Local mirror publishing lives in `.github/scripts/publish-config-mirrors.sh`.
 - GitHub Actions mirror publishing lives in `.github/workflows/publish-dot-config-mirror-repo.yml`.
 - Mirror publishing is one-way from this repo outward via subtree split plus force-push. Do not assume bidirectional sync with the standalone repo.
-- If a task changes the publish mapping, token expectations, or mirror workflow, update `README.md`, `AGENTS.md`, and `scripts/README.md` in the same task.
+- If a task changes the publish mapping, token expectations, or mirror workflow, update `README.md`, `AGENTS.md`, `scripts/README.md`, and `.github/scripts/README.md` in the same task.
 
 ## Command Workflow
 

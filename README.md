@@ -204,7 +204,7 @@ The standalone [`kimbank/.config`](https://github.com/kimbank/.config) repositor
 
 This repository includes:
 
-- `scripts/publish-config-mirrors.sh` for local manual publishing
+- `.github/scripts/publish-config-mirrors.sh` for local manual publishing or workflow use
 - `.github/workflows/publish-dot-config-mirror-repo.yml` for automatic publishing on pushes to `main`
 
 The publish flow uses `git subtree split` on `modules/shared/config` and force-pushes the resulting history to the mirror repository branch. Do not make direct commits in the mirror repo unless you intentionally want them overwritten by the next publish.
@@ -227,14 +227,14 @@ Recommended scope:
 
 ```sh
 export PUBLISH_GITHUB_TOKEN=YOUR_TOKEN
-bash ./scripts/publish-config-mirrors.sh config
+bash ./.github/scripts/publish-config-mirrors.sh config
 ```
 
 If you prefer the same repository over SSH locally, override the destination URL:
 
 ```sh
 CONFIG_MIRROR_URL=git@github.com:kimbank/.config.git \
-  bash ./scripts/publish-config-mirrors.sh config
+  bash ./.github/scripts/publish-config-mirrors.sh config
 ```
 
 The first successful publish after moving away from submodules will replace the target branch history in `kimbank/.config` with the subtree-derived history from this repo.

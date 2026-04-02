@@ -26,20 +26,3 @@ bash ./scripts/setup-github-local-auth.sh --danger
 `--danger` reads the token from 1Password at script runtime and writes it directly into `~/Github/*/.envrc`, so use it only when you explicitly want local plaintext secrets on disk.
 
 The actual `scripts/github-local-auth.env` file is ignored by git. Use `--env-file /path/to/file` if you want to keep the config elsewhere.
-
-## Config Mirror Publishing
-
-`publish-config-mirrors.sh` exports the repo-managed config tree to a standalone mirror repository.
-
-Current target:
-
-- `modules/shared/config` -> `kimbank/.config`
-
-Example:
-
-```sh
-export PUBLISH_GITHUB_TOKEN=YOUR_TOKEN
-bash ./scripts/publish-config-mirrors.sh config
-```
-
-This is a mirror publish, not bidirectional sync. The target branch is force-updated from this repo's subtree history, so the standalone `.config` repo should be treated as an output, not the source of truth.
