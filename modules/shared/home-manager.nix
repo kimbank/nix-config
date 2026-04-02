@@ -30,6 +30,11 @@ in
 
       # Keep Toolbox-generated IDE launchers available from new shells.
       export PATH="$HOME/.local/bin:$HOME/Library/Application Support/JetBrains/Toolbox/scripts:$PATH"
+
+      # Let worktrunk switch worktrees and change the current shell directory.
+      if command -v wt >/dev/null 2>&1; then
+        eval "$(wt config shell init zsh)"
+      fi
     '';
 
     # custom alias
