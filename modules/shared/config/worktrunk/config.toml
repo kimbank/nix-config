@@ -3,9 +3,18 @@
 
 [post-create]
 env = """
-  if [ ! -e .env ] && [ -n "{{ base_worktree_path }}" ] && [ -f {{ base_worktree_path }}/.env ]; then
+  {% if base_worktree_path %}
+  if [ ! -e .env ] && [ -f {{ base_worktree_path }}/.env ]; then
     cp {{ base_worktree_path }}/.env .env
   fi
+  {% elif base %}
+  {% set source_worktree = worktree_path_of_branch(base) %}
+  {% if source_worktree %}
+  if [ ! -e .env ] && [ -f {{ source_worktree }}/.env ]; then
+    cp {{ source_worktree }}/.env .env
+  fi
+  {% endif %}
+  {% endif %}
 """
 
 pnpm = """
