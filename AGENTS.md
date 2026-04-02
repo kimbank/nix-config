@@ -71,7 +71,6 @@ Important:
   - WezTerm: [`modules/shared/config/wezterm`](modules/shared/config/wezterm)
   - Worktrunk user config: [`modules/shared/config/worktrunk/config.toml`](modules/shared/config/worktrunk/config.toml)
   - VS Code user config: [`modules/shared/config/vscode`](modules/shared/config/vscode)
-  - VS Code extension declarations: [`modules/shared/config/vscode/extensions.nix`](modules/shared/config/vscode/extensions.nix)
 - macOS system defaults: [`hosts/darwin/default.nix`](hosts/darwin/default.nix)
 - Dock management: [`modules/darwin/dock/default.nix`](modules/darwin/dock/default.nix)
 
@@ -98,9 +97,9 @@ Important:
 - MySQL bootstrap SQL is stored under [`mysql-init/`](modules/shared/config/dev-infra/mysql-init/001-admin-superuser.sql) and baked into the local MySQL image via [`mysql/Dockerfile`](modules/shared/config/dev-infra/mysql/Dockerfile).
 - Portainer's initial admin password is configured directly in [`compose.yml`](modules/shared/config/dev-infra/compose.yml) as a bcrypt hash for the local-only password `adminadmin!!`.
 - If the dev stack behavior, credentials, ports, or daily workflow changes, update [`modules/shared/config/dev-infra/README.md`](modules/shared/config/dev-infra/README.md) in the same task.
-- VS Code is managed declaratively through Home Manager with `package = null`, which means settings/extensions are managed but the actual GUI app is expected to come from outside the HM package install path.
-- VS Code keybindings are linked via [`modules/shared/files.nix`](modules/shared/files.nix), while user settings stay writable in `~/Library/Application Support/Code/User/settings.json` and extension selection lives in [`modules/shared/config/vscode/extensions.nix`](modules/shared/config/vscode/extensions.nix).
-- Because `programs.vscode.mutableExtensionsDir = true`, VS Code can install, remove, and update extensions from the UI. Declarative defaults still live in [`modules/shared/config/vscode/extensions.nix`](modules/shared/config/vscode/extensions.nix), so the live extension set may diverge from the repo until the next explicit cleanup.
+- VS Code is managed declaratively through Home Manager with `package = null`, which means the actual GUI app is expected to come from outside the HM package install path.
+- VS Code keybindings are linked via [`modules/shared/files.nix`](modules/shared/files.nix), while user settings stay writable in `~/Library/Application Support/Code/User/settings.json`.
+- Because `programs.vscode.mutableExtensionsDir = true` and no declarative extension list is configured, VS Code extensions are installed, removed, and updated from the UI rather than from this repository.
 - The dock module resets the Dock when the current entries differ from the declared list.
 - Overlays are auto-loaded from `overlays/`; avoid adding broken or partial overlay files there.
 - This worktree may contain uncommitted user edits under `modules/shared/config/vscode` or other config directories. Do not revert them unless explicitly asked.

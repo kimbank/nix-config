@@ -99,10 +99,6 @@ in
     package = null;
     pname = "vscode";
     mutableExtensionsDir = true;
-
-    profiles.default = {
-      extensions = import ./config/vscode/extensions.nix { inherit pkgs; };
-    };
   };
 
   zoxide = {
