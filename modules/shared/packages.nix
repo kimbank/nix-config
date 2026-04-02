@@ -25,6 +25,7 @@ with pkgs; [
   tree
   unzip
   wget
+  worktrunk
   ytsurf
   zip
 ]
