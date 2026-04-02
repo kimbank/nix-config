@@ -5,11 +5,11 @@ This repository is a macOS-first `nix-darwin` flake for a single Apple Silicon h
 ## Scope
 
 - Target platform is `aarch64-darwin`.
-- Canonical working copy for this repo is `/Users/kimbank/nix-config`.
+- This repo does not require a fixed absolute checkout path; work from the current repo root and do not assume it lives under `~/nix-config`.
 - Do not confuse this repo with `/Users/kimbank/Desktop/nixos-config`, which is a separate upstream/example-style repo and not the default target for edits or validation unless the user explicitly asks to work there.
-- Main entrypoint is [`flake.nix`](/Users/kimbank/nix-config/flake.nix).
-- Host entrypoint is [`hosts/darwin/default.nix`](/Users/kimbank/nix-config/hosts/darwin/default.nix).
-- User-level shell and dotfile management is done through Home Manager in [`modules/darwin/home-manager.nix`](/Users/kimbank/nix-config/modules/darwin/home-manager.nix) and [`modules/shared/home-manager.nix`](/Users/kimbank/nix-config/modules/shared/home-manager.nix).
+- Main entrypoint is [`flake.nix`](flake.nix).
+- Host entrypoint is [`hosts/darwin/default.nix`](hosts/darwin/default.nix).
+- User-level shell and dotfile management is done through Home Manager in [`modules/darwin/home-manager.nix`](modules/darwin/home-manager.nix) and [`modules/shared/home-manager.nix`](modules/shared/home-manager.nix).
 
 ## Repository Layout
 
@@ -18,13 +18,13 @@ This repository is a macOS-first `nix-darwin` flake for a single Apple Silicon h
 - `modules/shared/`: cross-cutting packages, Home Manager programs, overlays
 - `modules/darwin/`: macOS-only packages, casks, files, dock behavior
 - `modules/shared/config/`: app-specific config stored as git submodules or repo-managed config trees
-- `overlays/`: optional local overlays auto-imported by [`modules/shared/default.nix`](/Users/kimbank/nix-config/modules/shared/default.nix)
+- `overlays/`: optional local overlays auto-imported by [`modules/shared/default.nix`](modules/shared/default.nix)
 
 ## Clone And Submodules
 
 - This repository uses git submodules for some app config under `modules/shared/config/`.
 - Clone with `git clone --recurse-submodules ...` or run `git submodule update --init --recursive` after cloning.
-- [`flake.nix`](/Users/kimbank/nix-config/flake.nix) sets `inputs.self.submodules = true;` so Nix includes submodule contents during evaluation.
+- [`flake.nix`](flake.nix) sets `inputs.self.submodules = true;` so Nix includes submodule contents during evaluation.
 - If a task edits files inside `modules/shared/config/nvim` or `modules/shared/config/wezterm`, commit and push those repositories first, then stage the updated gitlink in the parent repo.
 
 ## Command Workflow
@@ -40,52 +40,52 @@ Use these commands from the repo root:
 Important:
 
 - Stage tracked changes before `build` or `build-switch` if you want Nix to see them: `git add .`
-- `build-switch` runs `darwin-rebuild switch` via [`apps/aarch64-darwin/build-switch`](/Users/kimbank/nix-config/apps/aarch64-darwin/build-switch)
+- `build-switch` runs `darwin-rebuild switch` via [`apps/aarch64-darwin/build-switch`](apps/aarch64-darwin/build-switch)
 - `apply` rewrites placeholder values like `loginUser`, git name, and git email across repo files; do not run it for normal day-to-day edits
 - In this environment, `build-switch` usually reaches a macOS `sudo` password prompt and cannot complete unattended beyond that point
 - After a successful shell-related switch, refresh the shell with `exec zsh -l`. Do not rely on `source ~/.zshrc` alone, because this Home Manager setup expects variables from `~/.zshenv` as well.
 
 ## Where To Change Things
 
-- Shared CLI packages: [`modules/shared/packages.nix`](/Users/kimbank/nix-config/modules/shared/packages.nix)
-- macOS-only Nix packages: [`modules/darwin/packages.nix`](/Users/kimbank/nix-config/modules/darwin/packages.nix)
-- Homebrew GUI apps: [`modules/darwin/casks.nix`](/Users/kimbank/nix-config/modules/darwin/casks.nix)
-- Shell behavior, aliases, and `oh-my-zsh`: [`modules/shared/home-manager.nix`](/Users/kimbank/nix-config/modules/shared/home-manager.nix)
-- Docker/Colima user services: [`modules/darwin/home-manager.nix`](/Users/kimbank/nix-config/modules/darwin/home-manager.nix)
-- Managed home files and app config links: [`modules/shared/files.nix`](/Users/kimbank/nix-config/modules/shared/files.nix) and [`modules/darwin/files.nix`](/Users/kimbank/nix-config/modules/darwin/files.nix)
+- Shared CLI packages: [`modules/shared/packages.nix`](modules/shared/packages.nix)
+- macOS-only Nix packages: [`modules/darwin/packages.nix`](modules/darwin/packages.nix)
+- Homebrew GUI apps: [`modules/darwin/casks.nix`](modules/darwin/casks.nix)
+- Shell behavior, aliases, and `oh-my-zsh`: [`modules/shared/home-manager.nix`](modules/shared/home-manager.nix)
+- Docker/Colima user services: [`modules/darwin/home-manager.nix`](modules/darwin/home-manager.nix)
+- Managed home files and app config links: [`modules/shared/files.nix`](modules/shared/files.nix) and [`modules/darwin/files.nix`](modules/darwin/files.nix)
 - App-specific config content:
-  - Local Docker stack guide: [`modules/shared/config/dev-infra/README.md`](/Users/kimbank/nix-config/modules/shared/config/dev-infra/README.md)
-  - Local Docker stack: [`modules/shared/config/dev-infra/compose.yml`](/Users/kimbank/nix-config/modules/shared/config/dev-infra/compose.yml)
-  - Local MySQL image build: [`modules/shared/config/dev-infra/mysql/Dockerfile`](/Users/kimbank/nix-config/modules/shared/config/dev-infra/mysql/Dockerfile)
-  - Local MySQL init SQL: [`modules/shared/config/dev-infra/mysql-init/001-admin-superuser.sql`](/Users/kimbank/nix-config/modules/shared/config/dev-infra/mysql-init/001-admin-superuser.sql)
-  - Neovim: [`modules/shared/config/nvim`](/Users/kimbank/nix-config/modules/shared/config/nvim)
-  - WezTerm: [`modules/shared/config/wezterm`](/Users/kimbank/nix-config/modules/shared/config/wezterm)
-  - VS Code user config: [`modules/shared/config/vscode`](/Users/kimbank/nix-config/modules/shared/config/vscode)
-  - VS Code extension declarations: [`modules/shared/config/vscode/extensions.nix`](/Users/kimbank/nix-config/modules/shared/config/vscode/extensions.nix)
-- macOS system defaults: [`hosts/darwin/default.nix`](/Users/kimbank/nix-config/hosts/darwin/default.nix)
-- Dock management: [`modules/darwin/dock/default.nix`](/Users/kimbank/nix-config/modules/darwin/dock/default.nix)
+  - Local Docker stack guide: [`modules/shared/config/dev-infra/README.md`](modules/shared/config/dev-infra/README.md)
+  - Local Docker stack: [`modules/shared/config/dev-infra/compose.yml`](modules/shared/config/dev-infra/compose.yml)
+  - Local MySQL image build: [`modules/shared/config/dev-infra/mysql/Dockerfile`](modules/shared/config/dev-infra/mysql/Dockerfile)
+  - Local MySQL init SQL: [`modules/shared/config/dev-infra/mysql-init/001-admin-superuser.sql`](modules/shared/config/dev-infra/mysql-init/001-admin-superuser.sql)
+  - Neovim: [`modules/shared/config/nvim`](modules/shared/config/nvim)
+  - WezTerm: [`modules/shared/config/wezterm`](modules/shared/config/wezterm)
+  - VS Code user config: [`modules/shared/config/vscode`](modules/shared/config/vscode)
+  - VS Code extension declarations: [`modules/shared/config/vscode/extensions.nix`](modules/shared/config/vscode/extensions.nix)
+- macOS system defaults: [`hosts/darwin/default.nix`](hosts/darwin/default.nix)
+- Dock management: [`modules/darwin/dock/default.nix`](modules/darwin/dock/default.nix)
 
 ## Project-Specific Constraints
 
 - Prefer editing Nix modules instead of patching generated files or local dotfiles.
-- Home Manager manages `zsh`; changes should go into [`modules/shared/home-manager.nix`](/Users/kimbank/nix-config/modules/shared/home-manager.nix), not `~/.zshrc`.
+- Home Manager manages `zsh`; changes should go into [`modules/shared/home-manager.nix`](modules/shared/home-manager.nix), not `~/.zshrc`.
 - `zsh` uses Home Manager's `oh-my-zsh` integration. Do not assume a user-managed `~/.oh-my-zsh` tree exists or should be edited.
-- Existing unmanaged dotfiles can block activation. This repo sets `home-manager.backupFileExtension = "hm-backup"` in [`modules/darwin/home-manager.nix`](/Users/kimbank/nix-config/modules/darwin/home-manager.nix), so first-time activation may move conflicting files aside instead of failing.
+- Existing unmanaged dotfiles can block activation. This repo sets `home-manager.backupFileExtension = "hm-backup"` in [`modules/darwin/home-manager.nix`](modules/darwin/home-manager.nix), so first-time activation may move conflicting files aside instead of failing.
 - `homebrew.onActivation.autoUpdate` and `upgrade` are enabled, so `build-switch` may update managed casks.
-- JetBrains IDEs are expected to be installed and updated through JetBrains Toolbox, which is managed as a Homebrew cask in [`modules/darwin/casks.nix`](/Users/kimbank/nix-config/modules/darwin/casks.nix).
+- JetBrains IDEs are expected to be installed and updated through JetBrains Toolbox, which is managed as a Homebrew cask in [`modules/darwin/casks.nix`](modules/darwin/casks.nix).
 - Shell aliases such as `webstorm` or `datagrip` rely on Toolbox-generated launchers, so keep the Toolbox shell scripts feature enabled and ensure the scripts live in a PATH directory such as `~/Library/Application Support/JetBrains/Toolbox/scripts` or `~/.local/bin`.
 - Zen is installed via Homebrew cask, not via a Zen flake.
-- WezTerm is installed via Homebrew cask, and [`modules/shared/files.nix`](/Users/kimbank/nix-config/modules/shared/files.nix) links the whole [`modules/shared/config/wezterm`](/Users/kimbank/nix-config/modules/shared/config/wezterm) directory into `~/.config/wezterm`.
-- Neovim is installed by Home Manager, but the config is dotfile-style and lives in the [`modules/shared/config/nvim`](/Users/kimbank/nix-config/modules/shared/config/nvim) submodule. [`modules/shared/files.nix`](/Users/kimbank/nix-config/modules/shared/files.nix) links that whole directory into `~/.config/nvim`, and plugins are bootstrapped inside the config via `lazy.nvim` rather than `programs.neovim.plugins`.
-- Docker CLI comes from nixpkgs, Colima is managed as a Home Manager user service in [`modules/darwin/home-manager.nix`](/Users/kimbank/nix-config/modules/darwin/home-manager.nix), and [`modules/shared/files.nix`](/Users/kimbank/nix-config/modules/shared/files.nix) links the entire local Docker stack directory from [`modules/shared/config/dev-infra`](/Users/kimbank/nix-config/modules/shared/config/dev-infra) to `~/.config/dev-infra`.
-- The local Docker stack uses a single [`compose.yml`](/Users/kimbank/nix-config/modules/shared/config/dev-infra/compose.yml) to start Portainer, MySQL, PostgreSQL, and Redis together, and it is meant to be run from the Home Manager symlink at `~/.config/dev-infra`.
+- WezTerm is installed via Homebrew cask, and [`modules/shared/files.nix`](modules/shared/files.nix) links the whole [`modules/shared/config/wezterm`](modules/shared/config/wezterm) directory into `~/.config/wezterm`.
+- Neovim is installed by Home Manager, but the config is dotfile-style and lives in the [`modules/shared/config/nvim`](modules/shared/config/nvim) submodule. [`modules/shared/files.nix`](modules/shared/files.nix) links that whole directory into `~/.config/nvim`, and plugins are bootstrapped inside the config via `lazy.nvim` rather than `programs.neovim.plugins`.
+- Docker CLI comes from nixpkgs, Colima is managed as a Home Manager user service in [`modules/darwin/home-manager.nix`](modules/darwin/home-manager.nix), and [`modules/shared/files.nix`](modules/shared/files.nix) links the entire local Docker stack directory from [`modules/shared/config/dev-infra`](modules/shared/config/dev-infra) to `~/.config/dev-infra`.
+- The local Docker stack uses a single [`compose.yml`](modules/shared/config/dev-infra/compose.yml) to start Portainer, MySQL, PostgreSQL, and Redis together, and it is meant to be run from the Home Manager symlink at `~/.config/dev-infra`.
 - Because `~/.config/dev-infra` is store-backed, avoid runtime bind mounts for tracked files inside that stack. Prefer baking bootstrap assets into a local image, or use runtime inputs that do not require Colima to mount Nix-store-backed paths.
-- MySQL bootstrap SQL is stored under [`mysql-init/`](/Users/kimbank/nix-config/modules/shared/config/dev-infra/mysql-init/001-admin-superuser.sql) and baked into the local MySQL image via [`mysql/Dockerfile`](/Users/kimbank/nix-config/modules/shared/config/dev-infra/mysql/Dockerfile).
-- Portainer's initial admin password is configured directly in [`compose.yml`](/Users/kimbank/nix-config/modules/shared/config/dev-infra/compose.yml) as a bcrypt hash for the local-only password `adminadmin!!`.
-- If the dev stack behavior, credentials, ports, or daily workflow changes, update [`modules/shared/config/dev-infra/README.md`](/Users/kimbank/nix-config/modules/shared/config/dev-infra/README.md) in the same task.
+- MySQL bootstrap SQL is stored under [`mysql-init/`](modules/shared/config/dev-infra/mysql-init/001-admin-superuser.sql) and baked into the local MySQL image via [`mysql/Dockerfile`](modules/shared/config/dev-infra/mysql/Dockerfile).
+- Portainer's initial admin password is configured directly in [`compose.yml`](modules/shared/config/dev-infra/compose.yml) as a bcrypt hash for the local-only password `adminadmin!!`.
+- If the dev stack behavior, credentials, ports, or daily workflow changes, update [`modules/shared/config/dev-infra/README.md`](modules/shared/config/dev-infra/README.md) in the same task.
 - VS Code is managed declaratively through Home Manager with `package = null`, which means settings/extensions are managed but the actual GUI app is expected to come from outside the HM package install path.
-- VS Code keybindings are linked via [`modules/shared/files.nix`](/Users/kimbank/nix-config/modules/shared/files.nix), while user settings stay writable in `~/Library/Application Support/Code/User/settings.json` and extension selection lives in [`modules/shared/config/vscode/extensions.nix`](/Users/kimbank/nix-config/modules/shared/config/vscode/extensions.nix).
-- Because `programs.vscode.mutableExtensionsDir = true`, VS Code can install, remove, and update extensions from the UI. Declarative defaults still live in [`modules/shared/config/vscode/extensions.nix`](/Users/kimbank/nix-config/modules/shared/config/vscode/extensions.nix), so the live extension set may diverge from the repo until the next explicit cleanup.
+- VS Code keybindings are linked via [`modules/shared/files.nix`](modules/shared/files.nix), while user settings stay writable in `~/Library/Application Support/Code/User/settings.json` and extension selection lives in [`modules/shared/config/vscode/extensions.nix`](modules/shared/config/vscode/extensions.nix).
+- Because `programs.vscode.mutableExtensionsDir = true`, VS Code can install, remove, and update extensions from the UI. Declarative defaults still live in [`modules/shared/config/vscode/extensions.nix`](modules/shared/config/vscode/extensions.nix), so the live extension set may diverge from the repo until the next explicit cleanup.
 - The dock module resets the Dock when the current entries differ from the declared list.
 - Overlays are auto-loaded from `overlays/`; avoid adding broken or partial overlay files there.
 - This worktree may contain uncommitted user edits under `modules/shared/config/vscode` or other config directories. Do not revert them unless explicitly asked.

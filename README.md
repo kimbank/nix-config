@@ -243,11 +243,11 @@ The local DB services bind only to `127.0.0.1` on ports `3306`, `5432`, and `637
 The default MySQL and PostgreSQL database name is `playground`. PostgreSQL uses `admin` as the superuser, the MySQL stack initializes both `root` and a local `admin` account with full privileges for local development, and Portainer initializes the `admin` account with the password `adminadmin!!`.
 Colima is configured to start automatically at user login through Home Manager's macOS `launchd` integration. If you want it immediately in the current session before your next login, you can still run `colima start` once manually.
 If you change the initial DB usernames, passwords, or database names later, remove the related Docker volumes before recreating the containers so the new initialization values can take effect.
-For the full command reference and reset workflow, see [`modules/shared/config/dev-infra/README.md`](/Users/kimbank/nix-config/modules/shared/config/dev-infra/README.md).
+For the full command reference and reset workflow, see [`modules/shared/config/dev-infra/README.md`](modules/shared/config/dev-infra/README.md).
 
 ## Notes
 
-- For local-only GitHub bucket setup that should stay out of the Nix modules, use [`scripts/setup-github-local-auth.sh`](/Users/kimbank/nix-config/scripts/setup-github-local-auth.sh). It reads the configured 1Password items, writes local `~/.ssh` and `~/.gitconfig` state, and updates bucket-level `~/Github/*/.envrc` files.
+- For local-only GitHub bucket setup that should stay out of the Nix modules, use [`scripts/setup-github-local-auth.sh`](scripts/setup-github-local-auth.sh). It reads the configured 1Password items, writes local `~/.ssh` and `~/.gitconfig` state, and updates bucket-level `~/Github/*/.envrc` files.
 - The current target platform is `aarch64-darwin`, not `arm64-darwin`.
 - `nix run .#apply` is for initial personalization of the template.
 - Day-to-day changes are applied with `nix run .#build-switch`.

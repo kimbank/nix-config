@@ -12,13 +12,13 @@ Because Home Manager links it into the Nix store, this stack avoids bind-mountin
 - PostgreSQL
 - Redis
 
-All services are defined in [`compose.yml`](/Users/kimbank/nix-config/modules/shared/config/dev-infra/compose.yml).
+All services are defined in [`compose.yml`](compose.yml).
 
 ## Files
 
-- [`compose.yml`](/Users/kimbank/nix-config/modules/shared/config/dev-infra/compose.yml): main Docker Compose stack
-- [`mysql/Dockerfile`](/Users/kimbank/nix-config/modules/shared/config/dev-infra/mysql/Dockerfile): builds the local MySQL image with bootstrap SQL baked in
-- [`mysql-init/001-admin-superuser.sql`](/Users/kimbank/nix-config/modules/shared/config/dev-infra/mysql-init/001-admin-superuser.sql): grants the MySQL `admin` user full privileges for local development
+- [`compose.yml`](compose.yml): main Docker Compose stack
+- [`mysql/Dockerfile`](mysql/Dockerfile): builds the local MySQL image with bootstrap SQL baked in
+- [`mysql-init/001-admin-superuser.sql`](mysql-init/001-admin-superuser.sql): grants the MySQL `admin` user full privileges for local development
 
 ## Default Access
 
@@ -56,7 +56,7 @@ All services are defined in [`compose.yml`](/Users/kimbank/nix-config/modules/sh
 1. Apply the Nix config.
 
 ```sh
-cd /Users/kimbank/nix-config
+cd /path/to/your/nix-config
 nix run .#build-switch
 exec zsh -l
 ```
