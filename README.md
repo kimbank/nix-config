@@ -26,7 +26,7 @@ macOS-first Nix configuration that follows the same high-level layout as the ref
 │   │   ├── home-manager.nix
 │   │   └── packages.nix
 │   └── shared/               # Shared packages, shell config, files
-│       ├── config/           # App config submodules and tracked config trees
+│       ├── config/           # App config trees tracked in this repo
 │       │   ├── dev-infra/
 │       │   │   ├── README.md
 │       │   │   ├── compose.yml
@@ -92,24 +92,16 @@ nix --extra-experimental-features 'nix-command flakes' run .#build-switch
 
 ### 4. Clone this repository
 
-This repository uses git submodules for app-specific config under `modules/shared/config/`.
-
 The clone path is not special. Any location is fine as long as you run commands from the repository root.
 
 Example:
 
 ```sh
 cd ~
-git clone --recurse-submodules https://github.com/kimbank/nix-config.git
+git clone https://github.com/kimbank/nix-config.git
 # or ssh
-# git clone --recurse-submodules git@github.com:kimbank/nix-config.git
+# git clone git@github.com:kimbank/nix-config.git
 cd nix-config
-```
-
-If you already cloned without submodules, run:
-
-```sh
-git submodule update --init --recursive
 ```
 
 ### 5. Set your git identity first
@@ -200,16 +192,50 @@ exec zsh -l
 General workflow:
 
 1. Edit the Nix files.
-2. If you changed files inside `modules/shared/config/nvim` or `modules/shared/config/wezterm`, commit and push those submodule repositories too. `modules/shared/config/ghostty` is repo-managed in this parent repository, not a submodule.
-3. Run `git add .` if you created or changed tracked files.
-4. Run `nix run .#build` to verify.
-5. Run `nix run .#build-switch` to apply.
+2. Run `git add .` if you created or changed tracked files, including app config under `modules/shared/config/`.
+3. Run `nix run .#build` to verify.
+4. Run `nix run .#build-switch` to apply.
 
-If you pulled changes that moved submodule pointers, resync them before building:
+## Standalone Config Mirrors
+
+`nix-config` is the source of truth for the full [`modules/shared/config`](modules/shared/config) tree.
+
+The standalone [`kimbank/.config`](https://github.com/kimbank/.config) repository is treated as a mirror output for environments that only need the config tree outside this full Nix repo.
+
+This repository includes:
+
+- `scripts/publish-config-mirrors.sh` for local manual publishing
+- `.github/workflows/publish-dot-config-mirror-repo.yml` for automatic publishing on pushes to `main`
+
+The publish flow uses `git subtree split` on `modules/shared/config` and force-pushes the resulting history to the mirror repository branch. Do not make direct commits in the mirror repo unless you intentionally want them overwritten by the next publish.
+
+### GitHub Actions setup
+
+Create a repository secret in `nix-config` named `DOT_CONFIG_MIRROR_REPO_TOKEN`.
+
+Recommended scope:
+
+- Fine-grained personal access token
+- Repository access limited to `kimbank/.config`
+- Repository permission `Contents: Read and write`
+
+`GITHUB_TOKEN` from the `nix-config` Actions run is not intended for pushing to other repositories, so the workflow uses this separate secret for cross-repo publishing.
+
+### Manual publish
 
 ```sh
-git submodule update --init --recursive
+export PUBLISH_GITHUB_TOKEN=YOUR_TOKEN
+bash ./scripts/publish-config-mirrors.sh config
 ```
+
+If you prefer the same repository over SSH locally, override the destination URL:
+
+```sh
+CONFIG_MIRROR_URL=git@github.com:kimbank/.config.git \
+  bash ./scripts/publish-config-mirrors.sh config
+```
+
+The first successful publish after moving away from submodules will replace the target branch history in `kimbank/.config` with the subtree-derived history from this repo.
 
 Examples:
 

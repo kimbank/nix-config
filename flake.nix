@@ -2,7 +2,6 @@
   description = "Kimbank macOS-first Nix configuration";
 
   inputs = {
-    self.submodules = true;
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     home-manager.url = "github:nix-community/home-manager";
     darwin = {

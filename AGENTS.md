@@ -17,15 +17,22 @@ This repository is a macOS-first `nix-darwin` flake for a single Apple Silicon h
 - `hosts/darwin/`: top-level `nix-darwin` host module
 - `modules/shared/`: cross-cutting packages, Home Manager programs, overlays
 - `modules/darwin/`: macOS-only packages, casks, files, dock behavior
-- `modules/shared/config/`: app-specific config stored as git submodules or repo-managed config trees
+- `modules/shared/config/`: app-specific config trees tracked directly in this repository, with the whole tree mirrored out to a standalone repo when needed
 - `overlays/`: optional local overlays auto-imported by [`modules/shared/default.nix`](modules/shared/default.nix)
 
-## Clone And Submodules
+## Clone And Config Trees
 
-- This repository uses git submodules for some app config under `modules/shared/config/`.
-- Clone with `git clone --recurse-submodules ...` or run `git submodule update --init --recursive` after cloning.
-- [`flake.nix`](flake.nix) sets `inputs.self.submodules = true;` so Nix includes submodule contents during evaluation.
-- If a task edits files inside `modules/shared/config/nvim` or `modules/shared/config/wezterm`, commit and push those repositories first, then stage the updated gitlink in the parent repo.
+- App-specific config under `modules/shared/config/` is tracked directly in this repository.
+- A normal `git clone ...` is sufficient; there is no submodule initialization step.
+- If a task edits files inside `modules/shared/config/`, stage those parent-repo changes directly before running Nix builds if you want Nix to evaluate the updated working tree contents.
+
+## Mirror Publishing
+
+- `modules/shared/config/` is a source-of-truth tree in this repo and can be mirrored to the standalone `kimbank/.config` GitHub repo.
+- Local mirror publishing lives in `scripts/publish-config-mirrors.sh`.
+- GitHub Actions mirror publishing lives in `.github/workflows/publish-dot-config-mirror-repo.yml`.
+- Mirror publishing is one-way from this repo outward via subtree split plus force-push. Do not assume bidirectional sync with the standalone repo.
+- If a task changes the publish mapping, token expectations, or mirror workflow, update `README.md`, `AGENTS.md`, and `scripts/README.md` in the same task.
 
 ## Command Workflow
 
@@ -82,8 +89,9 @@ Important:
 - Ghostty-compatible config for Ghostty and `cmux` lives in [`modules/shared/config/ghostty`](modules/shared/config/ghostty), and [`modules/shared/files.nix`](modules/shared/files.nix) links that whole directory into `~/.config/ghostty`.
 - Keep the primary Ghostty config file named `config` for `cmux` compatibility, and use `config.ghostty` only as a shim when you need Ghostty tooling to resolve the same settings.
 - WezTerm is installed via Homebrew cask, and [`modules/shared/files.nix`](modules/shared/files.nix) links the whole [`modules/shared/config/wezterm`](modules/shared/config/wezterm) directory into `~/.config/wezterm`.
+- The standalone `kimbank/.config` repository is a mirror publish target for [`modules/shared/config`](modules/shared/config), not the source of truth.
 - Worktrunk user config is stored in [`modules/shared/config/worktrunk/config.toml`](modules/shared/config/worktrunk/config.toml) and linked as the single file `~/.config/worktrunk/config.toml`; do not link the whole `~/.config/worktrunk` directory because Worktrunk needs that directory to remain writable for runtime state such as `approvals.toml`.
-- Neovim is installed by Home Manager, but the config is dotfile-style and lives in the [`modules/shared/config/nvim`](modules/shared/config/nvim) submodule. [`modules/shared/files.nix`](modules/shared/files.nix) links that whole directory into `~/.config/nvim`, and plugins are bootstrapped inside the config via `lazy.nvim` rather than `programs.neovim.plugins`.
+- Neovim is installed by Home Manager, but the config is dotfile-style and lives in the repo-managed directory [`modules/shared/config/nvim`](modules/shared/config/nvim). [`modules/shared/files.nix`](modules/shared/files.nix) links that whole directory into `~/.config/nvim`, and plugins are bootstrapped inside the config via `lazy.nvim` rather than `programs.neovim.plugins`.
 - Docker CLI comes from nixpkgs, Colima is managed as a Home Manager user service in [`modules/darwin/home-manager.nix`](modules/darwin/home-manager.nix), and [`modules/shared/files.nix`](modules/shared/files.nix) links the entire local Docker stack directory from [`modules/shared/config/dev-infra`](modules/shared/config/dev-infra) to `~/.config/dev-infra`.
 - The local Docker stack uses a single [`compose.yml`](modules/shared/config/dev-infra/compose.yml) to start Portainer, MySQL, PostgreSQL, and Redis together, and it is meant to be run from the Home Manager symlink at `~/.config/dev-infra`.
 - Because `~/.config/dev-infra` is store-backed, avoid runtime bind mounts for tracked files inside that stack. Prefer baking bootstrap assets into a local image, or use runtime inputs that do not require Colima to mount Nix-store-backed paths.
@@ -133,4 +141,5 @@ If you cannot run a verification step, say so explicitly.
 - Avoid unnecessary churn in `flake.lock`.
 - Do not remove or rewrite user-specific values unless the task is explicitly about re-personalizing the repo.
 - This worktree may already contain unrelated edits. Do not revert user changes such as the current `README.md` modification.
-- If a change touches a submodule, treat it as a separate Git repository with its own commit/push cycle before updating the parent repo pointer.
+- Treat `modules/shared/config/` as parent-repo-owned content unless the user explicitly asks to export or mirror one of those directories elsewhere.
+- Do not edit the standalone `.config` mirror repository directly as part of normal config work unless the user explicitly asks for mirror-repo surgery.

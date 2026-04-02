@@ -1,0 +1,61 @@
+name: publish dot config mirror repo
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - modules/shared/config/**
+      - scripts/publish-config-mirrors.sh
+      - .github/workflows/publish-dot-config-mirror-repo.yml
+  workflow_dispatch:
+    inputs:
+      target:
+        description: Mirror target to publish
+        required: false
+        default: config
+        type: choice
+        options:
+          - config
+          - all
+
+concurrency:
+  group: publish-dot-config-mirror-repo
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify mirror token
+        env:
+          PUBLISH_GITHUB_TOKEN: ${{ secrets.DOT_CONFIG_MIRROR_REPO_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [[ -z "${PUBLISH_GITHUB_TOKEN:-}" ]]; then
+            echo "Missing DOT_CONFIG_MIRROR_REPO_TOKEN secret." >&2
+            echo "Create a fine-grained token with Contents write access to kimbank/.config." >&2
+            exit 1
+          fi
+
+      - name: Configure Git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Publish mirrors
+        env:
+          PUBLISH_GITHUB_TOKEN: ${{ secrets.DOT_CONFIG_MIRROR_REPO_TOKEN }}
+          TARGET_INPUT: ${{ github.event.inputs.target }}
+        run: |
+          set -euo pipefail
+          target="${TARGET_INPUT:-config}"
+          bash ./scripts/publish-config-mirrors.sh "$target" --ref "$GITHUB_SHA"
