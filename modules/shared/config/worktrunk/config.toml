@@ -1,7 +1,7 @@
 # Global Worktrunk defaults managed by Home Manager.
 # Keep this file user-specific and broadly safe across repositories.
 
-[pre-start]
+[post-create]
 env = """
   if [ ! -e .env ] && [ -n "{{ base_worktree_path }}" ] && [ -f {{ base_worktree_path }}/.env ]; then
     cp {{ base_worktree_path }}/.env .env
