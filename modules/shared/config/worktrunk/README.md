@@ -410,6 +410,80 @@ tmux = "[ -n \"$TMUX\" ] && tmux rename-window {{ branch | sanitize }}"
 
 이 부분은 공식 `tmux` 예제를 `cmux`에 맞게 응용하는 아이디어입니다.
 
+## Claude Code Skill
+
+공식적으로 Worktrunk는 Claude Code용 plugin과 skill을 제공합니다.
+
+공식 문서 기준 plugin이 제공하는 기능은 두 가지입니다.
+
+- Configuration skill: Claude Code가 Worktrunk 설정 문서를 읽고 LLM commits, hooks, worktree path, shell integration 문제를 도와줌
+- Activity tracking: `wt list`에 Claude 세션 상태를 표시
+
+공식 문서 링크:
+
+- Claude Code integration 문서: <https://worktrunk.dev/claude-code/>
+- 공식 skill 파일: <https://github.com/max-sixty/worktrunk/blob/main/skills/worktrunk/SKILL.md>
+- 공식 skill reference 디렉터리: <https://github.com/max-sixty/worktrunk/tree/main/skills/worktrunk/reference>
+
+참고:
+
+- 이 skill은 Claude Code용 공식 skill입니다.
+- Claude Code는 Worktrunk 관련 질문을 감지하면 이 skill을 자동 로드하도록 설계되어 있다고 문서에 적혀 있습니다.
+- 현재 이 리포의 로컬 `wt` 버전과 공식 skill 버전이 다를 수 있으니, 세부 hook 이름은 항상 `wt --help-page`와 `wt hook --help-page`로 교차 확인하는 편이 안전합니다.
+
+### Claude Code에 설치하는 방법
+
+공식 문서의 설치 명령:
+
+```bash
+claude plugin marketplace add max-sixty/worktrunk
+claude plugin install worktrunk@worktrunk
+```
+
+설치 후 기대할 수 있는 것:
+
+- Claude Code가 Worktrunk 설정 질문에 더 잘 반응
+- `wt list`에서 Claude 활동 상태 표시
+- Claude Code statusline에 Worktrunk 상태 표시 가능
+
+### Claude Code statusline 설정
+
+공식 문서는 아래 설정을 `~/.claude/settings.json`에 넣도록 안내합니다.
+
+```json
+{
+  "statusLine": {
+    "type": "command",
+    "command": "wt list statusline --format=claude-code"
+  }
+}
+```
+
+이 statusline은 현재 worktree 경로, 변경량, base 대비 상태, remote 상태, CI 상태 등을 한 줄로 보여줍니다.
+
+주의:
+
+- 공식 문서상 이 명령은 CI 상태를 네트워크에서 가져올 수 있어 약간 느릴 수 있습니다.
+- 문서에서는 비동기 statusline에는 적합하지만, 동기식 shell prompt에는 느릴 수 있다고 설명합니다.
+
+### Claude 상태 추적
+
+공식 문서 기준 plugin 설치 후 `wt list`에는 Claude 상태 마커가 표시될 수 있습니다.
+
+예시 개념:
+
+- Claude가 작업 중인 worktree
+- Claude가 사용자 입력을 기다리는 worktree
+
+수동으로 상태 마커를 넣는 명령도 문서에 있습니다.
+
+```bash
+wt config state marker set "✅"
+wt config state marker set "✅" --branch feature/login
+```
+
+Claude plugin이 없는 흐름에서도 이 marker 기능 자체는 다른 워크플로우에 응용할 수 있습니다.
+
 ## 공식 레퍼런스
 
 - Main docs: <https://worktrunk.dev/worktrunk/>
@@ -419,7 +493,10 @@ tmux = "[ -n \"$TMUX\" ] && tmux rename-window {{ branch | sanitize }}"
 - `wt remove`: <https://worktrunk.dev/remove/>
 - `wt config`: <https://worktrunk.dev/config/>
 - `wt hook`: <https://worktrunk.dev/hook/>
+- Claude Code integration: <https://worktrunk.dev/claude-code/>
 - Tips & Patterns: <https://worktrunk.dev/tips-patterns/>
+- Official skill file: <https://github.com/max-sixty/worktrunk/blob/main/skills/worktrunk/SKILL.md>
+- Official skill references: <https://github.com/max-sixty/worktrunk/tree/main/skills/worktrunk/reference>
 
 추가로, 현재 설치된 버전에서 실제 노출되는 옵션과 hook 이름은 아래 help가 가장 정확합니다.
 
