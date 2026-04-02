@@ -183,6 +183,171 @@ Worktrunk는 설정 위치가 둘입니다.
 - 모든 프로젝트에서 공통으로 쓰는 준비 작업: 사용자 전역
 - 특정 프로젝트에서만 맞는 `.env`, dev server, DB, 테스트 흐름: 프로젝트 설정
 
+## 유스케이스
+
+### 1. bare repo에서 시작할 때
+
+bare repo로 시작하면 "작업 파일이 펼쳐진 기준 worktree"가 아직 없는 상태입니다.
+
+예를 들어 bare repo가 아래 경로에 있다고 가정해보겠습니다.
+
+```text
+~/Github/acme/your-service-api.bare
+```
+
+이 상태에서 아래처럼 새 worktree를 만들면:
+
+```bash
+wt switch -c wt-test2
+```
+
+기본값으로는 bare 디렉터리 "안"이 아니라 bare 디렉터리 "옆"에 worktree가 생깁니다.
+
+```text
+~/Github/acme/your-service-api.bare
+~/Github/acme/your-service-api.bare.wt-test2
+```
+
+이건 이상한 동작이 아니라 Worktrunk의 기본 `worktree-path` 템플릿이 sibling layout이기 때문입니다.
+
+공식 문서 기준 기본 개념:
+
+- 기본 위치는 `../<repo>.<branch>`
+- 즉 현재 repo 경로의 상위에 형제 디렉터리 형태로 생성
+
+그래서 bare repo 이름이 `your-service-api.bare`라면 branch `wt-test2`의 기본 경로는:
+
+```text
+~/Github/acme/your-service-api.bare.wt-test2
+```
+
+가 됩니다.
+
+이 레이아웃은 bare repo와 작업 디렉터리를 섞지 않아서 깔끔합니다.
+
+### 2. 왜 bare "아래"가 아니라 bare "바깥"인가
+
+처음에는 이렇게 생각하기 쉽습니다.
+
+```text
+your-service-api.bare/
+  develop/
+  feature-login/
+```
+
+하지만 bare repo는 보통 Git 저장소 메타데이터 역할에 가깝고, working tree를 그 안에 직접 섞는 건 구조가 애매해집니다.
+
+공식 문서도 bare 패턴을 설명할 때는 보통 이런 구조를 예시로 듭니다.
+
+```text
+your-service-api/
+  .git/        # bare repo
+  main/        # worktree
+  develop/     # worktree
+  feature-api/ # worktree
+```
+
+즉 핵심은:
+
+- bare repo는 저장소 중심점
+- 실제 작업은 바깥 worktree들에서 수행
+
+입니다.
+
+### 3. `your-service-api`에서 추천 시작 순서
+
+`develop` 기반으로 작업한다고 하면, bare repo를 만든 직후엔 먼저 기준 worktree를 하나 만드는 게 좋습니다.
+
+예시:
+
+```bash
+cd ~/Github/acme/your-service-api.bare
+wt switch develop
+```
+
+그러면 대략 이런 식으로 됩니다.
+
+```text
+~/Github/acme/your-service-api.bare
+~/Github/acme/your-service-api.bare.develop
+```
+
+이제 `develop` worktree가 기준 작업 디렉터리 역할을 합니다.
+
+그 안에서 `.env`를 한 번 준비합니다.
+
+```bash
+cd ~/Github/acme/your-service-api.bare.develop
+cp .env.example .env
+```
+
+그다음부터 feature worktree는 이 `develop` worktree 안에서 만드는 게 가장 자연스럽습니다.
+
+```bash
+wt switch -c -b @ feature/login
+```
+
+그러면 흐름은 이렇게 됩니다.
+
+1. 현재 `develop` worktree를 base로 새 branch 생성
+2. 새 worktree로 이동
+3. 전역 `post-create` 훅 실행
+4. `develop` worktree의 `.env` 복사 시도
+5. `pnpm install`
+6. 필요하면 `npx prisma generate`
+
+예상되는 결과 경로:
+
+```text
+~/Github/acme/your-service-api.bare
+~/Github/acme/your-service-api.bare.develop
+~/Github/acme/your-service-api.bare.feature-login
+```
+
+### 4. `.env`는 어디에 두는 게 자연스러운가
+
+이 리포 기준 추천은 아래와 같습니다.
+
+- bare repo: `.env`를 두는 곳으로 쓰지 않음
+- `develop` worktree: 기준 `.env`를 두는 곳
+- feature worktree: 생성 시 `develop`의 `.env`를 복사받는 곳
+
+즉 `your-service-api` 예시라면:
+
+```text
+~/Github/acme/your-service-api.bare
+~/Github/acme/your-service-api.bare.develop/.env
+~/Github/acme/your-service-api.bare.feature-login/.env
+```
+
+이런 구조가 가장 이해하기 쉽고 유지보수도 편합니다.
+
+### 5. bare repo에서 바로 feature를 만들면 생기는 일
+
+예를 들어 기준 worktree 없이 바로:
+
+```bash
+cd ~/Github/acme/your-service-api.bare
+wt switch -c feature/login
+```
+
+을 하면 worktree 생성 자체는 가능할 수 있습니다. 다만 이 경우 `.env`를 복사할 "기준 worktree"가 아직 없어서, 전역 훅의 `.env` 복사는 스킵될 수 있습니다.
+
+그래서 bare repo를 처음 잡을 때는 보통 아래 순서를 추천합니다.
+
+```bash
+wt switch develop
+cd ../your-service-api.bare.develop
+# 여기서 .env 준비
+wt switch -c -b @ feature/login
+```
+
+한 줄로 요약하면:
+
+- bare repo는 시작점
+- 실제 기준 작업 디렉터리는 `develop` worktree
+- 이후 feature는 그 `develop` worktree에서 파생
+
 ## Hook 관련 주의사항
 
 공식 사이트 문서와 현재 설치된 바이너리 help가 hook 이름에서 다르게 보일 수 있습니다.
