@@ -42,6 +42,10 @@ in
 
   environment.systemPackages = import ../../modules/shared/packages.nix { inherit pkgs; };
 
+  fonts.packages = [
+    pkgs."jetbrains-mono"
+  ];
+
   power.sleep.display = 60;
 
   system = {
