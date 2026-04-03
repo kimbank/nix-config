@@ -12,7 +12,8 @@ theme = dark:kimbank-ashes-dark,light:kimbank-ashes-light
 # system font so Korean text doesn't inherit D2Coding's softer glyphs.
 font-family = ""
 font-family = JetBrains Mono
-font-codepoint-map = U+1100-U+11FF,U+3130-U+318F,U+A960-U+A97F,U+AC00-U+D7AF,U+D7B0-U+D7FF=Apple SD Gothic Neo
+# for map Korean font to Apple SD Gothic Neo
+# font-codepoint-map = U+1100-U+11FF,U+3130-U+318F,U+A960-U+A97F,U+AC00-U+D7AF,U+D7B0-U+D7FF=Apple SD Gothic Neo
 font-size = 14
 
 # Keep window chrome aligned with the active macOS appearance.
