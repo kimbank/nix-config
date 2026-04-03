@@ -2,27 +2,57 @@ _:
 
 [
   "1password"
+
+  # A
+  "antigravity"
+  
+  # B
+  "bettermouse"
+  "brave-browser"
+  
+  # C
   "claude"
+  "cmux"
   "codex-app"
   "codexbar"
-  "brave-browser"
-  "google-chrome"
-  "jetbrains-toolbox"
-  "obsidian"
-  "raycast"
-  "slack-cli"
-  "tailscale-app"
-  "wezterm"
-  "zen"
-  "visual-studio-code"
-  "libreoffice"
-  "postman"
-  # "keepingyouawake"
-  "bettermouse"
-  "stats"
-  "dockdoor" # for alt + tab
-  "antigravity"
   "cursor"
+
+  # D
+  "dockdoor" # for alt + tab
+
+  # G
+  "google-chrome"
+
+  # J
+  "jetbrains-toolbox"
+
+  # L
+  "libreoffice"
+
+  # O
+  "obsidian"
+  "opencode-desktop"
+
+  # P
+  "postman"
   "protonvpn"
-  "cmux"
+
+  # R
+  "raycast"
+
+  # S
+  "slack-cli"
+  "stats"
+
+  # T
+  "tailscale-app"
+
+  # V
+  "visual-studio-code"
+
+  # W
+  "wezterm"
+
+  # Z
+  "zen"
 ]

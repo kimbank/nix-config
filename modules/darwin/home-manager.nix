@@ -28,6 +28,7 @@ in
       autoUpdate = true;
       upgrade = true;
     };
+    brews = [ "opencode" ];
     casks = pkgs.callPackage ./casks.nix { };
     masApps = { };
   };
