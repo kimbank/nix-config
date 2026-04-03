@@ -17,25 +17,43 @@ in
       plugins = [ "git" ];
     };
 
-    initContent = lib.mkBefore ''
-      if [[ -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]]; then
-        . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-        . /nix/var/nix/profiles/default/etc/profile.d/nix.sh
-      fi
+    initContent = lib.mkMerge [
+      (lib.mkOrder 500 ''
+        if [[ -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]]; then
+          . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+          . /nix/var/nix/profiles/default/etc/profile.d/nix.sh
+        fi
 
-      # Keep newly spawned shells on ABC so terminal editing starts in English.
-      # if command -v im-select >/dev/null 2>&1; then
-      #   im-select com.apple.keylayout.ABC >/dev/null 2>&1 || true
-      # fi
+        # Keep newly spawned shells on ABC so terminal editing starts in English.
+        # if command -v im-select >/dev/null 2>&1; then
+        #   im-select com.apple.keylayout.ABC >/dev/null 2>&1 || true
+        # fi
 
-      # Keep Toolbox-generated IDE launchers available from new shells.
-      export PATH="$HOME/.local/bin:$HOME/Library/Application Support/JetBrains/Toolbox/scripts:$PATH"
+        # Keep Toolbox-generated IDE launchers available from new shells.
+        export PATH="$HOME/.local/bin:$HOME/Library/Application Support/JetBrains/Toolbox/scripts:$PATH"
 
-      # Let worktrunk switch worktrees and change the current shell directory.
-      if command -v wt >/dev/null 2>&1; then
-        eval "$(wt config shell init zsh)"
-      fi
-    '';
+        # Let worktrunk switch worktrees and change the current shell directory.
+        if command -v wt >/dev/null 2>&1; then
+          eval "$(wt config shell init zsh)"
+        fi
+      '')
+
+      (lib.mkOrder 525 ''
+        # Home Manager adds completion paths for each active profile even when a
+        # profile doesn't ship every completion directory. Keep only the paths
+        # that actually exist so oh-my-zsh doesn't keep rebuilding a bad dump.
+        fpath=(''${^fpath}(N-/))
+
+        expected_zcompdump_fpath="#omz fpath: $fpath"
+        for dump in ''${ZDOTDIR:-$HOME}/.zcompdump(N) ''${ZDOTDIR:-$HOME}/.zcompdump-*(N); do
+          [[ $dump == *.zwc ]] && continue
+          if ! grep -Fqx -- "$expected_zcompdump_fpath" "$dump" 2>/dev/null; then
+            rm -f -- "$dump" "$dump.zwc"
+          fi
+        done
+        unset expected_zcompdump_fpath
+      '')
+    ];
 
     # custom alias
     shellAliases = {

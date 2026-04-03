@@ -8,10 +8,11 @@
 # theme = dark:Catppuccin Frappe,light:Catppuccin Latte
 theme = dark:kimbank-ashes-dark,light:kimbank-ashes-light
 
-# Keep cmux visually closer to the repo's terminal/editor setup instead of
-# Ghostty's stock JetBrains Mono default.
-font-family = D2Coding ligature
+# Keep Latin text close to WezTerm's default feel, but map Hangul to a crisper
+# system font so Korean text doesn't inherit D2Coding's softer glyphs.
+font-family = ""
 font-family = JetBrains Mono
+font-codepoint-map = U+1100-U+11FF,U+3130-U+318F,U+A960-U+A97F,U+AC00-U+D7AF,U+D7B0-U+D7FF=Apple SD Gothic Neo
 font-size = 14
 
 # Keep window chrome aligned with the active macOS appearance.
