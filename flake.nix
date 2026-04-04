@@ -39,7 +39,8 @@
     let
       loginUser = "kimbank";
       darwinSystems = [ "aarch64-darwin" ];
-      forAllSystems = f: nixpkgs.lib.genAttrs darwinSystems f;
+      linuxSystems = [ "x86_64-linux" "aarch64-linux" ];
+      forAllSystems = f: nixpkgs.lib.genAttrs (darwinSystems ++ linuxSystems) f;
 
       devShell =
         system:
@@ -81,7 +82,20 @@
     {
       formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.nixfmt);
       devShells = forAllSystems devShell;
-      apps = nixpkgs.lib.genAttrs darwinSystems mkDarwinApps;
+      apps = (nixpkgs.lib.genAttrs darwinSystems mkDarwinApps) // (nixpkgs.lib.genAttrs linuxSystems mkDarwinApps); # Can adjust apps if needed for Linux
+
+      nixosConfigurations = nixpkgs.lib.genAttrs linuxSystems (
+        system:
+        nixpkgs.lib.nixosSystem {
+          inherit system;
+          specialArgs = inputs;
+
+          modules = [
+            home-manager.nixosModules.home-manager
+            ./hosts/nixos
+          ];
+        }
+      );
 
       darwinConfigurations = nixpkgs.lib.genAttrs darwinSystems (
         system:
