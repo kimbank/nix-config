@@ -41,6 +41,7 @@ _:
   "raycast"
 
   # S
+  "shottr"
   "slack-cli"
   "stats"
 
