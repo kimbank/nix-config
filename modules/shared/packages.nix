@@ -22,6 +22,10 @@ with pkgs; [
   nodejs_24
   pnpm
   ripgrep
+  rustc
+  cargo
+  clippy
+  rustfmt
   tmux
   tree
   unzip
