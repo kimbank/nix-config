@@ -5,9 +5,12 @@ let
 in
 {
   imports = [
+    ../../modules/darwin/pf.nix
     ../../modules/darwin/home-manager.nix
     ../../modules/shared
   ];
+
+  local.vncFirewall.enable = true;
 
   programs._1password.enable = true;
   programs._1password-gui.enable = false;

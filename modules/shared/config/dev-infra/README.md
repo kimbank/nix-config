@@ -11,6 +11,7 @@ Because Home Manager links it into the Nix store, this stack avoids bind-mountin
 - MySQL
 - PostgreSQL
 - Redis
+- MinIO
 
 All services are defined in [`compose.yml`](compose.yml).
 
@@ -50,6 +51,14 @@ All services are defined in [`compose.yml`](compose.yml).
 - Host: `127.0.0.1`
 - Port: `6379`
 - Password: none
+
+### MinIO
+
+- S3 API: `http://127.0.0.1:9000`
+- Console: `http://127.0.0.1:9001`
+- Root user: `admin`
+- Root password: `adminadmin!!`
+- Image: `minio/minio:RELEASE.2025-04-22T22-12-26Z`
 
 ## First Use
 
@@ -114,6 +123,7 @@ docker compose -f ~/.config/dev-infra/compose.yml restart mysql
 docker compose -f ~/.config/dev-infra/compose.yml restart postgres
 docker compose -f ~/.config/dev-infra/compose.yml restart redis
 docker compose -f ~/.config/dev-infra/compose.yml restart portainer
+docker compose -f ~/.config/dev-infra/compose.yml restart minio
 ```
 
 ## Reset Everything
@@ -131,6 +141,7 @@ This removes:
 - PostgreSQL data
 - Redis data
 - Portainer data
+- MinIO data
 
 ## Colima Behavior
 
@@ -153,4 +164,5 @@ docker info
 - This stack is intentionally local-only and optimized for convenience, not security.
 - MySQL and PostgreSQL defaults are meant for development.
 - Portainer admin initialization uses a baked bcrypt hash for `adminadmin!!` and only applies to a fresh Portainer data volume.
+- MinIO is pinned to `RELEASE.2025-04-22T22-12-26Z` so the local stack stays on a pre-pricing-change image line unless you explicitly choose to upgrade it later.
 - The stack is designed to run from the Home Manager symlink at `~/.config/dev-infra`, so avoid reintroducing relative bind mounts for tracked files unless they point to a real non-store path.

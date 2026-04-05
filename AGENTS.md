@@ -19,7 +19,7 @@ This repository is a macOS-first `nix-darwin` flake for a single Apple Silicon h
 - `.github/scripts/`: scripts that support GitHub workflow automation, grouped by workflow-specific subdirectory
 - `hosts/darwin/`: top-level `nix-darwin` host module
 - `modules/shared/`: cross-cutting packages, Home Manager programs, overlays
-- `modules/darwin/`: macOS-only packages, casks, files, dock behavior
+- `modules/darwin/`: macOS-only packages, casks, files, dock behavior, PF rules
 - `modules/shared/config/`: app-specific config trees tracked directly in this repository, with the whole tree mirrored out to a standalone repo when needed
 - `overlays/`: optional local overlays auto-imported by [`modules/shared/default.nix`](modules/shared/default.nix)
 
@@ -60,6 +60,7 @@ Important:
 - Shared CLI packages: [`modules/shared/packages.nix`](modules/shared/packages.nix)
 - macOS-only Nix packages: [`modules/darwin/packages.nix`](modules/darwin/packages.nix)
 - Homebrew GUI apps: [`modules/darwin/casks.nix`](modules/darwin/casks.nix)
+- PF-based inbound firewall rules for Screen Sharing/VNC: [`modules/darwin/pf.nix`](modules/darwin/pf.nix)
 - Shell behavior, aliases, and `oh-my-zsh`: [`modules/shared/home-manager.nix`](modules/shared/home-manager.nix)
 - Docker/Colima user services: [`modules/darwin/home-manager.nix`](modules/darwin/home-manager.nix)
 - Managed home files and app config links: [`modules/shared/files.nix`](modules/shared/files.nix) and [`modules/darwin/files.nix`](modules/darwin/files.nix)
@@ -95,7 +96,7 @@ Important:
 - Worktrunk user config is stored in [`modules/shared/config/worktrunk/config.toml`](modules/shared/config/worktrunk/config.toml) and linked as the single file `~/.config/worktrunk/config.toml`; do not link the whole `~/.config/worktrunk` directory because Worktrunk needs that directory to remain writable for runtime state such as `approvals.toml`.
 - Neovim is installed by Home Manager, but the config is dotfile-style and lives in the repo-managed directory [`modules/shared/config/nvim`](modules/shared/config/nvim). [`modules/shared/files.nix`](modules/shared/files.nix) links that whole directory into `~/.config/nvim`, and plugins are bootstrapped inside the config via `lazy.nvim` rather than `programs.neovim.plugins`.
 - Docker CLI comes from nixpkgs, Colima is managed as a Home Manager user service in [`modules/darwin/home-manager.nix`](modules/darwin/home-manager.nix), and [`modules/shared/files.nix`](modules/shared/files.nix) links the entire local Docker stack directory from [`modules/shared/config/dev-infra`](modules/shared/config/dev-infra) to `~/.config/dev-infra`.
-- The local Docker stack uses a single [`compose.yml`](modules/shared/config/dev-infra/compose.yml) to start Portainer, MySQL, PostgreSQL, and Redis together, and it is meant to be run from the Home Manager symlink at `~/.config/dev-infra`.
+- The local Docker stack uses a single [`compose.yml`](modules/shared/config/dev-infra/compose.yml) to start Portainer, MySQL, PostgreSQL, Redis, and MinIO together, and it is meant to be run from the Home Manager symlink at `~/.config/dev-infra`.
 - Because `~/.config/dev-infra` is store-backed, avoid runtime bind mounts for tracked files inside that stack. Prefer baking bootstrap assets into a local image, or use runtime inputs that do not require Colima to mount Nix-store-backed paths.
 - MySQL bootstrap SQL is stored under [`mysql-init/`](modules/shared/config/dev-infra/mysql-init/001-admin-superuser.sql) and baked into the local MySQL image via [`mysql/Dockerfile`](modules/shared/config/dev-infra/mysql/Dockerfile).
 - Portainer's initial admin password is configured directly in [`compose.yml`](modules/shared/config/dev-infra/compose.yml) as a bcrypt hash for the local-only password `adminadmin!!`.
@@ -116,6 +117,7 @@ Important:
 - For user-level files that do not have a first-class module option, prefer Home Manager-managed files (`home.file`) over editing live files in `$HOME`.
 - For small Darwin-only helper CLIs that are missing from `nixpkgs`, prefer a local Nix package in the repo over ad hoc install scripts or adding extra Homebrew taps, especially when the upstream source is small and easy to build reproducibly.
 - Use the existing Homebrew path primarily for GUI apps and other cases where Nix packaging is weak. Do not add third-party Homebrew taps when a simple local derivation is more reproducible and easier to maintain.
+- For inbound network allowlists on macOS, prefer a declarative `pf` module under [`modules/darwin/`](modules/darwin/) over ad hoc `pfctl` shell commands. Preserve Apple's default anchor chain unless the task is explicitly replacing the full PF policy.
 - Shell startup hooks only affect newly started shells. Do not assume they will retroactively change behavior in already-open terminals or on app focus changes.
 
 ## Validation Expectations

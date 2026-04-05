@@ -24,6 +24,7 @@ macOS-first Nix configuration that follows the same high-level layout as the ref
 │   │   │   └── default.nix
 │   │   ├── files.nix
 │   │   ├── home-manager.nix
+│   │   ├── pf.nix
 │   │   └── packages.nix
 │   └── shared/               # Shared packages, shell config, files
 │       ├── config/           # App config trees tracked in this repo
@@ -147,6 +148,7 @@ Current split:
 - Small repo-local shared packages: `modules/shared/pkgs/`
 - macOS-specific Nix packages: `modules/darwin/packages.nix`
 - Homebrew casks: `modules/darwin/casks.nix`
+- macOS PF rules for Screen Sharing/VNC: `modules/darwin/pf.nix`
 - JetBrains IDEs: install `jetbrains-toolbox` as a cask, then let Toolbox manage IDE installs and updates
 
 ### 8. Review shell configuration
@@ -248,9 +250,21 @@ Examples:
 - Adjust the local Docker stack in `modules/shared/config/dev-infra/compose.yml`
 - Adjust Ghostty or `cmux` terminal appearance in `modules/shared/config/ghostty`
 - Adjust Colima auto-start and profile settings in `modules/darwin/home-manager.nix`
+- Adjust PF-based inbound VNC allowlists in `modules/darwin/pf.nix`
 - Adjust the local MySQL image bootstrap in `modules/shared/config/dev-infra/mysql/Dockerfile`
 - Adjust shell settings in `modules/shared/home-manager.nix`
 - Adjust macOS defaults in `hosts/darwin/default.nix`
+
+## Screen Sharing Over Tailscale
+
+Inbound Screen Sharing/VNC filtering is managed declaratively in
+`modules/darwin/pf.nix`.
+
+After applying with `nix run .#build-switch`, inspect the loaded VNC rules with:
+
+```sh
+sudo pfctl -a org.nixos.vnc-screen-sharing -sr
+```
 
 The local Docker stack is intended to be run from the Home Manager-managed path `~/.config/dev-infra/compose.yml`. Because that path is a symlink into the Nix store, avoid adding relative bind mounts for tracked repo files; prefer image-baked assets or other approaches that do not require Colima to mount store-backed paths at runtime.
 
@@ -260,7 +274,7 @@ This repo installs Docker tooling with a split that matches the existing package
 
 - `modules/shared/packages.nix`: Docker CLI from nixpkgs
 - `modules/darwin/home-manager.nix`: Colima login-time service and profile settings
-- `modules/shared/config/dev-infra/compose.yml`: Portainer, MySQL, PostgreSQL, Redis stack linked under `~/.config/dev-infra/`
+- `modules/shared/config/dev-infra/compose.yml`: Portainer, MySQL, PostgreSQL, Redis, MinIO stack linked under `~/.config/dev-infra/`
 - `modules/shared/config/dev-infra/README.md`: detailed usage guide for the local stack
 
 Typical first run after `nix run .#build-switch`:
@@ -270,8 +284,8 @@ docker compose -f ~/.config/dev-infra/compose.yml up -d
 ```
 
 Portainer will then be available at [https://localhost:9443](https://localhost:9443). The initial certificate is self-signed, so the browser may show a warning the first time.
-The local DB services bind only to `127.0.0.1` on ports `3306`, `5432`, and `6379`.
-The default MySQL and PostgreSQL database name is `playground`. PostgreSQL uses `admin` as the superuser, the MySQL stack initializes both `root` and a local `admin` account with full privileges for local development, and Portainer initializes the `admin` account with the password `adminadmin!!`.
+The local DB and object storage services bind only to `127.0.0.1` on ports `3306`, `5432`, `6379`, `9000`, and `9001`.
+The default MySQL and PostgreSQL database name is `playground`. PostgreSQL uses `admin` as the superuser, the MySQL stack initializes both `root` and a local `admin` account with full privileges for local development, Portainer initializes the `admin` account with the password `adminadmin!!`, and MinIO exposes its S3 API on `http://127.0.0.1:9000` plus the web console on `http://127.0.0.1:9001` with `admin` / `adminadmin!!`.
 Colima is configured to start automatically at user login through Home Manager's macOS `launchd` integration. If you want it immediately in the current session before your next login, you can still run `colima start` once manually.
 If you change the initial DB usernames, passwords, or database names later, remove the related Docker volumes before recreating the containers so the new initialization values can take effect.
 For the full command reference and reset workflow, see [`modules/shared/config/dev-infra/README.md`](modules/shared/config/dev-infra/README.md).
