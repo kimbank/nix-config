@@ -95,6 +95,21 @@ in
     nix-direnv.enable = true;
   };
 
+  mise = {
+    enable = true;
+    enableZshIntegration = true;
+
+    globalConfig = {
+      tools = {
+        node = "24.14.0";
+      };
+
+      settings = {
+        idiomatic_version_file_enable_tools = [ "node" ];
+      };
+    };
+  };
+
   fzf = {
     enable = true;
     enableZshIntegration = true;

@@ -19,7 +19,6 @@ with pkgs; [
   (callPackage ./pkgs/im-select.nix { })
   nixd
   nixfmt
-  nodejs_24
   pnpm
   ripgrep
   rustc

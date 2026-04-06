@@ -62,6 +62,7 @@ Important:
 - Homebrew GUI apps: [`modules/darwin/casks.nix`](modules/darwin/casks.nix)
 - PF-based inbound firewall rules for Screen Sharing/VNC: [`modules/darwin/pf.nix`](modules/darwin/pf.nix)
 - Shell behavior, aliases, and `oh-my-zsh`: [`modules/shared/home-manager.nix`](modules/shared/home-manager.nix)
+- Node runtime defaults and `mise` shell integration: [`modules/shared/home-manager.nix`](modules/shared/home-manager.nix)
 - Docker/Colima user services: [`modules/darwin/home-manager.nix`](modules/darwin/home-manager.nix)
 - Managed home files and app config links: [`modules/shared/files.nix`](modules/shared/files.nix) and [`modules/darwin/files.nix`](modules/darwin/files.nix)
 - Ghostty-compatible terminal appearance for Ghostty/cmux: [`modules/shared/config/ghostty`](modules/shared/config/ghostty)
@@ -82,6 +83,7 @@ Important:
 
 - Prefer editing Nix modules instead of patching generated files or local dotfiles.
 - Home Manager manages `zsh`; changes should go into [`modules/shared/home-manager.nix`](modules/shared/home-manager.nix), not `~/.zshrc`.
+- Node runtime version switching is managed declaratively with Home Manager's `programs.mise`; prefer project-local `.tool-versions`, `.nvmrc`, or `.node-version` files over reintroducing a fixed global `nodejs_*` package unless a task explicitly requires a Nix-pinned system Node.
 - `zsh` uses Home Manager's `oh-my-zsh` integration. Do not assume a user-managed `~/.oh-my-zsh` tree exists or should be edited.
 - Worktrunk shell integration for zsh should be managed declaratively in [`modules/shared/home-manager.nix`](modules/shared/home-manager.nix); prefer that over running `wt config shell install`, because this repo treats shell startup as Home Manager-managed state.
 - Existing unmanaged dotfiles can block activation. This repo sets `home-manager.backupFileExtension = "hm-backup"` in [`modules/darwin/home-manager.nix`](modules/darwin/home-manager.nix), so first-time activation may move conflicting files aside instead of failing.
