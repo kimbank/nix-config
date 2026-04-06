@@ -51,6 +51,11 @@ in
 
   power.sleep.display = 60;
 
+  # 맥북 시작음(boot chime) 음소거 — NVRAM 기반 설정
+  system.activationScripts.postActivation.text = ''
+    nvram StartupMute=%01
+  '';
+
   system = {
     checks.verifyNixPath = false;
     primaryUser = loginUser;
