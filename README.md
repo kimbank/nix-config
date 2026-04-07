@@ -163,7 +163,7 @@ Like the reference `nixos-config`, this setup assumes your Nix-managed shell con
 
 JetBrains Toolbox users can keep IDE launchers such as `webstorm` and `datagrip` on `PATH` by enabling Toolbox shell scripts. This repo includes the default Toolbox scripts directory in shell startup so aliases such as `we` and `dg` work in new shells once Toolbox has created those launchers.
 
-JavaScript and TypeScript runtime switching is managed through Home Manager's `programs.mise` integration rather than fixed `nodejs_*`, `bun`, or `deno` packages in Nix. Home Manager writes the global defaults to `~/.config/mise/config.toml`, so they apply across new shells for this user. Project-local `.mise.toml` and `.tool-versions` files can override those defaults automatically, and `.nvmrc` or `.node-version` remain enabled for Node projects. After entering a project with one of those files, run `mise install` once if that version is not already present.
+JavaScript and TypeScript runtime switching is managed through Home Manager's `programs.mise` integration rather than fixed `nodejs_*`, `bun`, or `deno` packages in Nix. Home Manager writes the global defaults to `~/.config/mise/config.toml`, so they apply across new shells for this user. This repo keeps global fallbacks on moving channels such as Node `lts` and Bun/Deno `latest`, while project-local `.mise.toml` and `.tool-versions` files can pin exact versions when needed. `.nvmrc` or `.node-version` remain enabled for Node projects. After entering a project with one of those files, run `mise install` once if that version is not already present.
 
 ### 9. Stage the repo before building
 

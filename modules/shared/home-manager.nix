@@ -103,10 +103,11 @@ in
 
     globalConfig = {
       # Home Manager writes this to ~/.config/mise/config.toml for user-wide defaults.
+      # Keep global fallbacks on moving channels; repo-local mise files should pin specifics.
       tools = {
-        bun = "1.3.11";
-        deno = "2.7.11";
-        node = "24.14.0";
+        bun = "latest";
+        deno = "latest";
+        node = "lts";
       };
 
       settings = {
