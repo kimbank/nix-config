@@ -13,6 +13,7 @@ _:
   # C
   "claude"
   "cmux"
+  "codex"
   "codex-app"
   "codexbar"
   "cursor"
