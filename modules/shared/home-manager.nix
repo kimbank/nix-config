@@ -102,7 +102,10 @@ in
     enableZshIntegration = true;
 
     globalConfig = {
+      # Home Manager writes this to ~/.config/mise/config.toml for user-wide defaults.
       tools = {
+        bun = "1.3.11";
+        deno = "2.7.11";
         node = "24.14.0";
       };
 

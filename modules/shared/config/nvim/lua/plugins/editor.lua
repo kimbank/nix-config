@@ -15,6 +15,9 @@ return {
         follow_current_file = {
           enabled = true,
         },
+        filtered_items = {
+          hide_dotfiles = false,
+        },
         use_libuv_file_watcher = true,
       },
       window = {

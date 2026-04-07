@@ -5,7 +5,6 @@ with pkgs; [
   bash-completion
   bat
   btop
-  bun
   claude-code
   coreutils
   curl
