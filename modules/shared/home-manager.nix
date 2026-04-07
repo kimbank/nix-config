@@ -68,6 +68,8 @@ in
       dp = "watch -n 1 \"docker ps -a --format \\\"table {{.ID}}\\t{{.Names}}\\t{{.Status}}\\\"\"";
       we = "webstorm .";
       clauded = "claude --dangerously-skip-permissions";
+      codexf = "codex --full-auto";
+      codexd = "codex --dangerously-bypass-approvals-and-sandbox";
     };
   };
 
