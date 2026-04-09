@@ -90,6 +90,7 @@ Important:
 - Prefer editing Nix modules instead of patching generated files or local dotfiles.
 - Home Manager manages `zsh`; changes should go into [`modules/shared/home-manager.nix`](modules/shared/home-manager.nix), not `~/.zshrc`.
 - JavaScript/TypeScript runtime version switching is managed declaratively with Home Manager's `programs.mise`; prefer project-local `.mise.toml` or `.tool-versions` files, and `.nvmrc` or `.node-version` for Node-specific repos, over reintroducing fixed global `nodejs_*`, `bun`, or `deno` packages unless a task explicitly requires a Nix-pinned system runtime.
+- `pnpm` global binaries should be managed declaratively via `PNPM_HOME` in [`modules/darwin/home-manager.nix`](modules/darwin/home-manager.nix); prefer that over running `pnpm setup`, which edits shell dotfiles directly.
 - `zsh` uses Home Manager's `oh-my-zsh` integration. Do not assume a user-managed `~/.oh-my-zsh` tree exists or should be edited.
 - Worktrunk shell integration for zsh should be managed declaratively in [`modules/shared/home-manager.nix`](modules/shared/home-manager.nix); prefer that over running `wt config shell install`, because this repo treats shell startup as Home Manager-managed state.
 - Existing unmanaged dotfiles can block activation. This repo sets `home-manager.backupFileExtension = "hm-backup"` in [`modules/darwin/home-manager.nix`](modules/darwin/home-manager.nix), so first-time activation may move conflicting files aside instead of failing.

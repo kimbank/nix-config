@@ -166,6 +166,8 @@ JetBrains Toolbox users can keep IDE launchers such as `webstorm` and `datagrip`
 
 JavaScript and TypeScript runtime switching is managed through Home Manager's `programs.mise` integration rather than fixed `nodejs_*`, `bun`, or `deno` packages in Nix. Home Manager writes the global defaults to `~/.config/mise/config.toml`, so they apply across new shells for this user. This repo keeps global fallbacks on moving channels such as Node `lts` and Bun/Deno `latest`, while project-local `.mise.toml` and `.tool-versions` files can pin exact versions when needed. `.nvmrc` or `.node-version` remain enabled for Node projects. After entering a project with one of those files, run `mise install` once if that version is not already present.
 
+`pnpm` global binaries are managed declaratively through Home Manager with `PNPM_HOME=~/Library/pnpm`, so prefer that over running `pnpm setup` to edit shell dotfiles directly.
+
 Tracked app config under `modules/shared/config/` is linked back into the live app paths as writable symlinks when you use the helper commands from the repo root. That lets apps edit their own dotfiles while Git still sees the changes in this checkout. Directories that need selective tracking can keep a local `.gitignore`, while config trees you want backed up wholesale can just be tracked normally.
 
 ### 9. Stage the repo before building
