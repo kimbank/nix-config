@@ -149,4 +149,8 @@ in
     enable = true;
     enableZshIntegration = true;
   };
+
+  zellij = {
+    enable = true;
+  };
 }
