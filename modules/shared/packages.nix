@@ -1,6 +1,7 @@
 { pkgs }:
 
-with pkgs; [
+with pkgs;
+[
   android-tools
   bash-completion
   bat
@@ -18,6 +19,7 @@ with pkgs; [
   (callPackage ./pkgs/im-select.nix { })
   nixd
   nixfmt
+  opencode
   pnpm
   ripgrep
   rustc

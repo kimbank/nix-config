@@ -201,10 +201,11 @@ exec zsh -l
 General workflow:
 
 1. Edit the Nix files.
-2. If you need newer Nix-managed Homebrew metadata, run `nix run .#update-homebrew` to refresh both `nix-homebrew` and the pinned `homebrew-core`, `homebrew-cask`, and `homebrew-bundle` inputs in `flake.lock`.
-3. Run `git add .` if you created or changed tracked files, including app config under `modules/shared/config/`.
-4. Run `nix run .#build` to verify.
-5. Run `nix run .#build-switch` to apply.
+2. If you need newer nixpkgs-managed package versions such as `opencode`, run `nix flake update nixpkgs` to refresh the pinned `nixpkgs` input in `flake.lock`.
+3. If you need newer Nix-managed Homebrew metadata, run `nix run .#update-homebrew` to refresh both `nix-homebrew` and the pinned `homebrew-core`, `homebrew-cask`, and `homebrew-bundle` inputs in `flake.lock`.
+4. Run `git add .` if you created or changed tracked files, including app config under `modules/shared/config/`.
+5. Run `nix run .#build` to verify.
+6. Run `nix run .#build-switch` to apply.
 
 This repo manages both Homebrew itself and its taps through Nix, so use `nix run .#update-homebrew` instead of `brew update` when you want newer Homebrew package metadata.
 
