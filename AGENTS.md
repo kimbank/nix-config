@@ -29,7 +29,7 @@ This repository is a macOS-first `nix-darwin` flake for a single Apple Silicon h
 - A normal `git clone ...` is sufficient; there is no submodule initialization step.
 - If a task edits files inside `modules/shared/config/`, stage those parent-repo changes directly before running Nix builds if you want Nix to evaluate the updated working tree contents.
 - The `build` and `build-switch` helper apps export `NIX_CONFIG_REPO_ROOT` from the current git top-level and run with `--impure` so writable config links under `modules/shared/config/` can point at the live checkout instead of the Nix store.
-- Prefer keeping `modules/shared/files.nix` as a simple target-to-directory mapping table. Put per-app tracking rules in `modules/shared/config/<app>/.gitignore` instead of encoding ignore policy in the Nix module.
+- Prefer keeping `modules/shared/files.nix` as a simple target-to-directory mapping table. When an app needs selective tracking, put that policy in `modules/shared/config/<app>/.gitignore` instead of encoding ignore rules in the Nix module.
 
 ## Mirror Publishing
 

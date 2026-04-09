@@ -1,8 +1,0 @@
-*
-!.gitignore
-!README.md
-!compose.yml
-!mysql/
-!mysql/**
-!mysql-init/
-!mysql-init/**
