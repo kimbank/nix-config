@@ -48,7 +48,12 @@ in
         for dump in ''${ZDOTDIR:-$HOME}/.zcompdump(N) ''${ZDOTDIR:-$HOME}/.zcompdump-*(N); do
           [[ $dump == *.zwc ]] && continue
           if ! grep -Fqx -- "$expected_zcompdump_fpath" "$dump" 2>/dev/null; then
-            rm -f -- "$dump" "$dump.zwc"
+            if [[ -d $dump ]]; then
+              rm -rf -- "$dump"
+            else
+              rm -f -- "$dump"
+            fi
+            rm -f -- "$dump.zwc"
           fi
         done
         unset expected_zcompdump_fpath

@@ -46,11 +46,13 @@ Use these commands from the repo root:
 - `nix run .#build-switch`: build and switch to the new generation
 - `nix run .#rollback`: switch to a previous generation
 - `nix run .#clean`: garbage-collect old generations
+- `nix run .#update-homebrew`: refresh pinned `nix-homebrew`, `homebrew-core`, `homebrew-cask`, and `homebrew-bundle` inputs in `flake.lock`
 
 Important:
 
 - Stage tracked changes before `build` or `build-switch` if you want Nix to see them: `git add .`
 - `build-switch` runs `darwin-rebuild switch` via [`apps/aarch64-darwin/build-switch`](apps/aarch64-darwin/build-switch)
+- Because this repo manages both Homebrew itself and its taps through `nix-homebrew` with immutable tap pins, use `update-homebrew` instead of `brew update` when you need newer Homebrew metadata
 - `apply` rewrites placeholder values like `loginUser`, git name, and git email across repo files; do not run it for normal day-to-day edits
 - In this environment, `build-switch` usually reaches a macOS `sudo` password prompt and cannot complete unattended beyond that point
 - After a successful shell-related switch, refresh the shell with `exec zsh -l`. Do not rely on `source ~/.zshrc` alone, because this Home Manager setup expects variables from `~/.zshenv` as well.

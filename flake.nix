@@ -77,6 +77,7 @@
         build-switch = mkApp "build-switch" system;
         clean = mkApp "clean" system;
         rollback = mkApp "rollback" system;
+        update-homebrew = mkApp "update-homebrew" system;
       };
     in
     {

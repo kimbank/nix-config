@@ -1,0 +1,16 @@
+#!/bin/sh -e
+
+GREEN='\033[1;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m'
+
+echo "${YELLOW}Updating pinned Homebrew flake inputs...${NC}"
+nix --extra-experimental-features 'nix-command flakes' flake update \
+  "$@" \
+  nix-homebrew \
+  homebrew-core \
+  homebrew-cask \
+  homebrew-bundle
+
+echo "${GREEN}Homebrew flake inputs updated.${NC}"
+echo "${YELLOW}This updates both Homebrew itself and the pinned taps. Review flake.lock, then run nix run .#build before switching.${NC}"
