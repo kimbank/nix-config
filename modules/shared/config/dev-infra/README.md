@@ -3,7 +3,8 @@
 Local Docker stack for day-to-day development on macOS.
 
 This directory is linked to `~/.config/dev-infra` by Home Manager and is meant to be used with `docker compose`.
-Because Home Manager links it into the Nix store, this stack avoids bind-mounting tracked local files at runtime so it works cleanly with Colima.
+When you build through the repo helper commands, that path resolves back to this checkout as a writable symlink, so edits made from either path land in Git.
+Keep local secrets in ignored files such as `.env` rather than hard-coding them in tracked Compose YAML. This directory's local `.gitignore` ignores everything by default and re-includes only the tracked files in this repo.
 
 ## What It Starts
 

@@ -28,6 +28,8 @@ This repository is a macOS-first `nix-darwin` flake for a single Apple Silicon h
 - App-specific config under `modules/shared/config/` is tracked directly in this repository.
 - A normal `git clone ...` is sufficient; there is no submodule initialization step.
 - If a task edits files inside `modules/shared/config/`, stage those parent-repo changes directly before running Nix builds if you want Nix to evaluate the updated working tree contents.
+- The `build` and `build-switch` helper apps export `NIX_CONFIG_REPO_ROOT` from the current git top-level and run with `--impure` so writable config links under `modules/shared/config/` can point at the live checkout instead of the Nix store.
+- Prefer keeping `modules/shared/files.nix` as a simple target-to-directory mapping table. Put per-app tracking rules in `modules/shared/config/<app>/.gitignore` instead of encoding ignore policy in the Nix module.
 
 ## Mirror Publishing
 
@@ -52,6 +54,7 @@ Important:
 
 - Stage tracked changes before `build` or `build-switch` if you want Nix to see them: `git add .`
 - `build-switch` runs `darwin-rebuild switch` via [`apps/aarch64-darwin/build-switch`](apps/aarch64-darwin/build-switch)
+- Use the helper commands from the repo root when you need writable app-config links, because they set `NIX_CONFIG_REPO_ROOT` for the current checkout before evaluation.
 - Because this repo manages both Homebrew itself and its taps through `nix-homebrew` with immutable tap pins, use `update-homebrew` instead of `brew update` when you need newer Homebrew metadata
 - `apply` rewrites placeholder values like `loginUser`, git name, and git email across repo files; do not run it for normal day-to-day edits
 - In this environment, `build-switch` usually reaches a macOS `sudo` password prompt and cannot complete unattended beyond that point
@@ -93,20 +96,20 @@ Important:
 - JetBrains IDEs are expected to be installed and updated through JetBrains Toolbox, which is managed as a Homebrew cask in [`modules/darwin/casks.nix`](modules/darwin/casks.nix).
 - Shell aliases such as `webstorm` or `datagrip` rely on Toolbox-generated launchers, so keep the Toolbox shell scripts feature enabled and ensure the scripts live in a PATH directory such as `~/Library/Application Support/JetBrains/Toolbox/scripts` or `~/.local/bin`.
 - Zen is installed via Homebrew cask, not via a Zen flake.
-- Ghostty-compatible config for Ghostty and `cmux` lives in [`modules/shared/config/ghostty`](modules/shared/config/ghostty), and [`modules/shared/files.nix`](modules/shared/files.nix) links that whole directory into `~/.config/ghostty`.
+- Ghostty-compatible config for Ghostty and `cmux` lives in [`modules/shared/config/ghostty`](modules/shared/config/ghostty), and [`modules/shared/files.nix`](modules/shared/files.nix) links that whole directory into `~/.config/ghostty` as a writable repo-backed symlink when built through the helper commands.
 - Keep the primary Ghostty config file named `config` for `cmux` compatibility, and use `config.ghostty` only as a shim when you need Ghostty tooling to resolve the same settings.
-- WezTerm is installed via Homebrew cask, and [`modules/shared/files.nix`](modules/shared/files.nix) links the whole [`modules/shared/config/wezterm`](modules/shared/config/wezterm) directory into `~/.config/wezterm`.
+- WezTerm is installed via Homebrew cask, and [`modules/shared/files.nix`](modules/shared/files.nix) links the whole [`modules/shared/config/wezterm`](modules/shared/config/wezterm) directory into `~/.config/wezterm` as a writable repo-backed symlink when built through the helper commands.
 - The standalone `kimbank/.config` repository is a mirror publish target for [`modules/shared/config`](modules/shared/config), not the source of truth.
-- Worktrunk user config is stored in [`modules/shared/config/worktrunk/config.toml`](modules/shared/config/worktrunk/config.toml) and linked as the single file `~/.config/worktrunk/config.toml`; do not link the whole `~/.config/worktrunk` directory because Worktrunk needs that directory to remain writable for runtime state such as `approvals.toml`.
+- Worktrunk user config lives under [`modules/shared/config/worktrunk`](modules/shared/config/worktrunk) and [`modules/shared/files.nix`](modules/shared/files.nix) links that whole directory into `~/.config/worktrunk`. Runtime state such as `approvals.toml` or `config.toml.lock` should stay ignored via the directory-local `.gitignore`.
 - Neovim is installed by Home Manager, but the config is dotfile-style and lives in the repo-managed directory [`modules/shared/config/nvim`](modules/shared/config/nvim). [`modules/shared/files.nix`](modules/shared/files.nix) links that whole directory into `~/.config/nvim`, and plugins are bootstrapped inside the config via `lazy.nvim` rather than `programs.neovim.plugins`.
-- Docker CLI comes from nixpkgs, Colima is managed as a Home Manager user service in [`modules/darwin/home-manager.nix`](modules/darwin/home-manager.nix), and [`modules/shared/files.nix`](modules/shared/files.nix) links the entire local Docker stack directory from [`modules/shared/config/dev-infra`](modules/shared/config/dev-infra) to `~/.config/dev-infra`.
+- Docker CLI comes from nixpkgs, Colima is managed as a Home Manager user service in [`modules/darwin/home-manager.nix`](modules/darwin/home-manager.nix), and [`modules/shared/files.nix`](modules/shared/files.nix) links the entire local Docker stack directory from [`modules/shared/config/dev-infra`](modules/shared/config/dev-infra) to `~/.config/dev-infra` as a writable repo-backed symlink when built through the helper commands.
 - The local Docker stack uses a single [`compose.yml`](modules/shared/config/dev-infra/compose.yml) to start Portainer, MySQL, PostgreSQL, Redis, and MinIO together, and it is meant to be run from the Home Manager symlink at `~/.config/dev-infra`.
-- Because `~/.config/dev-infra` is store-backed, avoid runtime bind mounts for tracked files inside that stack. Prefer baking bootstrap assets into a local image, or use runtime inputs that do not require Colima to mount Nix-store-backed paths.
+- Because `~/.config/dev-infra` resolves back to the live repo checkout when built through the helper commands, relative bind mounts can target real working-tree files. Keep secrets in ignored files such as `modules/shared/config/dev-infra/.env` instead of tracked Compose YAML.
 - MySQL bootstrap SQL is stored under [`mysql-init/`](modules/shared/config/dev-infra/mysql-init/001-admin-superuser.sql) and baked into the local MySQL image via [`mysql/Dockerfile`](modules/shared/config/dev-infra/mysql/Dockerfile).
 - Portainer's initial admin password is configured directly in [`compose.yml`](modules/shared/config/dev-infra/compose.yml) as a bcrypt hash for the local-only password `adminadmin!!`.
 - If the dev stack behavior, credentials, ports, or daily workflow changes, update [`modules/shared/config/dev-infra/README.md`](modules/shared/config/dev-infra/README.md) in the same task.
 - VS Code is managed declaratively through Home Manager with `package = null`, which means the actual GUI app is expected to come from outside the HM package install path.
-- VS Code keybindings are linked via [`modules/shared/files.nix`](modules/shared/files.nix), while user settings stay writable in `~/Library/Application Support/Code/User/settings.json`.
+- VS Code user config is linked as the whole `~/Library/Application Support/Code/User` directory from [`modules/shared/config/vscode`](modules/shared/config/vscode). Keep runtime state such as `globalStorage`, `workspaceStorage`, `sync`, and optional local files like `mcp.json` ignored unless you intentionally choose to track them.
 - Because `programs.vscode.mutableExtensionsDir = true` and no declarative extension list is configured, VS Code extensions are installed, removed, and updated from the UI rather than from this repository.
 - The dock module resets the Dock when the current entries differ from the declared list.
 - Overlays are auto-loaded from `overlays/`; avoid adding broken or partial overlay files there.

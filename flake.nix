@@ -38,8 +38,16 @@
     }@inputs:
     let
       loginUser = "kimbank";
+      repoRoot =
+        let
+          env = builtins.getEnv "NIX_CONFIG_REPO_ROOT";
+        in
+        if env != "" then env else null;
       darwinSystems = [ "aarch64-darwin" ];
-      linuxSystems = [ "x86_64-linux" "aarch64-linux" ];
+      linuxSystems = [
+        "x86_64-linux"
+        "aarch64-linux"
+      ];
       forAllSystems = f: nixpkgs.lib.genAttrs (darwinSystems ++ linuxSystems) f;
 
       devShell =
@@ -83,13 +91,17 @@
     {
       formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.nixfmt);
       devShells = forAllSystems devShell;
-      apps = (nixpkgs.lib.genAttrs darwinSystems mkDarwinApps) // (nixpkgs.lib.genAttrs linuxSystems mkDarwinApps); # Can adjust apps if needed for Linux
+      apps =
+        (nixpkgs.lib.genAttrs darwinSystems mkDarwinApps)
+        // (nixpkgs.lib.genAttrs linuxSystems mkDarwinApps); # Can adjust apps if needed for Linux
 
       nixosConfigurations = nixpkgs.lib.genAttrs linuxSystems (
         system:
         nixpkgs.lib.nixosSystem {
           inherit system;
-          specialArgs = inputs;
+          specialArgs = inputs // {
+            inherit repoRoot;
+          };
 
           modules = [
             home-manager.nixosModules.home-manager
@@ -102,7 +114,9 @@
         system:
         darwin.lib.darwinSystem {
           inherit system;
-          specialArgs = inputs;
+          specialArgs = inputs // {
+            inherit repoRoot;
+          };
 
           modules = [
             home-manager.darwinModules.home-manager

@@ -6,11 +6,13 @@ NC='\033[0m'
 
 SYSTEM_TYPE="aarch64-darwin"
 FLAKE_SYSTEM="darwinConfigurations.${SYSTEM_TYPE}.system"
+REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 
 export NIXPKGS_ALLOW_UNFREE=1
+export NIX_CONFIG_REPO_ROOT="$REPO_ROOT"
 
 echo "${YELLOW}Starting build...${NC}"
-nix --extra-experimental-features 'nix-command flakes' build ".#${FLAKE_SYSTEM}" "$@"
+nix --extra-experimental-features 'nix-command flakes' build --impure ".#${FLAKE_SYSTEM}" "$@"
 
 echo "${YELLOW}Cleaning up...${NC}"
 rm -f ./result

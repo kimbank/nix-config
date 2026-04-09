@@ -166,6 +166,8 @@ JetBrains Toolbox users can keep IDE launchers such as `webstorm` and `datagrip`
 
 JavaScript and TypeScript runtime switching is managed through Home Manager's `programs.mise` integration rather than fixed `nodejs_*`, `bun`, or `deno` packages in Nix. Home Manager writes the global defaults to `~/.config/mise/config.toml`, so they apply across new shells for this user. This repo keeps global fallbacks on moving channels such as Node `lts` and Bun/Deno `latest`, while project-local `.mise.toml` and `.tool-versions` files can pin exact versions when needed. `.nvmrc` or `.node-version` remain enabled for Node projects. After entering a project with one of those files, run `mise install` once if that version is not already present.
 
+Tracked app config under `modules/shared/config/` is linked back into the live app paths as writable symlinks when you use the helper commands from the repo root. That lets apps edit their own dotfiles while Git still sees the changes in this checkout. Each app directory owns its own allowlist `.gitignore`, so apps can write extra local files without turning every runtime artifact into Git noise.
+
 ### 9. Stage the repo before building
 
 If you are using git, stage the files first so Nix sees the current working tree contents.
@@ -179,6 +181,8 @@ git add .
 ```sh
 nix run .#build
 ```
+
+This helper exports the current repo root and runs Nix with `--impure` so mutable links under `modules/shared/config/` resolve back to this checkout instead of the Nix store.
 
 ### 11. Apply the configuration
 
@@ -210,6 +214,13 @@ For Node, Bun, or Deno projects, use `mise` to inspect or install runtime versio
 mise ls --current
 mise install
 ```
+
+When you add a new repo-backed dotfiles tree, the usual pattern is:
+
+1. Create a directory under `modules/shared/config/<app>`.
+2. Add a local `.gitignore` there that ignores everything by default and re-includes only the files you want tracked.
+3. Add one mapping in `modules/shared/files.nix`.
+4. Run `git add .` and `nix run .#build`.
 
 ## Standalone Config Mirrors
 
@@ -279,7 +290,7 @@ After applying with `nix run .#build-switch`, inspect the loaded VNC rules with:
 sudo pfctl -a org.nixos.vnc-screen-sharing -sr
 ```
 
-The local Docker stack is intended to be run from the Home Manager-managed path `~/.config/dev-infra/compose.yml`. Because that path is a symlink into the Nix store, avoid adding relative bind mounts for tracked repo files; prefer image-baked assets or other approaches that do not require Colima to mount store-backed paths at runtime.
+The local Docker stack is intended to be run from the Home Manager-managed path `~/.config/dev-infra/compose.yml`. That path resolves back to this repo checkout when you build through the helper commands, so relative bind mounts can point at real working-tree files. Keep local secrets in ignored files such as `modules/shared/config/dev-infra/.env` instead of baking them into tracked Compose YAML.
 
 ## Docker On macOS
 

@@ -2,6 +2,7 @@
   config,
   pkgs,
   lib,
+  repoRoot ? null,
   ...
 }:
 
@@ -45,7 +46,9 @@ in
         ...
       }:
       let
-        sharedFiles = import ../shared/files.nix { inherit config; };
+        sharedFiles = import ../shared/files.nix {
+          inherit config repoRoot;
+        };
       in
       {
         home = {

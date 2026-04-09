@@ -1,0 +1,6 @@
+*
+!.gitignore
+!init.lua
+!lazy-lock.json
+!lua/
+!lua/**

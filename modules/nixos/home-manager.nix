@@ -2,6 +2,7 @@
   config,
   pkgs,
   lib,
+  repoRoot ? null,
   ...
 }:
 
@@ -16,7 +17,11 @@ in
   users.users.${loginUser} = {
     isNormalUser = true;
     description = "Kimbank";
-    extraGroups = [ "networkmanager" "wheel" "docker" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+      "docker"
+    ];
     shell = pkgs.zsh;
   };
 
@@ -33,7 +38,9 @@ in
         ...
       }:
       let
-        sharedFiles = import ../shared/files.nix { inherit config; };
+        sharedFiles = import ../shared/files.nix {
+          inherit config repoRoot;
+        };
       in
       {
         home = {

@@ -1,17 +1,19 @@
 # Worktrunk
 
-이 디렉터리는 이 리포가 관리하는 사용자 전역 Worktrunk 설정을 담습니다.
+이 디렉터리는 이 리포가 관리하는 사용자 전역 Worktrunk 설정 디렉터리 전체를 담습니다.
 
-- 실제 사용자 설정 파일: `~/.config/worktrunk/config.toml`
-- 이 리포의 원본 파일: `modules/shared/config/worktrunk/config.toml`
+- 실제 사용자 설정 디렉터리: `~/.config/worktrunk`
+- 이 리포의 원본 디렉터리: `modules/shared/config/worktrunk`
 - Home Manager 링크 설정: `modules/shared/files.nix`
 - zsh shell integration 설정: `modules/shared/home-manager.nix`
+- `nix run .#build` 또는 `nix run .#build-switch` 를 repo root에서 실행하면 `~/.config/worktrunk` 전체가 이 리포 작업트리를 직접 가리키는 writable symlink 로 연결됩니다.
 
 중요:
 
-- 이 리포는 `~/.config/worktrunk` 디렉터리 전체를 링크하지 않고 `config.toml` 파일만 링크합니다.
-- 이유는 Worktrunk가 런타임 상태 파일을 같은 디렉터리에 쓰기 때문입니다.
-- 예: 승인 상태, 로그 관련 상태
+- 이 리포는 `~/.config/worktrunk` 디렉터리 전체를 링크합니다.
+- 대신 이 디렉터리의 `.gitignore` 가 기본적으로 전부 무시하고, 필요한 파일만 다시 포함합니다.
+- 그래서 Worktrunk가 같은 디렉터리에 쓰는 런타임 파일도 계속 writable 이고 Git에는 안 올라갑니다.
+- 예: 승인 상태, 로그 관련 상태, `config.toml.lock`
 
 ## 빠른 시작
 
