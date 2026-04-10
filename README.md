@@ -276,7 +276,7 @@ Examples:
 - Add `jetbrains-toolbox` in `modules/darwin/casks.nix`, then manage WebStorm/DataGrip installs inside Toolbox
 - Adjust the local Docker stack in `modules/shared/config/dev-infra/compose.yml`
 - Adjust Ghostty or `cmux` terminal appearance in `modules/shared/config/ghostty`
-- Adjust Colima auto-start and profile settings in `modules/darwin/home-manager.nix`
+- Adjust Colima auto-start and Docker/Kubernetes profile settings in `modules/darwin/home-manager.nix`
 - Adjust PF-based inbound VNC allowlists in `modules/darwin/pf.nix`
 - Adjust the local MySQL image bootstrap in `modules/shared/config/dev-infra/mysql/Dockerfile`
 - Adjust shell settings in `modules/shared/home-manager.nix`
@@ -299,21 +299,22 @@ The local Docker stack is intended to be run from the Home Manager-managed path 
 
 This repo installs Docker tooling with a split that matches the existing package layout:
 
-- `modules/shared/packages.nix`: Docker CLI from nixpkgs
-- `modules/darwin/home-manager.nix`: Colima login-time service and profile settings
+- `modules/shared/packages.nix`: Docker CLI and `kubectl` from nixpkgs
+- `modules/darwin/home-manager.nix`: Colima login-time service plus the default Docker and Kubernetes profile settings
 - `modules/shared/config/dev-infra/compose.yml`: Portainer, MySQL, PostgreSQL, Redis, MinIO stack linked under `~/.config/dev-infra/`
 - `modules/shared/config/dev-infra/README.md`: detailed usage guide for the local stack
 
 Typical first run after `nix run .#build-switch`:
 
 ```sh
+kubectl get nodes
 docker compose -f ~/.config/dev-infra/compose.yml up -d
 ```
 
 Portainer will then be available at [https://localhost:9443](https://localhost:9443). The initial certificate is self-signed, so the browser may show a warning the first time.
 The local DB and object storage services bind only to `127.0.0.1` on ports `3306`, `5432`, `6379`, `9000`, and `9001`.
 The default MySQL and PostgreSQL database name is `playground`. PostgreSQL uses `admin` as the superuser, the MySQL stack initializes both `root` and a local `admin` account with full privileges for local development, Portainer initializes the `admin` account with the password `adminadmin!!`, and MinIO exposes its S3 API on `http://127.0.0.1:9000` plus the web console on `http://127.0.0.1:9001` with `admin` / `adminadmin!!`.
-Colima is configured to start automatically at user login through Home Manager's macOS `launchd` integration. If you want it immediately in the current session before your next login, you can still run `colima start` once manually.
+Colima is configured to start automatically at user login through Home Manager's macOS `launchd` integration, and the default profile also enables its built-in k3s cluster for local Kubernetes testing. If Colima was already running before you switched to the new generation, restart it once with `colima stop && colima start` so the Kubernetes setting applies in the current session.
 If you change the initial DB usernames, passwords, or database names later, remove the related Docker volumes before recreating the containers so the new initialization values can take effect.
 For the full command reference and reset workflow, see [`modules/shared/config/dev-infra/README.md`](modules/shared/config/dev-infra/README.md).
 

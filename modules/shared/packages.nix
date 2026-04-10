@@ -11,6 +11,7 @@ with pkgs;
   curl
   direnv
   docker
+  kubectl
   fd
   fzf
   gh

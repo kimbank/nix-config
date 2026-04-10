@@ -70,13 +70,29 @@ nix run .#build-switch
 exec zsh -l
 ```
 
-2. Start the stack.
+2. If Colima was already running before the switch, restart it once so the
+   managed Kubernetes setting takes effect in the current session.
+
+```sh
+colima stop
+colima start
+```
+
+3. Confirm the local Kubernetes context is up.
+
+```sh
+kubectl config current-context
+kubectl get nodes
+kubectl cluster-info
+```
+
+4. Start the Docker-based local stack.
 
 ```sh
 docker compose -f ~/.config/dev-infra/compose.yml up -d --build
 ```
 
-3. Open Portainer.
+5. Open Portainer.
 
 ```text
 https://localhost:9443
@@ -148,8 +164,9 @@ This removes:
 Colima is configured in the main Nix config as a Home Manager `launchd` user service. That means:
 
 - it should start automatically when the macOS user logs in after the config is applied
-- if you want it immediately in the current session before the next login, run `colima start` manually once
-- avoid declaratively pinning `~/.colima/default/colima.yaml` via Home Manager profile settings unless the file can stay writable, because Colima rewrites it during startup
+- the default profile also enables Colima's built-in k3s cluster for local Kubernetes testing
+- if Colima was already running before you applied a config change, restart it once in the current session with `colima stop && colima start`
+- `kubectl` is installed from nixpkgs so you can use the Colima-backed cluster directly from the shell
 
 Useful checks:
 
@@ -157,11 +174,15 @@ Useful checks:
 colima status
 docker context show
 docker info
+kubectl config current-context
+kubectl get nodes
 ```
 
 ## Notes
 
 - This stack is intentionally local-only and optimized for convenience, not security.
+- Colima's built-in k3s is a good fit for local manifest checks, image builds, and basic deployment smoke tests, but it is not a full substitute for production parity with managed Kubernetes platforms.
+- Running the Docker stack and k3s in the same Colima VM can feel tight on the default resource settings; if workloads start thrashing, increase Colima CPU and memory in `modules/darwin/home-manager.nix`.
 - MySQL and PostgreSQL defaults are meant for development.
 - Portainer admin initialization uses a baked bcrypt hash for `adminadmin!!` and only applies to a fresh Portainer data volume.
 - MinIO is pinned to `RELEASE.2025-04-22T22-12-26Z` so the local stack stays on a pre-pricing-change image line unless you explicitly choose to upgrade it later.

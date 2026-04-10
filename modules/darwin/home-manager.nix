@@ -91,9 +91,14 @@ in
             isActive = true;
             isService = true;
             setDockerHost = true;
-            # Keep profile settings empty here so Home Manager does not
-            # manage ~/.colima/default/colima.yaml as an immutable symlink.
-            # Colima rewrites that file during startup.
+            # Manage colima.yaml declaratively so the default profile comes up
+            # with k3s enabled for local manifest and deployment testing.
+            # Home Manager starts managed profiles with --save-config=false, so
+            # Colima will not try to rewrite this generated YAML.
+            settings.kubernetes = {
+              enabled = true;
+              k3sArgs = [ "--disable=traefik" ];
+            };
           };
         };
 
