@@ -11,6 +11,20 @@ Current conventions:
 - Keep real local secrets out of git. For task directories, prefer `.env` as the local copy name.
 - Add a task-local `README.md` only when the subdirectory grows enough that the top-level index is no longer sufficient.
 
+## adb-shutter-sound-off
+
+`adb-shutter-sound-off/` contains a small local helper to disable Samsung's forced camera shutter sound setting over ADB.
+
+Files:
+
+- `adb-shutter-sound-off/adb-shutter-sound-off.sh`: waits for an authorized device, writes the setting, then stops the local ADB server on exit
+
+```sh
+bash ./scripts/adb-shutter-sound-off/adb-shutter-sound-off.sh
+```
+
+If the phone shows an `Allow USB debugging` prompt, approve it and the script will continue automatically.
+
 ## github-local-auth
 
 `github-local-auth/` contains the local GitHub bucket authentication bootstrap flow that reads from 1Password and writes machine-local Git and SSH setup.
