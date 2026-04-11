@@ -5,6 +5,7 @@ _:
 
   # A
   "antigravity"
+  "android-studio"
   
   # B
   "bettermouse"

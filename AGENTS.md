@@ -69,6 +69,7 @@ Important:
 - PF-based inbound firewall rules for Screen Sharing/VNC: [`modules/darwin/pf.nix`](modules/darwin/pf.nix)
 - Shell behavior, aliases, and `oh-my-zsh`: [`modules/shared/home-manager.nix`](modules/shared/home-manager.nix)
 - JavaScript/TypeScript runtime defaults and `mise` shell integration: [`modules/shared/home-manager.nix`](modules/shared/home-manager.nix)
+- Android SDK shell environment for local builds: [`modules/darwin/home-manager.nix`](modules/darwin/home-manager.nix)
 - Docker/Colima user services: [`modules/darwin/home-manager.nix`](modules/darwin/home-manager.nix)
 - Managed home files and app config links: [`modules/shared/files.nix`](modules/shared/files.nix) and [`modules/darwin/files.nix`](modules/darwin/files.nix)
 - Ghostty-compatible terminal appearance for Ghostty/cmux: [`modules/shared/config/ghostty`](modules/shared/config/ghostty)
@@ -91,6 +92,8 @@ Important:
 - Home Manager manages `zsh`; changes should go into [`modules/shared/home-manager.nix`](modules/shared/home-manager.nix), not `~/.zshrc`.
 - JavaScript/TypeScript runtime version switching is managed declaratively with Home Manager's `programs.mise`; prefer project-local `.mise.toml` or `.tool-versions` files, and `.nvmrc` or `.node-version` for Node-specific repos, over reintroducing fixed global `nodejs_*`, `bun`, or `deno` packages unless a task explicitly requires a Nix-pinned system runtime.
 - `pnpm` global binaries should be managed declaratively via `PNPM_HOME` in [`modules/darwin/home-manager.nix`](modules/darwin/home-manager.nix); prefer that over running `pnpm setup`, which edits shell dotfiles directly.
+- Android Studio should be managed as a Homebrew cask in [`modules/darwin/casks.nix`](modules/darwin/casks.nix), while `ANDROID_HOME`, `ANDROID_SDK_ROOT`, and related PATH entries should be managed declaratively in [`modules/darwin/home-manager.nix`](modules/darwin/home-manager.nix) rather than relying on Android Studio or shell startup files to mutate the environment.
+- Android SDK contents such as SDK Platform, Build-Tools, Platform-Tools, Command-line Tools, and side-by-side NDK are expected to be installed through Android Studio's SDK Manager under `~/Library/Android/sdk` after the cask is present.
 - `zsh` uses Home Manager's `oh-my-zsh` integration. Do not assume a user-managed `~/.oh-my-zsh` tree exists or should be edited.
 - Worktrunk shell integration for zsh should be managed declaratively in [`modules/shared/home-manager.nix`](modules/shared/home-manager.nix); prefer that over running `wt config shell install`, because this repo treats shell startup as Home Manager-managed state.
 - Existing unmanaged dotfiles can block activation. This repo sets `home-manager.backupFileExtension = "hm-backup"` in [`modules/darwin/home-manager.nix`](modules/darwin/home-manager.nix), so first-time activation may move conflicting files aside instead of failing.

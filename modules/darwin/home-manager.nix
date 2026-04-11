@@ -62,8 +62,17 @@ in
             # Keep pnpm global binaries outside mise-managed Node installs.
             PNPM_HOME = "$HOME/Library/pnpm";
             JAVA_HOME = pkgs.jdk17_headless.home;
+            # Android Studio installs the SDK here on macOS; keep the CLI env
+            # declarative so local Android/EAS tooling sees a stable path.
+            ANDROID_HOME = "$HOME/Library/Android/sdk";
+            ANDROID_SDK_ROOT = "$HOME/Library/Android/sdk";
           };
-          sessionPath = [ "$HOME/Library/pnpm" ];
+          sessionPath = [
+            "$HOME/Library/pnpm"
+            "$HOME/Library/Android/sdk/platform-tools"
+            "$HOME/Library/Android/sdk/emulator"
+            "$HOME/Library/Android/sdk/cmdline-tools/latest/bin"
+          ];
           stateVersion = "24.11";
         };
 
