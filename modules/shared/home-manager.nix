@@ -64,6 +64,7 @@ in
     shellAliases = {
       ll = "ls -lah";
       cls = "clear";
+      sg = "ast-grep";
       "친" = "clear";
       "ㅊㅣㄴ" = "clear";
       "히" = "gl";

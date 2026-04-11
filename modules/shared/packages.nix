@@ -4,6 +4,7 @@ with pkgs;
 [
   android-tools
   bash-completion
+  ast-grep
   bat
   btop
   claude-code
