@@ -58,8 +58,11 @@ in
             sharedFiles
             additionalFiles
           ];
-          # Keep pnpm global binaries outside mise-managed Node installs.
-          sessionVariables.PNPM_HOME = "$HOME/Library/pnpm";
+          sessionVariables = {
+            # Keep pnpm global binaries outside mise-managed Node installs.
+            PNPM_HOME = "$HOME/Library/pnpm";
+            JAVA_HOME = pkgs.jdk17_headless.home;
+          };
           sessionPath = [ "$HOME/Library/pnpm" ];
           stateVersion = "24.11";
         };

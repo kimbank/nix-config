@@ -18,6 +18,7 @@ with pkgs;
   gh
   git
   jq
+  jdk17_headless
   (callPackage ./pkgs/im-select.nix { })
   nixd
   nixfmt
