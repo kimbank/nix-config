@@ -22,6 +22,7 @@ with pkgs;
   (callPackage ./pkgs/im-select.nix { })
   nixd
   nixfmt
+  opentofu
   # pnpm add -g opencode-ai@latest
   # pnpm up -g opencode-ai --latest
   # opencode
