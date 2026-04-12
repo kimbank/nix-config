@@ -170,6 +170,8 @@ JavaScript and TypeScript runtime switching is managed through Home Manager's `p
 
 Android Studio itself is managed as a Homebrew cask, while Home Manager exports `ANDROID_HOME`, `ANDROID_SDK_ROOT`, and the Android SDK command-line paths for new shells. After installing the app, use Android Studio's SDK Manager to install the SDK contents under `~/Library/Android/sdk`, including the Android SDK Platform, Build-Tools, Platform-Tools, Command-line Tools, and side-by-side NDK needed for local Android or EAS builds.
 
+For iOS work, real-device development or debugging normally only needs Xcode plus the project-local scripts such as `pnpm dev:ios` or `pnpm preflight`. This config also installs `fastlane` from nixpkgs for the narrower case where you really do want local EAS iOS builds on the machine, so prefer that declarative package over a one-off `brew install fastlane`.
+
 Tracked app config under `modules/shared/config/` is linked back into the live app paths as writable symlinks when you use the helper commands from the repo root. That lets apps edit their own dotfiles while Git still sees the changes in this checkout. Directories that need selective tracking can keep a local `.gitignore`, while config trees you want backed up wholesale can just be tracked normally.
 
 ### 9. Stage the repo before building
