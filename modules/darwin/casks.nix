@@ -31,6 +31,9 @@ _:
   # L
   "libreoffice"
 
+  # M
+  "macs-fan-control"
+
   # O
   "obsidian"
   "opencode-desktop"
