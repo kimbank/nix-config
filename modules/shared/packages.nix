@@ -5,6 +5,7 @@ with pkgs;
   android-tools
   bash-completion
   ast-grep
+  awscli2
   bat
   btop
   claude-code
