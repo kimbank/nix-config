@@ -10,7 +10,13 @@ in
     ../../modules/shared
   ];
 
-  local.vncFirewall.enable = true;
+  local.vncFirewall = {
+    enable = true;
+    allowedCidrs = [
+      "100.0.0.0/8"
+      "192.168.99.0/24"
+    ];
+  };
 
   programs._1password.enable = true;
   programs._1password-gui.enable = false;

@@ -29,5 +29,6 @@
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
     "workbench.externalBrowser": "chrome",
-    "redhat.telemetry.enabled": false
+    "redhat.telemetry.enabled": false,
+    "security.workspace.trust.untrustedFiles": "open"
 }
