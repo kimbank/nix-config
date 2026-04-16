@@ -39,6 +39,28 @@ in
       '')
 
       (lib.mkOrder 525 ''
+        if command -v openclaw >/dev/null 2>&1; then
+          # Cache pnpm-managed completions outside the Nix store and refresh
+          # them when the global CLI wrapper changes.
+          openclaw_completion_dir="''${XDG_CACHE_HOME:-$HOME/.cache}/zsh/completions"
+          openclaw_completion_file="$openclaw_completion_dir/openclaw.zsh"
+          openclaw_completion_tmp="$openclaw_completion_file.tmp"
+
+          mkdir -p -- "$openclaw_completion_dir"
+          if [[ ! -s "$openclaw_completion_file" || "$openclaw_completion_file" -ot "$(command -v openclaw)" ]]; then
+            if openclaw completion --shell zsh >| "$openclaw_completion_tmp" 2>/dev/null; then
+              mv -f -- "$openclaw_completion_tmp" "$openclaw_completion_file"
+            else
+              rm -f -- "$openclaw_completion_tmp"
+            fi
+          fi
+
+          if [[ -r "$openclaw_completion_file" ]]; then
+            source "$openclaw_completion_file"
+          fi
+          unset openclaw_completion_dir openclaw_completion_file openclaw_completion_tmp
+        fi
+
         # Home Manager adds completion paths for each active profile even when a
         # profile doesn't ship every completion directory. Keep only the paths
         # that actually exist so oh-my-zsh doesn't keep rebuilding a bad dump.
