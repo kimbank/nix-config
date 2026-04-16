@@ -8,7 +8,6 @@ with pkgs;
   awscli2
   bat
   btop
-  claude-code
   coreutils
   curl
   direnv

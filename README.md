@@ -149,6 +149,7 @@ Current split:
 - Small repo-local shared packages: `modules/shared/pkgs/`
 - macOS-specific Nix packages: `modules/darwin/packages.nix`
 - Homebrew casks: `modules/darwin/casks.nix`
+- Claude Code CLI: `claude-code@latest` in `modules/darwin/casks.nix`
 - macOS PF rules for Screen Sharing/VNC: `modules/darwin/pf.nix`
 - JetBrains IDEs: install `jetbrains-toolbox` as a cask, then let Toolbox manage IDE installs and updates
 
@@ -214,6 +215,10 @@ General workflow:
 6. Run `nix run .#build-switch` to apply.
 
 This repo manages both Homebrew itself and its taps through Nix, so use `nix run .#update-homebrew` instead of `brew update` when you want newer Homebrew package metadata.
+
+That also applies to `claude-code@latest`: this repo tracks the latest Homebrew cask channel declaratively, but new Claude Code releases still arrive through the pinned Homebrew metadata in `flake.lock`.
+
+If `which claude` still points at an older native or npm install after switching, remove that copy so the Homebrew cask binary takes precedence on `PATH`.
 
 For Node, Bun, or Deno projects, use `mise` to inspect or install runtime versions:
 

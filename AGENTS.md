@@ -66,6 +66,7 @@ Important:
 - Shared CLI packages: [`modules/shared/packages.nix`](modules/shared/packages.nix)
 - macOS-only Nix packages: [`modules/darwin/packages.nix`](modules/darwin/packages.nix)
 - Homebrew GUI apps: [`modules/darwin/casks.nix`](modules/darwin/casks.nix)
+- Claude Code CLI Homebrew cask: [`modules/darwin/casks.nix`](modules/darwin/casks.nix)
 - PF-based inbound firewall rules for Screen Sharing/VNC: [`modules/darwin/pf.nix`](modules/darwin/pf.nix)
 - Shell behavior, aliases, and `oh-my-zsh`: [`modules/shared/home-manager.nix`](modules/shared/home-manager.nix)
 - JavaScript/TypeScript runtime defaults and `mise` shell integration: [`modules/shared/home-manager.nix`](modules/shared/home-manager.nix)
@@ -100,6 +101,8 @@ Important:
 - Worktrunk shell integration for zsh should be managed declaratively in [`modules/shared/home-manager.nix`](modules/shared/home-manager.nix); prefer that over running `wt config shell install`, because this repo treats shell startup as Home Manager-managed state.
 - Existing unmanaged dotfiles can block activation. This repo sets `home-manager.backupFileExtension = "hm-backup"` in [`modules/darwin/home-manager.nix`](modules/darwin/home-manager.nix), so first-time activation may move conflicting files aside instead of failing.
 - `homebrew.onActivation.autoUpdate` and `upgrade` are enabled, so `build-switch` may update managed casks.
+- Claude Code CLI is managed through the Homebrew cask `claude-code@latest` rather than nixpkgs, so use `nix run .#update-homebrew` when you want newer pinned Claude Code releases in this repo.
+- If `which claude` still resolves to an older native or npm installation after switching, remove that copy instead of changing this repo's PATH order just to prefer Claude Code.
 - JetBrains IDEs are expected to be installed and updated through JetBrains Toolbox, which is managed as a Homebrew cask in [`modules/darwin/casks.nix`](modules/darwin/casks.nix).
 - Shell aliases such as `webstorm` or `datagrip` rely on Toolbox-generated launchers, so keep the Toolbox shell scripts feature enabled and ensure the scripts live in a PATH directory such as `~/Library/Application Support/JetBrains/Toolbox/scripts` or `~/.local/bin`.
 - Zen is installed via Homebrew cask, not via a Zen flake.

@@ -13,6 +13,7 @@ _:
   
   # C
   "claude"
+  "claude-code@latest"
   "cmux"
   "codex"
   "codex-app"
