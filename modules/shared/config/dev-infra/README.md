@@ -189,6 +189,93 @@ kubectl config current-context
 kubectl get nodes
 ```
 
+## Colima Troubleshooting
+
+### `colima start` fails with `error writing yaml file` or `permission denied`
+
+This repo manages `~/.colima/default/colima.yaml` declaratively through Home
+Manager, so a plain `colima start` can fail when Colima tries to rewrite that
+generated symlink.
+
+Use:
+
+```sh
+colima start --save-config=false
+```
+
+If you need to restart Colima after a config switch, prefer:
+
+```sh
+colima stop
+colima start --save-config=false
+```
+
+### `failed to run attach disk "colima", in use by instance "colima"`
+
+This usually means Colima or Lima left behind stale runtime state after a
+partial shutdown.
+
+Use:
+
+```sh
+colima stop -f
+colima start --save-config=false
+```
+
+If that still fails, check whether Colima reports the VM as running and retry
+after the forced stop completes:
+
+```sh
+colima status
+```
+
+### Docker works but `kubectl` returns `connection refused`
+
+The VM can be up while the bundled k3s service is still stopped or still
+starting.
+
+First check the VM and Docker side:
+
+```sh
+colima status
+docker info
+```
+
+Then start or re-start the Colima-managed Kubernetes cluster:
+
+```sh
+colima kubernetes start
+kubectl get nodes
+```
+
+If you only need the Docker-based local stack, you can keep working even while
+k3s is still coming up.
+
+### Home Manager says Colima should auto-start, but this shell still cannot use Docker
+
+The managed LaunchAgent starts Colima at login, but your current shell may
+still need the Colima socket and context to become active again after a restart.
+
+Check:
+
+```sh
+colima status
+docker context show
+echo "$DOCKER_HOST"
+```
+
+In this repo, `DOCKER_HOST` is expected to point at the Colima socket:
+
+```text
+unix:///Users/<your-user>/.colima/default/docker.sock
+```
+
+If Colima is stopped, start it with:
+
+```sh
+colima start --save-config=false
+```
+
 ## Notes
 
 - This stack is intentionally local-only and optimized for convenience, not security.
