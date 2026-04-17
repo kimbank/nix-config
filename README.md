@@ -310,7 +310,7 @@ This repo installs Docker tooling with a split that matches the existing package
 
 - `modules/shared/packages.nix`: Docker CLI and `kubectl` from nixpkgs
 - `modules/darwin/home-manager.nix`: Colima login-time service plus the default Docker and Kubernetes profile settings
-- `modules/shared/config/dev-infra/compose.yml`: Portainer, MySQL, PostgreSQL, Redis, MinIO stack linked under `~/.config/dev-infra/`
+- `modules/shared/config/dev-infra/compose.yml`: Portainer, MySQL, PostgreSQL, Redis, RustFS stack linked under `~/.config/dev-infra/`
 - `modules/shared/config/dev-infra/README.md`: detailed usage guide for the local stack
 
 Typical first run after `nix run .#build-switch`:
@@ -322,8 +322,8 @@ docker compose -f ~/.config/dev-infra/compose.yml up -d
 
 Portainer will then be available at [https://localhost:9443](https://localhost:9443). The initial certificate is self-signed, so the browser may show a warning the first time.
 The local DB and object storage services bind only to `127.0.0.1` on ports `3306`, `5432`, `6379`, `9000`, and `9001`.
-The default MySQL and PostgreSQL database name is `playground`. PostgreSQL uses `admin` as the superuser, the MySQL stack initializes both `root` and a local `admin` account with full privileges for local development, Portainer initializes the `admin` account with the password `adminadmin!!`, and MinIO exposes its S3 API on `http://127.0.0.1:9000` plus the web console on `http://127.0.0.1:9001` with `admin` / `adminadmin!!`.
-Colima is configured to start automatically at user login through Home Manager's macOS `launchd` integration, and the default profile also enables its built-in k3s cluster for local Kubernetes testing. If Colima was already running before you switched to the new generation, restart it once with `colima stop && colima start` so the Kubernetes setting applies in the current session.
+The default MySQL and PostgreSQL database name is `playground`. PostgreSQL uses `admin` as the superuser, the MySQL stack initializes both `root` and a local `admin` account with full privileges for local development, Portainer initializes the `admin` account with the password `adminadmin!!`, and RustFS exposes its S3 API on `http://127.0.0.1:9000` plus the web console on `http://127.0.0.1:9001` with `admin` / `adminadmin!!`.
+Colima is configured to start automatically at user login through Home Manager's macOS `launchd` integration, and the default profile also enables its built-in k3s cluster for local Kubernetes testing. If Colima was already running before you switched to the new generation, restart it once with `colima stop && colima start --save-config=false` so the Kubernetes setting applies in the current session. This repo manages `~/.colima/default/colima.yaml` declaratively, so a plain `colima start` can fail when Colima tries to rewrite the generated config symlink.
 If you change the initial DB usernames, passwords, or database names later, remove the related Docker volumes before recreating the containers so the new initialization values can take effect.
 For the full command reference and reset workflow, see [`modules/shared/config/dev-infra/README.md`](modules/shared/config/dev-infra/README.md).
 

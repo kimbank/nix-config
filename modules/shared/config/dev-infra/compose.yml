@@ -55,23 +55,37 @@ services:
     volumes:
       - redis_data:/data
 
-  minio:
-    image: minio/minio:RELEASE.2025-04-22T22-12-26Z
-    container_name: local-minio
+  rustfs:
+    image: rustfs/rustfs:1.0.0-alpha.94
+    container_name: local-rustfs
     restart: unless-stopped
-    command: server /data --console-address ":9001"
     environment:
-      MINIO_ROOT_USER: admin
-      MINIO_ROOT_PASSWORD: adminadmin!!
+      RUSTFS_ADDRESS: 0.0.0.0:9000
+      RUSTFS_CONSOLE_ADDRESS: 0.0.0.0:9001
+      RUSTFS_CONSOLE_ENABLE: "true"
+      RUSTFS_VOLUMES: /data
+      RUSTFS_ACCESS_KEY: admin
+      RUSTFS_SECRET_KEY: adminadmin!!
     ports:
       - "127.0.0.1:9000:9000"
       - "127.0.0.1:9001:9001"
     volumes:
-      - minio_data:/data
+      - rustfs_data:/data
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - >
+          curl -fsS http://127.0.0.1:9000/health &&
+          (curl -fsS http://127.0.0.1:9001/health ||
+          curl -fsS http://127.0.0.1:9001/rustfs/console/health)
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
 
 volumes:
   portainer_data:
   mysql_data:
   postgres_data:
   redis_data:
-  minio_data:
+  rustfs_data:

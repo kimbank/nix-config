@@ -11,7 +11,7 @@ When you build through the repo helper commands, that path resolves back to this
 - MySQL
 - PostgreSQL
 - Redis
-- MinIO
+- RustFS
 
 All services are defined in [`compose.yml`](compose.yml).
 
@@ -52,13 +52,13 @@ All services are defined in [`compose.yml`](compose.yml).
 - Port: `6379`
 - Password: none
 
-### MinIO
+### RustFS
 
 - S3 API: `http://127.0.0.1:9000`
 - Console: `http://127.0.0.1:9001`
-- Root user: `admin`
-- Root password: `adminadmin!!`
-- Image: `minio/minio:RELEASE.2025-04-22T22-12-26Z`
+- Access key: `admin`
+- Secret key: `adminadmin!!`
+- Image: `rustfs/rustfs:1.0.0-alpha.94`
 
 ## First Use
 
@@ -75,7 +75,7 @@ exec zsh -l
 
 ```sh
 colima stop
-colima start
+colima start --save-config=false
 ```
 
 3. Confirm the local Kubernetes context is up.
@@ -91,6 +91,16 @@ kubectl cluster-info
 ```sh
 docker compose -f ~/.config/dev-infra/compose.yml up -d --build
 ```
+
+If you are switching from the older MinIO-based stack, clean up the renamed
+service once before the first RustFS start:
+
+```sh
+docker compose -f ~/.config/dev-infra/compose.yml down --remove-orphans
+docker compose -f ~/.config/dev-infra/compose.yml up -d
+```
+
+If you no longer need the old MinIO object data, remove its leftover Docker volume separately after you confirm nothing still depends on it.
 
 5. Open Portainer.
 
@@ -139,7 +149,7 @@ docker compose -f ~/.config/dev-infra/compose.yml restart mysql
 docker compose -f ~/.config/dev-infra/compose.yml restart postgres
 docker compose -f ~/.config/dev-infra/compose.yml restart redis
 docker compose -f ~/.config/dev-infra/compose.yml restart portainer
-docker compose -f ~/.config/dev-infra/compose.yml restart minio
+docker compose -f ~/.config/dev-infra/compose.yml restart rustfs
 ```
 
 ## Reset Everything
@@ -157,7 +167,7 @@ This removes:
 - PostgreSQL data
 - Redis data
 - Portainer data
-- MinIO data
+- RustFS data
 
 ## Colima Behavior
 
@@ -165,7 +175,8 @@ Colima is configured in the main Nix config as a Home Manager `launchd` user ser
 
 - it should start automatically when the macOS user logs in after the config is applied
 - the default profile also enables Colima's built-in k3s cluster for local Kubernetes testing
-- if Colima was already running before you applied a config change, restart it once in the current session with `colima stop && colima start`
+- if Colima was already running before you applied a config change, restart it once in the current session with `colima stop && colima start --save-config=false`
+- this repo manages `~/.colima/default/colima.yaml` declaratively through Home Manager, so a plain `colima start` can fail when Colima tries to rewrite the generated config symlink
 - `kubectl` is installed from nixpkgs so you can use the Colima-backed cluster directly from the shell
 
 Useful checks:
@@ -185,5 +196,6 @@ kubectl get nodes
 - Running the Docker stack and k3s in the same Colima VM can feel tight on the default resource settings; if workloads start thrashing, increase Colima CPU and memory in `modules/darwin/home-manager.nix`.
 - MySQL and PostgreSQL defaults are meant for development.
 - Portainer admin initialization uses a baked bcrypt hash for `adminadmin!!` and only applies to a fresh Portainer data volume.
-- MinIO is pinned to `RELEASE.2025-04-22T22-12-26Z` so the local stack stays on a pre-pricing-change image line unless you explicitly choose to upgrade it later.
+- RustFS is pinned to `1.0.0-alpha.94` so the local stack stays on a known tested image tag; review upstream release notes before bumping because RustFS is still publishing alpha releases.
+- RustFS keeps the same local `admin` / `adminadmin!!` credentials as the old MinIO setup so existing development tooling can usually be repointed without changing auth values.
 - The stack is designed to run from the Home Manager symlink at `~/.config/dev-infra`, so avoid reintroducing relative bind mounts for tracked files unless they point to a real non-store path.
