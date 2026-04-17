@@ -56,7 +56,7 @@ services:
       - redis_data:/data
 
   rustfs:
-    image: rustfs/rustfs:1.0.0-alpha.94
+    image: rustfs/rustfs:latest
     container_name: local-rustfs
     restart: unless-stopped
     environment:

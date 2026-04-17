@@ -58,7 +58,7 @@ All services are defined in [`compose.yml`](compose.yml).
 - Console: `http://127.0.0.1:9001`
 - Access key: `admin`
 - Secret key: `adminadmin!!`
-- Image: `rustfs/rustfs:1.0.0-alpha.94`
+- Image: `rustfs/rustfs:latest`
 
 ## First Use
 
@@ -196,6 +196,8 @@ kubectl get nodes
 - Running the Docker stack and k3s in the same Colima VM can feel tight on the default resource settings; if workloads start thrashing, increase Colima CPU and memory in `modules/darwin/home-manager.nix`.
 - MySQL and PostgreSQL defaults are meant for development.
 - Portainer admin initialization uses a baked bcrypt hash for `adminadmin!!` and only applies to a fresh Portainer data volume.
-- RustFS is pinned to `1.0.0-alpha.94` so the local stack stays on a known tested image tag; review upstream release notes before bumping because RustFS is still publishing alpha releases.
+- RustFS now tracks the upstream `latest` image tag, matching the project's own Docker Compose examples. Expect occasional alpha-to-alpha behavior changes when you pull updates.
+- Portainer already follows the upstream `sts` channel tag, so it is effectively on a moving release stream as well.
+- MySQL, PostgreSQL, and Redis intentionally stay on major-version tags in this stack so persisted local volumes are less likely to be surprised by automatic major upgrades.
 - RustFS keeps the same local `admin` / `adminadmin!!` credentials as the old MinIO setup so existing development tooling can usually be repointed without changing auth values.
 - The stack is designed to run from the Home Manager symlink at `~/.config/dev-infra`, so avoid reintroducing relative bind mounts for tracked files unless they point to a real non-store path.
