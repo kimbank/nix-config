@@ -53,6 +53,7 @@ _:
 
   # T
   "tailscale-app"
+  "telegram"
 
   # V
   "visual-studio-code"
