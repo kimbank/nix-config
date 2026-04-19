@@ -13,6 +13,7 @@ with pkgs;
   direnv
   docker
   kubectl
+  kubeseal
   fd
   fzf
   gh
