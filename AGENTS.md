@@ -71,7 +71,7 @@ Important:
 - Shell behavior, aliases, and `oh-my-zsh`: [`modules/shared/home-manager.nix`](modules/shared/home-manager.nix)
 - JavaScript/TypeScript runtime defaults and `mise` shell integration: [`modules/shared/home-manager.nix`](modules/shared/home-manager.nix)
 - Android SDK shell environment for local builds: [`modules/darwin/home-manager.nix`](modules/darwin/home-manager.nix)
-- Docker/Colima user services: [`modules/darwin/home-manager.nix`](modules/darwin/home-manager.nix)
+- Docker/Colima user services and persistent profile defaults: [`modules/darwin/home-manager.nix`](modules/darwin/home-manager.nix)
 - Managed home files and app config links: [`modules/shared/files.nix`](modules/shared/files.nix) and [`modules/darwin/files.nix`](modules/darwin/files.nix)
 - Ghostty-compatible terminal appearance for Ghostty/cmux: [`modules/shared/config/ghostty`](modules/shared/config/ghostty)
 - App-specific config content:
@@ -113,8 +113,8 @@ Important:
 - Worktrunk user config lives under [`modules/shared/config/worktrunk`](modules/shared/config/worktrunk) and [`modules/shared/files.nix`](modules/shared/files.nix) links that whole directory into `~/.config/worktrunk`. Runtime state such as `approvals.toml` or `config.toml.lock` should stay ignored via the directory-local `.gitignore`.
 - Neovim is installed by Home Manager, but the config is dotfile-style and lives in the repo-managed directory [`modules/shared/config/nvim`](modules/shared/config/nvim). [`modules/shared/files.nix`](modules/shared/files.nix) links that whole directory into `~/.config/nvim`, and plugins are bootstrapped inside the config via `lazy.nvim` rather than `programs.neovim.plugins`.
 - Docker CLI comes from nixpkgs, Colima is managed as a Home Manager user service in [`modules/darwin/home-manager.nix`](modules/darwin/home-manager.nix), and [`modules/shared/files.nix`](modules/shared/files.nix) links the entire local Docker stack directory from [`modules/shared/config/dev-infra`](modules/shared/config/dev-infra) to `~/.config/dev-infra` as a writable repo-backed symlink when built through the helper commands.
+- Home Manager writes a regular `~/.colima/default/colima.yaml` during activation so direct `colima start` commands can save runtime flags without failing on an immutable Nix store symlink, but the persistent source of truth stays in [`modules/darwin/home-manager.nix`](modules/darwin/home-manager.nix). Expect manual edits under `~/.colima` to be replaced on the next switch.
 - The local Docker stack uses a single [`compose.yml`](modules/shared/config/dev-infra/compose.yml) to start Portainer, MySQL, PostgreSQL, Redis, and RustFS together, and it is meant to be run from the Home Manager symlink at `~/.config/dev-infra`.
-- This repo manages `~/.colima/default/colima.yaml` declaratively through Home Manager. When you start Colima manually, prefer `colima start --save-config=false` so Colima does not try to rewrite the generated config symlink in the Nix store.
 - Because `~/.config/dev-infra` resolves back to the live repo checkout when built through the helper commands, relative bind mounts can target real working-tree files. Keep secrets in ignored files such as `modules/shared/config/dev-infra/.env` instead of tracked Compose YAML.
 - MySQL bootstrap SQL is stored under [`mysql-init/`](modules/shared/config/dev-infra/mysql-init/001-admin-superuser.sql) and baked into the local MySQL image via [`mysql/Dockerfile`](modules/shared/config/dev-infra/mysql/Dockerfile).
 - Portainer's initial admin password is configured directly in [`compose.yml`](modules/shared/config/dev-infra/compose.yml) as a bcrypt hash for the local-only password `adminadmin!!`.

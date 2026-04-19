@@ -49,6 +49,14 @@ in
         sharedFiles = import ../shared/files.nix {
           inherit config repoRoot;
         };
+        colimaConfigTarget = ".colima/default/colima.yaml";
+        colimaDefaultSettings = {
+          kubernetes = {
+            enabled = true;
+            k3sArgs = [ "--disable=traefik" ];
+          };
+        };
+        colimaDefaultConfig = (pkgs.formats.yaml { }).generate "colima.yaml" colimaDefaultSettings;
       in
       {
         home = {
@@ -57,6 +65,12 @@ in
           file = lib.mkMerge [
             sharedFiles
             additionalFiles
+            {
+              # Home Manager's Colima module otherwise links this file from the
+              # Nix store when profile settings are set, which makes a direct
+              # `colima start` fail when the CLI tries to rewrite the profile.
+              "${colimaConfigTarget}".enable = lib.mkForce false;
+            }
           ];
           sessionVariables = {
             # Keep pnpm global binaries outside mise-managed Node installs.
@@ -75,6 +89,15 @@ in
           ];
           stateVersion = "24.11";
         };
+
+        home.activation.installWritableColimaConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+          target="$HOME/${colimaConfigTarget}"
+
+          run ${pkgs.coreutils}/bin/mkdir -p "''${target%/*}"
+          run ${pkgs.coreutils}/bin/rm -f "$target"
+          run ${pkgs.coreutils}/bin/cp "${colimaDefaultConfig}" "$target"
+          run ${pkgs.coreutils}/bin/chmod 0644 "$target"
+        '';
 
         targets.darwin = {
           copyApps.enable = true;
@@ -103,14 +126,10 @@ in
             isActive = true;
             isService = true;
             setDockerHost = true;
-            # Manage colima.yaml declaratively so the default profile comes up
-            # with k3s enabled for local manifest and deployment testing.
-            # Home Manager starts managed profiles with --save-config=false, so
-            # Colima will not try to rewrite this generated YAML.
-            settings.kubernetes = {
-              enabled = true;
-              k3sArgs = [ "--disable=traefik" ];
-            };
+            # Keep the Colima profile declarative in Nix, but install a normal
+            # file into ~/.colima/default/colima.yaml during activation so a
+            # direct `colima start` can persist runtime flags.
+            settings = colimaDefaultSettings;
           };
         };
 

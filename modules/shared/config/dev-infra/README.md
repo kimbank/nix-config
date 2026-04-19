@@ -175,8 +175,9 @@ Colima is configured in the main Nix config as a Home Manager `launchd` user ser
 
 - it should start automatically when the macOS user logs in after the config is applied
 - the default profile also enables Colima's built-in k3s cluster for local Kubernetes testing
-- if Colima was already running before you applied a config change, restart it once in the current session with `colima stop && colima start --save-config=false`
-- this repo manages `~/.colima/default/colima.yaml` declaratively through Home Manager, so a plain `colima start` can fail when Colima tries to rewrite the generated config symlink
+- Home Manager writes a regular `~/.colima/default/colima.yaml` during activation so a direct `colima start` can update the profile instead of failing on an immutable Nix store symlink
+- persistent Colima changes still belong in `modules/darwin/home-manager.nix`; manual edits under `~/.colima` will be replaced on the next switch
+- if Colima was already running before you applied a config change, restart it once in the current session with `colima stop && colima start`
 - `kubectl` is installed from nixpkgs so you can use the Colima-backed cluster directly from the shell
 
 Useful checks:
