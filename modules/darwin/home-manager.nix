@@ -54,6 +54,9 @@ in
           cpu = 4;
           memory = 8;
           disk = 150;
+          # Some Colima versions do not reliably infer the runtime from an
+          # otherwise minimal config on restart, so keep Docker explicit.
+          runtime = "docker";
           kubernetes = {
             enabled = true;
             k3sArgs = [ "--disable=traefik" ];
