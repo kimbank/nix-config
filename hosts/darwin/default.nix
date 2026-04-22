@@ -21,6 +21,13 @@ in
   programs._1password.enable = true;
   programs._1password-gui.enable = false;
 
+  services.openssh = {
+    enable = true;
+    extraConfig = ''
+      PasswordAuthentication no
+    '';
+  };
+
   nix = {
     package = pkgs.nix;
 
