@@ -51,6 +51,9 @@ in
         };
         colimaConfigTarget = ".colima/default/colima.yaml";
         colimaDefaultSettings = {
+          cpu = 4;
+          memory = 8;
+          disk = 150;
           kubernetes = {
             enabled = true;
             k3sArgs = [ "--disable=traefik" ];
