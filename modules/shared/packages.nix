@@ -37,6 +37,7 @@ with pkgs;
   tree
   unzip
   wget
+  witr
   worktrunk
   ytsurf
   zip
