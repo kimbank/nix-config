@@ -6,16 +6,18 @@ _:
   # A
   "antigravity"
   "android-studio"
-  
+
   # B
   "bettermouse"
   "brave-browser"
-  
+
   # C
   "claude"
   "claude-code@latest"
   "cmux"
-  "codex"
+  # pnpm add -g @openai/codex@latest
+  # pnpm up -g @openai/codex --latest
+  # "codex"
   "codex-app"
   "codexbar"
   "cursor"
