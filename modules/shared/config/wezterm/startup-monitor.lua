@@ -16,6 +16,7 @@ local function setup_startup_handler()
     end
 
     if not enable_startup_monitor then
+      mux.spawn_window({})
       return
     end
 
