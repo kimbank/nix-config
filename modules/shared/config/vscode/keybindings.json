@@ -55,5 +55,13 @@
         "key": "cmd+shift+g",
         "command": "workbench.view.scm",
         "when": "!findWidgetVisible"
+    },
+    {
+        "key": "shift+enter",
+        "command": "workbench.action.terminal.sendSequence",
+        "args": {
+            "text": "\n"
+        },
+        "when": "terminalFocus"
     }
 ]
