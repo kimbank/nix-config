@@ -36,5 +36,6 @@
         "plaintext": false,
         "markdown": false,
         "scminput": false
-    }
+    },
+    "terminal.external.osxExec": "WezTerm.app"
 }
