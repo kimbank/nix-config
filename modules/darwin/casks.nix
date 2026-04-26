@@ -62,6 +62,7 @@ _:
 
   # W
   "wezterm"
+  "windows-app"
 
   # Z
   "zen"
