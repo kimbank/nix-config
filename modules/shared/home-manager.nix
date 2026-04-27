@@ -157,10 +157,6 @@ in
     vimdiffAlias = true;
   };
 
-  alacritty = {
-    enable = true;
-  };
-
   vscode = {
     enable = true;
     package = null;
