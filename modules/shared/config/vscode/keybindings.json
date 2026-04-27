@@ -60,7 +60,7 @@
         "key": "shift+enter",
         "command": "workbench.action.terminal.sendSequence",
         "args": {
-            "text": "\n"
+            "text": "\u001b[200~\n\u001b[201~"
         },
         "when": "terminalFocus"
     }

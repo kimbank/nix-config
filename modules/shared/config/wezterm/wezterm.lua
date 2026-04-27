@@ -1,4 +1,5 @@
 local wezterm = require("wezterm")
+local act = wezterm.action
 local config = wezterm.config_builder()
 
 require("startup-monitor")
@@ -78,6 +79,11 @@ local appearance = get_appearance()
 local scheme_name = scheme_for_appearance(appearance)
 
 config.color_scheme = scheme_name
+config.enable_kitty_keyboard = true
+config.keys = {
+  -- Send LF so terminal AI CLIs treat Shift+Enter as a multiline prompt break.
+  { key = "Enter", mods = "SHIFT", action = act.SendString("\x0a") },
+}
 
 local colors, window_frame = tab_bar_colors_for_scheme(scheme_name)
 if colors then
