@@ -63,5 +63,13 @@
             "text": "\u001b[200~\n\u001b[201~"
         },
         "when": "terminalFocus"
+    },
+    {
+        "key": "shift+cmd+w",
+        "command": "-workbench.action.closeWindow"
+    },
+    {
+        "key": "cmd+k shift+cmd+w",
+        "command": "-workbench.action.closeAllGroups"
     }
 ]
