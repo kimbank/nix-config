@@ -2,43 +2,78 @@
 
 with pkgs;
 [
+  # A
   android-tools
-  bash-completion
   ast-grep
   awscli2
+
+  # B
+  bash-completion
   bat
   btop
+
+  # C
+  cargo
+  clippy
   coreutils
   curl
+
+  # D
   direnv
   docker
-  kubectl
-  kubeseal
+
+  # F
   fd
   fzf
+
+  # G
   gh
   git
-  jq
-  jdk17_headless
+
+  # I
   (callPackage ./pkgs/im-select.nix { })
+
+  # J
+  jdk17_headless
+  jq
+
+  # K
+  kubectl
+  kubeseal
+
+  # N
   nixd
   nixfmt
+
+  # O
   opentofu
+
+  # P
   # pnpm add -g opencode-ai@latest
   # pnpm up -g opencode-ai --latest
   # opencode
   pnpm
+
+  # R
   ripgrep
   rustc
-  cargo
-  clippy
   rustfmt
+
+  # T
   tmux
   tree
+
+  # U
   unzip
+
+  # W
   wget
   witr
   worktrunk
+
+  # Y
   ytsurf
+
+  # Z
   zip
 ]
