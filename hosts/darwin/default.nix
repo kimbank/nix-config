@@ -60,6 +60,7 @@ in
 
   fonts.packages = [
     pkgs."jetbrains-mono"
+    pkgs.pretendard
   ];
 
   power.sleep.display = 60;
