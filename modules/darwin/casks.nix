@@ -23,6 +23,7 @@ _:
   "cursor"
 
   # D
+  "dbeaver-community"
   "dockdoor" # for alt + tab
 
   # G
