@@ -88,10 +88,13 @@ in
       cls = "clear";
       grep = "rg";
       sg = "ast-grep";
+      glf = "gl && gf";
       "친" = "clear";
       "ㅊㅣㄴ" = "clear";
       "히" = "gl";
       "ㅎㅣ" = "gl";
+      "힐" = "glf";
+      "ㅎㅣㄹ" = "glf";
       "ㅣㅣ" = "ll";
       wd = "while true; do tput cup 0 0; command duf; sleep 2; done";
       dp = "watch -n 1 \"docker ps -a --format \\\"table {{.ID}}\\t{{.Names}}\\t{{.Status}}\\\"\"";
