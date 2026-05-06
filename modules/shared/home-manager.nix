@@ -69,7 +69,7 @@ in
         expected_zcompdump_fpath="#omz fpath: $fpath"
         for dump in ''${ZDOTDIR:-$HOME}/.zcompdump(N) ''${ZDOTDIR:-$HOME}/.zcompdump-*(N); do
           [[ $dump == *.zwc ]] && continue
-          if ! grep -Fqx -- "$expected_zcompdump_fpath" "$dump" 2>/dev/null; then
+          if ! command grep -Fqx -- "$expected_zcompdump_fpath" "$dump" 2>/dev/null; then
             if [[ -d $dump ]]; then
               rm -rf -- "$dump"
             else
@@ -86,6 +86,7 @@ in
     shellAliases = {
       ll = "ls -lah";
       cls = "clear";
+      grep = "rg";
       sg = "ast-grep";
       "친" = "clear";
       "ㅊㅣㄴ" = "clear";
