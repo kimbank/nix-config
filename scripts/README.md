@@ -53,3 +53,17 @@ If you want each bucket's `.envrc` to contain a plaintext `GH_TOKEN` instead of 
 Use `--env-file /path/to/file` if you want to keep the local config somewhere else.
 
 For convenience during the move to `scripts/github-local-auth/`, the script also falls back to legacy local paths `scripts/github-local-auth/github-local-auth.env` and `scripts/github-local-auth.env` if the new default env file does not exist.
+
+## update-pnpm-global-pacakges
+
+`update-pnpm-global-pacakges/` contains quick manual updates for pnpm global AI agent CLIs that should follow the latest npm release.
+
+Files:
+
+- `update-pnpm-global-pacakges/main.sh`: runs the collected `pnpm up -g ... --latest` commands
+
+```sh
+bash ./scripts/update-pnpm-global-pacakges/main.sh
+```
+
+When another fast-moving pnpm global AI agent CLI needs the same treatment, add its update command to this script instead of leaving the command as a comment in Nix package or cask modules.

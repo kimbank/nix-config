@@ -15,9 +15,6 @@ _:
   "claude"
   "claude-code@latest"
   "cmux"
-  # pnpm add -g @openai/codex@latest
-  # pnpm up -g @openai/codex --latest
-  # "codex"
   "codex-app"
   "codexbar"
   "cursor"

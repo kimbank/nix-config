@@ -57,6 +57,7 @@ Important:
 - Use the helper commands from the repo root when you need writable app-config links, because they set `NIX_CONFIG_REPO_ROOT` for the current checkout before evaluation.
 - Because this repo manages both Homebrew itself and its taps through `nix-homebrew` with immutable tap pins, use `update-homebrew` instead of `brew update` when you need newer Homebrew metadata
 - If you need newer nixpkgs-managed package versions, update the pinned `nixpkgs` input with `nix flake update nixpkgs`
+- Keep one-off pnpm global AI agent update commands, such as `pnpm up -g ... --latest`, in [`scripts/update-pnpm-global-pacakges/main.sh`](scripts/update-pnpm-global-pacakges/main.sh) instead of scattering them as comments in package modules.
 - `apply` rewrites placeholder values like `loginUser`, git name, and git email across repo files; do not run it for normal day-to-day edits
 - In this environment, `build-switch` usually reaches a macOS `sudo` password prompt and cannot complete unattended beyond that point
 - After a successful shell-related switch, refresh the shell with `exec zsh -l`. Do not rely on `source ~/.zshrc` alone, because this Home Manager setup expects variables from `~/.zshenv` as well.
@@ -67,6 +68,7 @@ Important:
 - macOS-only Nix packages: [`modules/darwin/packages.nix`](modules/darwin/packages.nix)
 - Homebrew GUI apps: [`modules/darwin/casks.nix`](modules/darwin/casks.nix)
 - Claude Code CLI Homebrew cask: [`modules/darwin/casks.nix`](modules/darwin/casks.nix)
+- pnpm global AI agent update script: [`scripts/update-pnpm-global-pacakges/main.sh`](scripts/update-pnpm-global-pacakges/main.sh)
 - PF-based inbound firewall rules for Screen Sharing/VNC: [`modules/darwin/pf.nix`](modules/darwin/pf.nix)
 - Shell behavior, aliases, and `oh-my-zsh`: [`modules/shared/home-manager.nix`](modules/shared/home-manager.nix)
 - JavaScript/TypeScript runtime defaults and `mise` shell integration: [`modules/shared/home-manager.nix`](modules/shared/home-manager.nix)

@@ -49,9 +49,6 @@ with pkgs;
   opentofu
 
   # P
-  # pnpm add -g opencode-ai@latest
-  # pnpm up -g opencode-ai --latest
-  # opencode
   pnpm
 
   # R
