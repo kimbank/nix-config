@@ -36,7 +36,6 @@ _:
   "libreoffice"
 
   # M
-  "macs-fan-control"
 
   # O
   "obsidian"
