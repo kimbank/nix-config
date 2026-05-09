@@ -10,8 +10,8 @@ services:
       # The above hash corresponds to the password "adminadmin!!"
     restart: unless-stopped
     ports:
-      - "8000:8000"
-      - "9443:9443"
+      - "${DEV_INFRA_BIND_ADDRESS:-0.0.0.0}:8000:8000"
+      - "${DEV_INFRA_BIND_ADDRESS:-0.0.0.0}:9443:9443"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - portainer_data:/data
@@ -28,7 +28,7 @@ services:
       MYSQL_ROOT_PASSWORD: adminadmin!!
       MYSQL_DATABASE: playground
     ports:
-      - "127.0.0.1:3306:3306"
+      - "${DEV_INFRA_BIND_ADDRESS:-0.0.0.0}:3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
 
@@ -41,7 +41,7 @@ services:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: adminadmin!!
     ports:
-      - "127.0.0.1:5432:5432"
+      - "${DEV_INFRA_BIND_ADDRESS:-0.0.0.0}:5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
@@ -51,7 +51,7 @@ services:
     restart: unless-stopped
     command: redis-server --appendonly yes
     ports:
-      - "127.0.0.1:6379:6379"
+      - "${DEV_INFRA_BIND_ADDRESS:-0.0.0.0}:6379:6379"
     volumes:
       - redis_data:/data
 
@@ -63,12 +63,14 @@ services:
       RUSTFS_ADDRESS: 0.0.0.0:9000
       RUSTFS_CONSOLE_ADDRESS: 0.0.0.0:9001
       RUSTFS_CONSOLE_ENABLE: "true"
+      RUSTFS_CORS_ALLOWED_ORIGINS: ${RUSTFS_CORS_ALLOWED_ORIGINS:-http://localhost:9000,http://localhost:9001,http://127.0.0.1:9000,http://127.0.0.1:9001,http://kimbank.local:9000,http://kimbank.local:9001,http://ehkim.local:9000,http://ehkim.local:9001}
+      RUSTFS_CONSOLE_CORS_ALLOWED_ORIGINS: ${RUSTFS_CONSOLE_CORS_ALLOWED_ORIGINS:-http://localhost:9000,http://localhost:9001,http://127.0.0.1:9000,http://127.0.0.1:9001,http://kimbank.local:9000,http://kimbank.local:9001,http://ehkim.local:9000,http://ehkim.local:9001}
       RUSTFS_VOLUMES: /data
       RUSTFS_ACCESS_KEY: admin
       RUSTFS_SECRET_KEY: adminadmin!!
     ports:
-      - "127.0.0.1:9000:9000"
-      - "127.0.0.1:9001:9001"
+      - "${DEV_INFRA_BIND_ADDRESS:-0.0.0.0}:9000:9000"
+      - "${DEV_INFRA_BIND_ADDRESS:-0.0.0.0}:9001:9001"
     volumes:
       - rustfs_data:/data
     healthcheck:

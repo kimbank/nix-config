@@ -26,12 +26,13 @@ All services are defined in [`compose.yml`](compose.yml).
 ### Portainer
 
 - URL: `https://localhost:9443`
+- Bonjour URL: `https://kimbank.local:9443` or `https://ehkim.local:9443`
 - Username: `admin`
 - Password: `adminadmin!!`
 
 ### MySQL
 
-- Host: `127.0.0.1`
+- Host: `127.0.0.1`, `kimbank.local`, or `ehkim.local`
 - Port: `3306`
 - Default database: `playground`
 - Admin user: `admin`
@@ -40,7 +41,7 @@ All services are defined in [`compose.yml`](compose.yml).
 
 ### PostgreSQL
 
-- Host: `127.0.0.1`
+- Host: `127.0.0.1`, `kimbank.local`, or `ehkim.local`
 - Port: `5432`
 - Default database: `playground`
 - User: `admin`
@@ -48,7 +49,7 @@ All services are defined in [`compose.yml`](compose.yml).
 
 ### Redis
 
-- Host: `127.0.0.1`
+- Host: `127.0.0.1`, `kimbank.local`, or `ehkim.local`
 - Port: `6379`
 - Password: none
 
@@ -56,9 +57,27 @@ All services are defined in [`compose.yml`](compose.yml).
 
 - S3 API: `http://127.0.0.1:9000`
 - Console: `http://127.0.0.1:9001`
+- Bonjour S3 API: `http://kimbank.local:9000`
+- Bonjour console: `http://kimbank.local:9001`
+- Alternate Bonjour S3 API: `http://ehkim.local:9000`
+- Alternate Bonjour console: `http://ehkim.local:9001`
 - Access key: `admin`
 - Secret key: `adminadmin!!`
 - Image: `rustfs/rustfs:latest`
+- CORS origins: `localhost`, `127.0.0.1`, `kimbank.local`, and `ehkim.local` on ports `9000` and `9001`
+
+By default, the stack publishes local service ports on `0.0.0.0` so the same
+services are reachable through this Mac's Bonjour hostnames, such as
+`kimbank.local` and `ehkim.local`.
+To force the stack back to loopback-only access for a run, set:
+
+```sh
+DEV_INFRA_BIND_ADDRESS=127.0.0.1 docker compose -f ~/.config/dev-infra/compose.yml up -d
+```
+
+RustFS CORS can be overridden per run with `RUSTFS_CORS_ALLOWED_ORIGINS` and
+`RUSTFS_CONSOLE_CORS_ALLOWED_ORIGINS`. The default is intentionally explicit
+instead of `*` so local browser access stays predictable.
 
 ## First Use
 
