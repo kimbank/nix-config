@@ -1,7 +1,7 @@
 # Global Worktrunk defaults managed by Home Manager.
 # Keep this file user-specific and broadly safe across repositories.
 
-[post-create]
+[pre-start]
 env = """
   if [ ! -e .env ]; then
     {% set primary = primary_worktree_path | default('') %}
