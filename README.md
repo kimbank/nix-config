@@ -209,12 +209,14 @@ General workflow:
 
 1. Edit the Nix files.
 2. If you need newer nixpkgs-managed package versions such as `opencode`, run `nix flake update nixpkgs` to refresh the pinned `nixpkgs` input in `flake.lock`.
-3. If you need newer Nix-managed Homebrew metadata, run `nix run .#update-homebrew` to refresh both `nix-homebrew` and the pinned `homebrew-core`, `homebrew-cask`, and `homebrew-bundle` inputs in `flake.lock`.
+3. If you need newer Nix-managed Homebrew metadata, run `nix run .#update-homebrew` to refresh both `nix-homebrew` and the pinned official/third-party tap inputs in `flake.lock`.
 4. Run `git add .` if you created or changed tracked files, including app config under `modules/shared/config/`.
 5. Run `nix run .#build` to verify.
 6. Run `nix run .#build-switch` to apply.
 
-This repo manages both Homebrew itself and its taps through Nix, so use `nix run .#update-homebrew` instead of `brew update` when you want newer Homebrew package metadata.
+This repo manages both Homebrew itself and its taps through Nix. Add required taps as `flake = false` inputs in `flake.nix`, wire them through `nix-homebrew.taps` using Homebrew's on-disk tap directory names such as `owner/homebrew-name`, and use `nix run .#update-homebrew` instead of `brew update` when you want newer Homebrew package metadata.
+
+CodexBar is installed from the pinned `steipete/tap` cask while the upstream `homebrew/cask` release is newer but crash-prone on this host. Its Sparkle auto-updater is disabled declaratively so app updates stay on the Nix/Homebrew path.
 
 That also applies to `claude-code@latest`: this repo tracks the latest Homebrew cask channel declaratively, but new Claude Code releases still arrive through the pinned Homebrew metadata in `flake.lock`.
 
@@ -332,7 +334,7 @@ For the full command reference and reset workflow, see [`modules/shared/config/d
 - For local-only GitHub bucket setup that should stay out of the Nix modules, use [`scripts/github-local-auth/setup-github-local-auth.sh`](scripts/github-local-auth/setup-github-local-auth.sh). It reads the configured 1Password items, writes local `~/.ssh` and `~/.gitconfig` state, and updates bucket-level `~/Github/*/.envrc` files. Pass `--danger` if you intentionally want plaintext `GH_TOKEN` values written into those `.envrc` files instead of `op://...` references.
 - The current target platform is `aarch64-darwin`, not `arm64-darwin`.
 - `nix run .#apply` is for initial personalization of the template.
-- `nix run .#update-homebrew` refreshes both the pinned Homebrew version and the Homebrew tap pins stored in `flake.lock`.
+- `nix run .#update-homebrew` refreshes both the pinned Homebrew version and the official/third-party Homebrew tap pins stored in `flake.lock`.
 - Day-to-day changes are applied with `nix run .#build-switch`.
 - If you change repo structure, workflow, or user-visible behavior, update this README alongside the code so the documented layout and commands stay current.
 - On a fresh Mac this should be straightforward. On an already-used Mac, existing `/etc` files, old Homebrew state, or existing shell dotfiles can still conflict during first activation.

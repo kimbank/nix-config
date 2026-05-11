@@ -162,7 +162,24 @@
         "homebrew-cask": "homebrew-cask",
         "homebrew-core": "homebrew-core",
         "nix-homebrew": "nix-homebrew",
-        "nixpkgs": "nixpkgs_2"
+        "nixpkgs": "nixpkgs_2",
+        "steipete-homebrew-tap": "steipete-homebrew-tap"
+      }
+    },
+    "steipete-homebrew-tap": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1778439303,
+        "narHash": "sha256-bZvmcpfMo6z7PPvlJkloYA7njDv7XhJ0+e5ahlOv/Ak=",
+        "owner": "steipete",
+        "repo": "homebrew-tap",
+        "rev": "59d989689b66f893c769fe9dc689d2219c2488af",
+        "type": "github"
+      },
+      "original": {
+        "owner": "steipete",
+        "repo": "homebrew-tap",
+        "type": "github"
       }
     }
   },

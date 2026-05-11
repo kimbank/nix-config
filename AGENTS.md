@@ -48,14 +48,14 @@ Use these commands from the repo root:
 - `nix run .#build-switch`: build and switch to the new generation
 - `nix run .#rollback`: switch to a previous generation
 - `nix run .#clean`: garbage-collect old generations
-- `nix run .#update-homebrew`: refresh pinned `nix-homebrew`, `homebrew-core`, `homebrew-cask`, and `homebrew-bundle` inputs in `flake.lock`
+- `nix run .#update-homebrew`: refresh pinned `nix-homebrew`, official Homebrew tap inputs, and declared third-party Homebrew tap inputs in `flake.lock`
 
 Important:
 
 - Stage tracked changes before `build` or `build-switch` if you want Nix to see them: `git add .`
 - `build-switch` runs `darwin-rebuild switch` via [`apps/aarch64-darwin/build-switch`](apps/aarch64-darwin/build-switch)
 - Use the helper commands from the repo root when you need writable app-config links, because they set `NIX_CONFIG_REPO_ROOT` for the current checkout before evaluation.
-- Because this repo manages both Homebrew itself and its taps through `nix-homebrew` with immutable tap pins, use `update-homebrew` instead of `brew update` when you need newer Homebrew metadata
+- Because this repo manages both Homebrew itself and its taps through `nix-homebrew` with immutable tap pins, use `update-homebrew` instead of `brew update` when you need newer Homebrew metadata. Add extra taps as `flake = false` inputs in `flake.nix` and wire them through `nix-homebrew.taps` using Homebrew's on-disk tap directory names such as `owner/homebrew-name`.
 - If you need newer nixpkgs-managed package versions, update the pinned `nixpkgs` input with `nix flake update nixpkgs`
 - Keep one-off pnpm global AI agent update commands, such as `pnpm up -g ... --latest`, in [`scripts/update-pnpm-global-pacakges/main.sh`](scripts/update-pnpm-global-pacakges/main.sh) instead of scattering them as comments in package modules.
 - `apply` rewrites placeholder values like `loginUser`, git name, and git email across repo files; do not run it for normal day-to-day edits
@@ -103,6 +103,8 @@ Important:
 - Worktrunk shell integration for zsh should be managed declaratively in [`modules/shared/home-manager.nix`](modules/shared/home-manager.nix); prefer that over running `wt config shell install`, because this repo treats shell startup as Home Manager-managed state.
 - Existing unmanaged dotfiles can block activation. This repo sets `home-manager.backupFileExtension = "hm-backup"` in [`modules/darwin/home-manager.nix`](modules/darwin/home-manager.nix), so first-time activation may move conflicting files aside instead of failing.
 - `homebrew.onActivation.autoUpdate` and `upgrade` are enabled, so `build-switch` may update managed casks.
+- Third-party Homebrew taps should be pinned through `nix-homebrew.taps`; do not rely on ad hoc `brew tap` for managed casks.
+- CodexBar is currently installed as `steipete/tap/codexbar` from the pinned `steipete/homebrew-tap` input, and its Sparkle updater is disabled through Home Manager defaults so updates stay on the declarative Homebrew path.
 - Claude Code CLI is managed through the Homebrew cask `claude-code@latest` rather than nixpkgs, so use `nix run .#update-homebrew` when you want newer pinned Claude Code releases in this repo.
 - If `which claude` still resolves to an older native or npm installation after switching, remove that copy instead of changing this repo's PATH order just to prefer Claude Code.
 - JetBrains IDEs are expected to be installed and updated through JetBrains Toolbox, which is managed as a Homebrew cask in [`modules/darwin/casks.nix`](modules/darwin/casks.nix).

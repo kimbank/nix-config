@@ -1,47 +1,48 @@
 {
-    "workbench.colorTheme": "Dark Modern",
-    "workbench.iconTheme": "material-icon-theme",
-    "workbench.preferredDarkColorTheme": "Dark Modern",
-    "workbench.preferredLightColorTheme": "Light Modern",
-    "window.autoDetectColorScheme": true,
-    "material-icon-theme.activeIconPack": "nest",
-    "gitlens.ai.model": "vscode",
-    "gitlens.ai.vscode.model": "copilot:gpt-4.1",
-    "gitlens.ai.generateCommitMessage.customInstructions": "<type>: <description>\\n<body> 구조에서 type 에는 적절한 태그 붙이고, description 은 한국어로 잘 작성 (단, 용어는 영어로 표기해도 됨, 억지 번역 지양)",
-    "chat.viewSessions.orientation": "stacked",
-    "[typescript]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
-    "git.autofetch": true,
-    "files.exclude": {
-        "**/.DS_Store": false,
-        "**/.git": false,
-        "**/.hg": false,
-        "**/.svn": false,
-        "**/Thumbs.db": false
-    },
-    "editor.minimap.enabled": false,
-    "[json]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
-    "git.confirmSync": false,
-    "[jsonc]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
-    "workbench.externalBrowser": "chrome",
-    "redhat.telemetry.enabled": false,
-    "security.workspace.trust.untrustedFiles": "open",
-    "github.copilot.enable": {
-        "*": true,
-        "plaintext": false,
-        "markdown": false,
-        "scminput": false
-    },
-    "terminal.external.osxExec": "WezTerm.app",
-    "[javascript]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
-    "[typescriptreact]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
-    }
+  "workbench.colorTheme": "Dark Modern",
+  "workbench.iconTheme": "material-icon-theme",
+  "workbench.preferredDarkColorTheme": "Dark Modern",
+  "workbench.preferredLightColorTheme": "Light Modern",
+  "window.autoDetectColorScheme": true,
+  "material-icon-theme.activeIconPack": "nest",
+  "gitlens.ai.model": "vscode",
+  "gitlens.ai.vscode.model": "copilot:gpt-4.1",
+  "gitlens.ai.generateCommitMessage.customInstructions": "<type>: <description>\\n<body> 구조에서 type 에는 적절한 태그 붙이고, description 은 한국어로 잘 작성 (단, 용어는 영어로 표기해도 됨, 억지 번역 지양)",
+  "chat.viewSessions.orientation": "stacked",
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "git.autofetch": true,
+  "files.exclude": {
+    "**/.DS_Store": false,
+    "**/.git": false,
+    "**/.hg": false,
+    "**/.svn": false,
+    "**/Thumbs.db": false
+  },
+  "editor.minimap.enabled": false,
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "git.confirmSync": false,
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "workbench.externalBrowser": "chrome",
+  "redhat.telemetry.enabled": false,
+  "security.workspace.trust.untrustedFiles": "open",
+  "github.copilot.enable": {
+    "*": true,
+    "plaintext": false,
+    "markdown": false,
+    "scminput": false
+  },
+  "terminal.external.osxExec": "WezTerm.app",
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "terminal.integrated.initialHint": false
 }

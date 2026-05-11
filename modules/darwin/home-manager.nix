@@ -110,6 +110,10 @@ in
           linkApps.enable = false;
           defaults = {
             NSGlobalDomain."com.apple.mouse.tapBehavior" = 0;
+            "com.steipete.codexbar" = {
+              SUAutomaticallyUpdate = false;
+              SUEnableAutomaticChecks = false;
+            };
           };
           currentHostDefaults = {
             NSGlobalDomain."com.apple.mouse.tapBehavior" = 0;
