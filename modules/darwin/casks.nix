@@ -33,6 +33,7 @@ _:
   "libreoffice"
 
   # M
+  "manus"
 
   # O
   "obsidian"
