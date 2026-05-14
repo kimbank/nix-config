@@ -64,7 +64,7 @@ All services are defined in [`compose.yml`](compose.yml).
 - Access key: `admin`
 - Secret key: `adminadmin!!`
 - Image: `rustfs/rustfs:latest`
-- CORS origins: `localhost`, `127.0.0.1`, `kimbank.local`, and `ehkim.local` on ports `9000` and `9001`
+- CORS origins: `*` for local development
 
 By default, the stack publishes local service ports on `0.0.0.0` so the same
 services are reachable through this Mac's Bonjour hostnames, such as
@@ -75,9 +75,9 @@ To force the stack back to loopback-only access for a run, set:
 DEV_INFRA_BIND_ADDRESS=127.0.0.1 docker compose -f ~/.config/dev-infra/compose.yml up -d
 ```
 
-RustFS CORS can be overridden per run with `RUSTFS_CORS_ALLOWED_ORIGINS` and
-`RUSTFS_CONSOLE_CORS_ALLOWED_ORIGINS`. The default is intentionally explicit
-instead of `*` so local browser access stays predictable.
+RustFS CORS defaults to `*` because this stack is local development
+infrastructure. Override it per run with `RUSTFS_CORS_ALLOWED_ORIGINS` and
+`RUSTFS_CONSOLE_CORS_ALLOWED_ORIGINS` if you need a stricter allow-list.
 
 ## First Use
 
