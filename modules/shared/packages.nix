@@ -38,6 +38,7 @@ with pkgs;
   jq
 
   # K
+  k9s
   kubectl
   kubeseal
 
