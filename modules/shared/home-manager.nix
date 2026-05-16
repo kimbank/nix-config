@@ -102,6 +102,7 @@ in
       clauded = "claude --dangerously-skip-permissions";
       codexf = "codex --full-auto";
       codexd = "codex --dangerously-bypass-approvals-and-sandbox";
+      ck = "colima kubernetes";
     };
   };
 
