@@ -58,7 +58,7 @@ in
           # otherwise minimal config on restart, so keep Docker explicit.
           runtime = "docker";
           kubernetes = {
-            enabled = true;
+            enabled = false; # `ck start` to enable when needed
             k3sArgs = [ "--disable=traefik" ];
           };
         };
