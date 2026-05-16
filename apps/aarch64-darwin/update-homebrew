@@ -11,7 +11,8 @@ nix --extra-experimental-features 'nix-command flakes' flake update \
   homebrew-core \
   homebrew-cask \
   homebrew-bundle \
-  steipete-homebrew-tap
+  steipete-homebrew-tap \
+  chojs23-homebrew-tap
 
 echo "${GREEN}Homebrew flake inputs updated.${NC}"
 echo "${YELLOW}This updates both Homebrew itself and the pinned official/third-party taps. Review flake.lock, then run nix run .#build before switching.${NC}"

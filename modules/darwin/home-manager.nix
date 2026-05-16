@@ -29,7 +29,9 @@ in
       autoUpdate = true;
       upgrade = true;
     };
-    brews = [ ];
+    brews = [
+      "chojs23/tap/concord"
+    ];
     casks = pkgs.callPackage ./casks.nix { };
     masApps = { };
   };

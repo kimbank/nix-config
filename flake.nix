@@ -27,6 +27,10 @@
       url = "github:steipete/homebrew-tap";
       flake = false;
     };
+    chojs23-homebrew-tap = {
+      url = "github:chojs23/homebrew-tap";
+      flake = false;
+    };
   };
 
   outputs =
@@ -38,6 +42,7 @@
       homebrew-core,
       homebrew-cask,
       steipete-homebrew-tap,
+      chojs23-homebrew-tap,
       home-manager,
       nixpkgs,
     }@inputs:
@@ -135,6 +140,7 @@
                   "homebrew/homebrew-cask" = homebrew-cask;
                   "homebrew/homebrew-bundle" = homebrew-bundle;
                   "steipete/homebrew-tap" = steipete-homebrew-tap;
+                  "chojs23/homebrew-tap" = chojs23-homebrew-tap;
                 };
                 mutableTaps = false;
                 autoMigrate = true;

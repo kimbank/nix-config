@@ -148,6 +148,7 @@ Current split:
 - Shared CLI packages: `modules/shared/packages.nix`
 - Small repo-local shared packages: `modules/shared/pkgs/`
 - macOS-specific Nix packages: `modules/darwin/packages.nix`
+- Homebrew formulae: `modules/darwin/home-manager.nix`
 - Homebrew casks: `modules/darwin/casks.nix`
 - Claude Code CLI: `claude-code@latest` in `modules/darwin/casks.nix`
 - macOS PF rules for Screen Sharing/VNC: `modules/darwin/pf.nix`
@@ -283,6 +284,7 @@ Examples:
 
 - Add CLI tools in `modules/shared/packages.nix`
 - Add small repo-local CLI packages in `modules/shared/pkgs/`
+- Add Homebrew formulae in `modules/darwin/home-manager.nix`
 - Add GUI apps in `modules/darwin/casks.nix`
 - Add `jetbrains-toolbox` in `modules/darwin/casks.nix`, then manage WebStorm/DataGrip installs inside Toolbox
 - Adjust the local Docker stack in `modules/shared/config/dev-infra/compose.yml`

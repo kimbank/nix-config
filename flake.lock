@@ -17,6 +17,22 @@
         "type": "github"
       }
     },
+    "chojs23-homebrew-tap": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1778860279,
+        "narHash": "sha256-9jPHS/b70C5CPpvguKMIMocoJPuBUsU02A9mgB6ka6M=",
+        "owner": "chojs23",
+        "repo": "homebrew-tap",
+        "rev": "b795dfe99ff46fd2fbe9a48193a31a76697930c1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "chojs23",
+        "repo": "homebrew-tap",
+        "type": "github"
+      }
+    },
     "darwin": {
       "inputs": {
         "nixpkgs": [
@@ -156,6 +172,7 @@
     },
     "root": {
       "inputs": {
+        "chojs23-homebrew-tap": "chojs23-homebrew-tap",
         "darwin": "darwin",
         "home-manager": "home-manager",
         "homebrew-bundle": "homebrew-bundle",

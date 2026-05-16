@@ -66,6 +66,7 @@ Important:
 
 - Shared CLI packages: [`modules/shared/packages.nix`](modules/shared/packages.nix)
 - macOS-only Nix packages: [`modules/darwin/packages.nix`](modules/darwin/packages.nix)
+- Homebrew CLI formulae: [`modules/darwin/home-manager.nix`](modules/darwin/home-manager.nix)
 - Homebrew GUI apps: [`modules/darwin/casks.nix`](modules/darwin/casks.nix)
 - Claude Code CLI Homebrew cask: [`modules/darwin/casks.nix`](modules/darwin/casks.nix)
 - pnpm global AI agent update script: [`scripts/update-pnpm-global-pacakges/main.sh`](scripts/update-pnpm-global-pacakges/main.sh)
