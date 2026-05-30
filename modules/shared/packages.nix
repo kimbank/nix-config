@@ -47,6 +47,7 @@ with pkgs;
   nixfmt
 
   # O
+  oci-cli
   opentofu
 
   # P
