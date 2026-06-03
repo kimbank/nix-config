@@ -48,6 +48,7 @@ with pkgs;
   git
 
   # I
+  iperf3
   (callPackage ./pkgs/im-select.nix { })
 
   # J
