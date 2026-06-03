@@ -1,5 +1,22 @@
 { pkgs }:
 
+let
+  resumeTexLive = pkgs.texlive.combine {
+    inherit (pkgs.texlive)
+      scheme-small
+      latexmk
+      collection-langkorean
+      fontspec
+      luatexko
+      polyglossia
+      titlesec
+      marvosym
+      enumitem
+      pgf
+      preprint
+      ;
+  };
+in
 with pkgs;
 [
   # A
@@ -41,6 +58,9 @@ with pkgs;
   k9s
   kubectl
   kubeseal
+
+  # L
+  resumeTexLive
 
   # N
   nixd

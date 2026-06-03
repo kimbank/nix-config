@@ -59,7 +59,9 @@ in
   environment.systemPackages = import ../../modules/shared/packages.nix { inherit pkgs; };
 
   fonts.packages = [
+    pkgs.d2coding
     pkgs."jetbrains-mono"
+    pkgs.nanum
     pkgs.pretendard
   ];
 
