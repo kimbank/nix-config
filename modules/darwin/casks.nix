@@ -26,6 +26,9 @@ _:
   # G
   "google-chrome"
 
+  # I
+  "insomnia"
+
   # J
   "jetbrains-toolbox"
 
