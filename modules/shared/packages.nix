@@ -59,6 +59,7 @@ with pkgs;
   k9s
   kubectl
   kubeseal
+  kubernetes-helm
 
   # L
   resumeTexLive

@@ -197,7 +197,7 @@ Colima is configured in the main Nix config as a Home Manager `launchd` user ser
 - Home Manager writes a regular `~/.colima/default/colima.yaml` during activation so a direct `colima start` can update the profile instead of failing on an immutable Nix store symlink
 - persistent Colima changes still belong in `modules/darwin/home-manager.nix`; manual edits under `~/.colima` will be replaced on the next switch
 - if Colima was already running before you applied a config change, restart it once in the current session with `colima stop && colima start`
-- `kubectl` is installed from nixpkgs so you can use the Colima-backed cluster directly from the shell
+- `kubectl` and Helm are installed from nixpkgs so you can use the Colima-backed cluster directly from the shell
 
 Useful checks:
 

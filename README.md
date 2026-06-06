@@ -312,7 +312,7 @@ The local Docker stack is intended to be run from the Home Manager-managed path 
 
 This repo installs Docker tooling with a split that matches the existing package layout:
 
-- `modules/shared/packages.nix`: Docker CLI and `kubectl` from nixpkgs
+- `modules/shared/packages.nix`: Docker CLI, `kubectl`, and Helm from nixpkgs
 - `modules/darwin/home-manager.nix`: Colima login-time service plus the persistent default Docker and Kubernetes profile settings
 - `modules/shared/config/dev-infra/compose.yml`: Portainer, MySQL, PostgreSQL, Redis, RustFS stack linked under `~/.config/dev-infra/`
 - `modules/shared/config/dev-infra/README.md`: detailed usage guide for the local stack
