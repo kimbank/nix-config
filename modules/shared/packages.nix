@@ -74,6 +74,7 @@ with pkgs;
 
   # P
   pnpm
+  poppler-utils
 
   # R
   ripgrep
