@@ -38,6 +38,7 @@ All services are defined in [`compose.yml`](compose.yml).
 - Admin user: `admin`
 - Admin password: `adminadmin!!`
 - Root password: `adminadmin!!`
+- Container limit: 2 CPUs and 2 GiB RAM
 
 ### PostgreSQL
 

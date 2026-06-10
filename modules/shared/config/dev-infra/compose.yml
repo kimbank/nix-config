@@ -23,6 +23,8 @@ services:
     image: local-mysql-dev:8.4
     container_name: local-mysql
     restart: unless-stopped
+    cpus: "2"
+    mem_limit: 2g
     environment:
       MYSQL_ROOT_HOST: "%"
       MYSQL_ROOT_PASSWORD: adminadmin!!
