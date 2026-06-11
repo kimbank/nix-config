@@ -1,3 +1,5 @@
+[한국어](README.ko.md) | English
+
 # Kimbank Nix Config
 
 macOS-first Nix configuration that follows the same high-level layout as the reference `nixos-config` repository.
