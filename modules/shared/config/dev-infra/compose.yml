@@ -35,7 +35,7 @@ services:
       - mysql_data:/var/lib/mysql
 
   postgres:
-    image: postgres:16
+    image: postgres:18
     container_name: local-postgres
     restart: unless-stopped
     environment:
@@ -45,7 +45,7 @@ services:
     ports:
       - "${DEV_INFRA_BIND_ADDRESS:-0.0.0.0}:5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data_v18:/var/lib/postgresql
 
   redis:
     image: redis:7
@@ -90,6 +90,6 @@ services:
 volumes:
   portainer_data:
   mysql_data:
-  postgres_data:
+  postgres_data_v18:
   redis_data:
   rustfs_data:

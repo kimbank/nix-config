@@ -44,9 +44,11 @@ All services are defined in [`compose.yml`](compose.yml).
 
 - Host: `127.0.0.1`, `kimbank.local`, or `ehkim.local`
 - Port: `5432`
+- Image: `postgres:18`
 - Default database: `playground`
 - User: `admin`
 - Password: `adminadmin!!`
+- Data volume: `postgres_data_v18`
 
 ### Redis
 
@@ -307,5 +309,6 @@ colima start --save-config=false
 - RustFS now tracks the upstream `latest` image tag, matching the project's own Docker Compose examples. Expect occasional alpha-to-alpha behavior changes when you pull updates.
 - Portainer already follows the upstream `sts` channel tag, so it is effectively on a moving release stream as well.
 - MySQL, PostgreSQL, and Redis intentionally stay on major-version tags in this stack so persisted local volumes are less likely to be surprised by automatic major upgrades.
+- PostgreSQL 18 uses the upstream image's `/var/lib/postgresql` data root. This stack uses the versioned `postgres_data_v18` volume and does not automatically migrate data from the old `postgres_data` volume.
 - RustFS keeps the same local `admin` / `adminadmin!!` credentials as the old MinIO setup so existing development tooling can usually be repointed without changing auth values.
 - The stack is designed to run from the Home Manager symlink at `~/.config/dev-infra`, so avoid reintroducing relative bind mounts for tracked files unless they point to a real non-store path.
