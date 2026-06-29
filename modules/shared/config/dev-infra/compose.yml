@@ -4,6 +4,8 @@ services:
   portainer:
     image: portainer/portainer-ce:sts
     container_name: portainer
+    environment:
+      TZ: Etc/UTC
     command:
       - --admin-password
       - '$$2y$$10$$jrhGT44cae3CwxwtOEY5reSLUCj/bZ.c3dFrjXDr.CwsZtSvq1Cmi'
@@ -25,7 +27,9 @@ services:
     restart: unless-stopped
     cpus: "2"
     mem_limit: 2g
+    command: --default-time-zone=+00:00
     environment:
+      TZ: Etc/UTC
       MYSQL_ROOT_HOST: "%"
       MYSQL_ROOT_PASSWORD: adminadmin!!
       MYSQL_DATABASE: playground
@@ -38,7 +42,12 @@ services:
     image: postgres:18
     container_name: local-postgres
     restart: unless-stopped
+    command:
+      - postgres
+      - -c
+      - timezone=Etc/UTC
     environment:
+      TZ: Etc/UTC
       POSTGRES_DB: playground
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: adminadmin!!
@@ -52,6 +61,8 @@ services:
     container_name: local-redis
     restart: unless-stopped
     command: redis-server --appendonly yes
+    environment:
+      TZ: Etc/UTC
     ports:
       - "${DEV_INFRA_BIND_ADDRESS:-0.0.0.0}:6379:6379"
     volumes:
@@ -62,6 +73,7 @@ services:
     container_name: local-rustfs
     restart: unless-stopped
     environment:
+      TZ: Etc/UTC
       RUSTFS_ADDRESS: 0.0.0.0:9000
       RUSTFS_CONSOLE_ADDRESS: 0.0.0.0:9001
       RUSTFS_CONSOLE_ENABLE: "true"

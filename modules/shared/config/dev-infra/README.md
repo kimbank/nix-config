@@ -302,6 +302,7 @@ colima start --save-config=false
 ## Notes
 
 - This stack is intentionally local-only and optimized for convenience, not security.
+- All services explicitly set `TZ=Etc/UTC`. PostgreSQL also starts with `timezone=Etc/UTC`, and MySQL starts with `--default-time-zone=+00:00`, so database defaults stay UTC even if the macOS host timezone is different.
 - Colima's built-in k3s is a good fit for local manifest checks, image builds, and basic deployment smoke tests, but it is not a full substitute for production parity with managed Kubernetes platforms.
 - Running the Docker stack and k3s in the same Colima VM can feel tight on the default resource settings; if workloads start thrashing, increase Colima CPU and memory in `modules/darwin/home-manager.nix`.
 - MySQL and PostgreSQL defaults are meant for development.
