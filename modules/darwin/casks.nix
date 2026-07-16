@@ -10,6 +10,7 @@ _:
   # B
   "bettermouse"
   "brave-browser"
+  "bruno"
 
   # C
   "claude"
