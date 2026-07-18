@@ -21,23 +21,16 @@ _:
   "cursor"
 
   # D
-  "dbeaver-community"
   "dockdoor" # for alt + tab
 
   # G
   "google-chrome"
-
-  # I
-  "insomnia"
 
   # J
   "jetbrains-toolbox"
 
   # L
   "libreoffice"
-
-  # M
-  "manus"
 
   # O
   "obsidian"
