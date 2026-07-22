@@ -31,6 +31,7 @@ in
     };
     brews = [
       "chojs23/tap/concord"
+      "herdr"
     ];
     casks = pkgs.callPackage ./casks.nix { };
     masApps = { };
