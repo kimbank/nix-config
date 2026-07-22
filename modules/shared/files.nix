@@ -13,6 +13,7 @@ let
       config.lib.file.mkOutOfStoreSymlink "${repoRoot}/modules/shared/config/${name}";
 in
 {
+  ".config/cmux".source = configPath "cmux";
   ".config/dev-infra".source = configPath "dev-infra";
   ".config/ghostty".source = configPath "ghostty";
   ".config/herdr".source = configPath "herdr";

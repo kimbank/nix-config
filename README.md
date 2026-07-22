@@ -29,6 +29,7 @@ macOS-first Nix configuration that follows the same high-level layout as the ref
 │   │   └── packages.nix
 │   └── shared/               # Shared packages, shell config, files
 │       ├── config/           # App config trees tracked in this repo
+│       │   ├── cmux/
 │       │   ├── dev-infra/
 │       │   │   ├── README.md
 │       │   │   ├── compose.yml
@@ -162,6 +163,7 @@ This config manages your shell through Home Manager. Review:
 - `modules/shared/home-manager.nix`
 - `modules/darwin/home-manager.nix`
 - `modules/shared/config/ghostty` for Ghostty-compatible terminal appearance that `cmux` reads from `~/.config/ghostty/config`
+- `modules/shared/config/cmux` for cmux-owned app settings, including stable workspace ordering when notifications arrive
 - `modules/shared/config/herdr` for the Herdr sidebar layout and notification behavior
 
 Like the reference `nixos-config`, this setup assumes your Nix-managed shell config replaces the previous one. Bring over anything important before switching.
@@ -292,6 +294,7 @@ Examples:
 - Add GUI apps in `modules/darwin/casks.nix`
 - Add `jetbrains-toolbox` in `modules/darwin/casks.nix`, then manage WebStorm/DataGrip installs inside Toolbox
 - Adjust the local Docker stack in `modules/shared/config/dev-infra/compose.yml`
+- Adjust cmux app behavior in `modules/shared/config/cmux/cmux.json`
 - Adjust Ghostty or `cmux` terminal appearance in `modules/shared/config/ghostty`
 - Adjust Colima auto-start and Docker/Kubernetes profile settings in `modules/darwin/home-manager.nix`
 - Adjust PF-based inbound VNC allowlists in `modules/darwin/pf.nix`

@@ -78,6 +78,7 @@ Important:
 - Managed home files and app config links: [`modules/shared/files.nix`](modules/shared/files.nix) and [`modules/darwin/files.nix`](modules/darwin/files.nix)
 - Ghostty-compatible terminal appearance for Ghostty/cmux: [`modules/shared/config/ghostty`](modules/shared/config/ghostty)
 - App-specific config content:
+  - cmux app settings: [`modules/shared/config/cmux/cmux.json`](modules/shared/config/cmux/cmux.json)
   - Local Docker stack guide: [`modules/shared/config/dev-infra/README.md`](modules/shared/config/dev-infra/README.md)
   - Local Docker stack: [`modules/shared/config/dev-infra/compose.yml`](modules/shared/config/dev-infra/compose.yml)
   - Local MySQL image build: [`modules/shared/config/dev-infra/mysql/Dockerfile`](modules/shared/config/dev-infra/mysql/Dockerfile)
@@ -112,6 +113,7 @@ Important:
 - JetBrains IDEs are expected to be installed and updated through JetBrains Toolbox, which is managed as a Homebrew cask in [`modules/darwin/casks.nix`](modules/darwin/casks.nix).
 - Shell aliases such as `webstorm` or `datagrip` rely on Toolbox-generated launchers, so keep the Toolbox shell scripts feature enabled and ensure the scripts live in a PATH directory such as `~/Library/Application Support/JetBrains/Toolbox/scripts` or `~/.local/bin`.
 - Zen is installed via Homebrew cask, not via a Zen flake.
+- cmux-owned app settings live under [`modules/shared/config/cmux`](modules/shared/config/cmux), and [`modules/shared/files.nix`](modules/shared/files.nix) links that directory into `~/.config/cmux`. Keep `app.reorderOnNotification` disabled so notification badges do not change workspace ordering.
 - Ghostty-compatible config for Ghostty and `cmux` lives in [`modules/shared/config/ghostty`](modules/shared/config/ghostty), and [`modules/shared/files.nix`](modules/shared/files.nix) links that whole directory into `~/.config/ghostty` as a writable repo-backed symlink when built through the helper commands.
 - Herdr UI config lives under [`modules/shared/config/herdr`](modules/shared/config/herdr), and [`modules/shared/files.nix`](modules/shared/files.nix) links that whole directory into `~/.config/herdr`. Track `config.toml` while keeping runtime files such as sockets, logs, release notes, and session state ignored through the directory-local `.gitignore`. Keep Herdr popup delivery disabled when cmux is responsible for agent notifications so the same state change is not reported twice.
 - Keep the primary Ghostty config file named `config` for `cmux` compatibility, and use `config.ghostty` only as a shim when you need Ghostty tooling to resolve the same settings.
