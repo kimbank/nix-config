@@ -82,6 +82,9 @@ in
             }
           ];
           sessionVariables = {
+            # GUI apps can launch zsh without a locale. Keep UTF-8 explicit so
+            # zsh-syntax-highlighting can round-trip non-ASCII aliases safely.
+            LANG = "en_US.UTF-8";
             # Keep pnpm global binaries outside mise-managed Node installs.
             PNPM_HOME = "$HOME/Library/pnpm";
             JAVA_HOME = pkgs.jdk17_headless.home;
