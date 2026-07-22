@@ -60,12 +60,14 @@ For convenience during the move to `scripts/github-local-auth/`, the script also
 
 Files:
 
-- `update-pnpm-global-pacakges/main.sh`: installs or updates each tracked CLI separately with `pnpm add --global <package>@latest`
+- `update-pnpm-global-pacakges/main.sh`: migrates tracked pnpm 10 globals when needed, refreshes OpenCode with its lifecycle-build exception, and runs pnpm's native global updater
 
 ```sh
 bash ./scripts/update-pnpm-global-pacakges/main.sh
 ```
 
-The script currently tracks Biome, Codex, Bash Language Server, EAS CLI, and OpenCode. pnpm 11 uses a new `global/v11` layout and stores shims under `$PNPM_HOME/bin`, so using `add` instead of `update` also performs the one-time migration from pnpm 10. Each package is installed in a separate command to preserve pnpm 11's per-package isolation.
+The script currently tracks Biome, Codex, Bash Language Server, EAS CLI, and OpenCode. pnpm 11 uses a new `global/v11` layout and stores shims under `$PNPM_HOME/bin`, so packages still missing from v11 are installed once with `add`. After migration, `pnpm update --global --latest` updates every package in the v11 global directory, including manually added packages that are not in the migration list.
 
-OpenCode needs its install script to materialize bundled CLI assets, so the updater passes pnpm 11's package-scoped `--allow-build=opencode-ai` exception. When another fast-moving global CLI should use this path, add its package name to the script instead of leaving an ad hoc command in a package module. If it needs a lifecycle build, add a narrow package exception; do not enable all dependency builds globally just to bypass pnpm 11's safety check.
+OpenCode needs its install script to materialize bundled CLI assets, so the updater refreshes it explicitly with pnpm 11's package-scoped `--allow-build=opencode-ai` exception before the general update. When another existing pnpm 10 global CLI needs to migrate, add its package name to the script instead of leaving an ad hoc command in a package module. If it needs a lifecycle build, add a narrow package exception; do not enable all dependency builds globally just to bypass pnpm 11's safety check.
+
+The nixpkgs Node 24 build currently used on Apple Silicon Darwin has a known file-descriptor tracking bug that can abort pnpm 11 after installation. `modules/shared/packages.nix` temporarily runs only the Nix-provided pnpm executable with Node 22; the adjacent `TODO` and upstream issue links define when to remove that workaround. This does not change the mise-managed Node version used by installed CLI applications.

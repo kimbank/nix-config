@@ -1,6 +1,16 @@
 { pkgs }:
 
 let
+  pnpmForHost =
+    if pkgs.stdenv.isDarwin && pkgs.stdenv.hostPlatform.isAarch64 then
+      # TODO: Remove this override once the pinned nixpkgs includes the Node 24
+      # Darwin fd-tracking fix. The affected Node build can make pnpm 11 emit
+      # unmanaged-fd warnings and abort in libuv after a successful install.
+      # https://github.com/NixOS/nixpkgs/issues/536039
+      # https://github.com/NixOS/nixpkgs/issues/525627
+      pkgs.pnpm.override { nodejs-slim = pkgs.nodejs-slim_22; }
+    else
+      pkgs.pnpm;
   resumeTexLive = pkgs.texliveSmall.withPackages (
     ps: with ps; [
       latexmk
@@ -72,7 +82,7 @@ with pkgs;
   opentofu
 
   # P
-  pnpm
+  pnpmForHost
   poppler-utils
 
   # R
