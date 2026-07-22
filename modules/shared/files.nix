@@ -15,6 +15,7 @@ in
 {
   ".config/dev-infra".source = configPath "dev-infra";
   ".config/ghostty".source = configPath "ghostty";
+  ".config/herdr".source = configPath "herdr";
   ".config/nvim".source = configPath "nvim";
   ".config/wezterm".source = configPath "wezterm";
   ".config/worktrunk".source = configPath "worktrunk";

@@ -1,0 +1,21 @@
+[ui]
+agent_panel_sort = "priority"
+sidebar_width = 32
+sidebar_min_width = 24
+sidebar_max_width = 42
+show_agent_labels_on_pane_borders = true
+hide_tab_bar_when_single_tab = true
+
+[ui.sidebar.agents]
+row_gap = 1
+rows = [
+  ["state_icon", "agent", "state_text"],
+  ["workspace", "tab"],
+]
+
+[ui.sidebar.spaces]
+row_gap = 1
+
+[ui.toast]
+# cmux already delivers agent notifications; keep Herdr from duplicating them.
+delivery = "off"

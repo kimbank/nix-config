@@ -83,6 +83,7 @@ Important:
   - Local MySQL image build: [`modules/shared/config/dev-infra/mysql/Dockerfile`](modules/shared/config/dev-infra/mysql/Dockerfile)
   - Local MySQL init SQL: [`modules/shared/config/dev-infra/mysql-init/001-admin-superuser.sql`](modules/shared/config/dev-infra/mysql-init/001-admin-superuser.sql)
   - Ghostty/cmux terminal config: [`modules/shared/config/ghostty`](modules/shared/config/ghostty)
+  - Herdr: [`modules/shared/config/herdr/config.toml`](modules/shared/config/herdr/config.toml)
   - Neovim: [`modules/shared/config/nvim`](modules/shared/config/nvim)
   - WezTerm: [`modules/shared/config/wezterm`](modules/shared/config/wezterm)
   - Worktrunk user config: [`modules/shared/config/worktrunk/config.toml`](modules/shared/config/worktrunk/config.toml)
@@ -112,6 +113,7 @@ Important:
 - Shell aliases such as `webstorm` or `datagrip` rely on Toolbox-generated launchers, so keep the Toolbox shell scripts feature enabled and ensure the scripts live in a PATH directory such as `~/Library/Application Support/JetBrains/Toolbox/scripts` or `~/.local/bin`.
 - Zen is installed via Homebrew cask, not via a Zen flake.
 - Ghostty-compatible config for Ghostty and `cmux` lives in [`modules/shared/config/ghostty`](modules/shared/config/ghostty), and [`modules/shared/files.nix`](modules/shared/files.nix) links that whole directory into `~/.config/ghostty` as a writable repo-backed symlink when built through the helper commands.
+- Herdr UI config lives under [`modules/shared/config/herdr`](modules/shared/config/herdr), and [`modules/shared/files.nix`](modules/shared/files.nix) links that whole directory into `~/.config/herdr`. Track `config.toml` while keeping runtime files such as sockets, logs, release notes, and session state ignored through the directory-local `.gitignore`. Keep Herdr popup delivery disabled when cmux is responsible for agent notifications so the same state change is not reported twice.
 - Keep the primary Ghostty config file named `config` for `cmux` compatibility, and use `config.ghostty` only as a shim when you need Ghostty tooling to resolve the same settings.
 - WezTerm is installed via Homebrew cask, and [`modules/shared/files.nix`](modules/shared/files.nix) links the whole [`modules/shared/config/wezterm`](modules/shared/config/wezterm) directory into `~/.config/wezterm` as a writable repo-backed symlink when built through the helper commands.
 - The standalone `kimbank/.config` repository is a mirror publish target for [`modules/shared/config`](modules/shared/config), not the source of truth.
