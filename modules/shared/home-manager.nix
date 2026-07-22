@@ -160,12 +160,17 @@ in
     viAlias = true;
     vimAlias = true;
     vimdiffAlias = true;
+    # The repo owns ~/.config/nvim/init.lua through an out-of-store symlink.
+    # Load Home Manager's generated provider setup through the wrapper instead.
+    sideloadInitLua = true;
+    # Preserve the pre-26.05 Home Manager defaults explicitly.
+    withPython3 = true;
+    withRuby = true;
   };
 
   vscode = {
     enable = true;
     package = null;
-    pname = "vscode";
     mutableExtensionsDir = true;
   };
 

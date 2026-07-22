@@ -1,9 +1,8 @@
 { pkgs }:
 
 let
-  resumeTexLive = pkgs.texlive.combine {
-    inherit (pkgs.texlive)
-      scheme-small
+  resumeTexLive = pkgs.texliveSmall.withPackages (
+    ps: with ps; [
       latexmk
       collection-langkorean
       fontspec
@@ -14,8 +13,8 @@ let
       enumitem
       pgf
       preprint
-      ;
-  };
+    ]
+  );
 in
 with pkgs;
 [

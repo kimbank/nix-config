@@ -56,8 +56,8 @@ Important:
 - `build-switch` runs `darwin-rebuild switch` via [`apps/aarch64-darwin/build-switch`](apps/aarch64-darwin/build-switch)
 - Use the helper commands from the repo root when you need writable app-config links, because they set `NIX_CONFIG_REPO_ROOT` for the current checkout before evaluation.
 - Because this repo manages both Homebrew itself and its taps through `nix-homebrew` with immutable tap pins, use `update-homebrew` instead of `brew update` when you need newer Homebrew metadata. Add extra taps as `flake = false` inputs in `flake.nix` and wire them through `nix-homebrew.taps` using Homebrew's on-disk tap directory names such as `owner/homebrew-name`.
-- If you need newer nixpkgs-managed package versions, update the pinned `nixpkgs` input with `nix flake update nixpkgs`
-- Keep one-off pnpm global AI agent update commands, such as `pnpm up -g ... --latest`, in [`scripts/update-pnpm-global-pacakges/main.sh`](scripts/update-pnpm-global-pacakges/main.sh) instead of scattering them as comments in package modules.
+- Update `nixpkgs`, `home-manager`, and `darwin` together with `nix flake update nixpkgs home-manager darwin`; their module and package APIs need to stay coordinated.
+- Keep pnpm-managed global CLI package names in [`scripts/update-pnpm-global-pacakges/main.sh`](scripts/update-pnpm-global-pacakges/main.sh) instead of scattering ad hoc update commands through package modules.
 - `apply` rewrites placeholder values like `loginUser`, git name, and git email across repo files; do not run it for normal day-to-day edits
 - In this environment, `build-switch` usually reaches a macOS `sudo` password prompt and cannot complete unattended beyond that point
 - After a successful shell-related switch, refresh the shell with `exec zsh -l`. Do not rely on `source ~/.zshrc` alone, because this Home Manager setup expects variables from `~/.zshenv` as well.
@@ -69,7 +69,7 @@ Important:
 - Homebrew CLI formulae: [`modules/darwin/home-manager.nix`](modules/darwin/home-manager.nix)
 - Homebrew GUI apps: [`modules/darwin/casks.nix`](modules/darwin/casks.nix)
 - Claude Code CLI Homebrew cask: [`modules/darwin/casks.nix`](modules/darwin/casks.nix)
-- pnpm global AI agent update script: [`scripts/update-pnpm-global-pacakges/main.sh`](scripts/update-pnpm-global-pacakges/main.sh)
+- pnpm global CLI install/update script: [`scripts/update-pnpm-global-pacakges/main.sh`](scripts/update-pnpm-global-pacakges/main.sh)
 - PF-based inbound firewall rules for Screen Sharing/VNC: [`modules/darwin/pf.nix`](modules/darwin/pf.nix)
 - Shell behavior, aliases, and `oh-my-zsh`: [`modules/shared/home-manager.nix`](modules/shared/home-manager.nix)
 - JavaScript/TypeScript runtime defaults and `mise` shell integration: [`modules/shared/home-manager.nix`](modules/shared/home-manager.nix)
@@ -97,7 +97,7 @@ Important:
 - Prefer editing Nix modules instead of patching generated files or local dotfiles.
 - Home Manager manages `zsh`; changes should go into [`modules/shared/home-manager.nix`](modules/shared/home-manager.nix), not `~/.zshrc`.
 - JavaScript/TypeScript runtime version switching is managed declaratively with Home Manager's `programs.mise`; prefer project-local `.mise.toml` or `.tool-versions` files, and `.nvmrc` or `.node-version` for Node-specific repos, over reintroducing fixed global `nodejs_*`, `bun`, or `deno` packages unless a task explicitly requires a Nix-pinned system runtime.
-- `pnpm` global binaries should be managed declaratively via `PNPM_HOME` in [`modules/darwin/home-manager.nix`](modules/darwin/home-manager.nix); prefer that over running `pnpm setup`, which edits shell dotfiles directly.
+- `pnpm` global binaries should use the declarative `PNPM_HOME` and `PNPM_HOME/bin` PATH entries in [`modules/darwin/home-manager.nix`](modules/darwin/home-manager.nix); prefer that over running `pnpm setup`, which edits shell dotfiles directly. pnpm 11 global CLIs should be installed or updated through [`scripts/update-pnpm-global-pacakges/main.sh`](scripts/update-pnpm-global-pacakges/main.sh), which applies narrow lifecycle-build exceptions and migrates tracked packages out of the pnpm 10 global layout.
 - Android Studio should be managed as a Homebrew cask in [`modules/darwin/casks.nix`](modules/darwin/casks.nix), while `ANDROID_HOME`, `ANDROID_SDK_ROOT`, and related PATH entries should be managed declaratively in [`modules/darwin/home-manager.nix`](modules/darwin/home-manager.nix) rather than relying on Android Studio or shell startup files to mutate the environment.
 - Android SDK contents such as SDK Platform, Build-Tools, Platform-Tools, Command-line Tools, and side-by-side NDK are expected to be installed through Android Studio's SDK Manager under `~/Library/Android/sdk` after the cask is present.
 - For iOS real-device development or debugging, prefer project-local scripts such as `pnpm dev:ios` or `pnpm preflight`; do not add extra global tooling just for that workflow.
@@ -121,6 +121,7 @@ Important:
 - The standalone `kimbank/.config` repository is a mirror publish target for [`modules/shared/config`](modules/shared/config), not the source of truth.
 - Worktrunk user config lives under [`modules/shared/config/worktrunk`](modules/shared/config/worktrunk) and [`modules/shared/files.nix`](modules/shared/files.nix) links that whole directory into `~/.config/worktrunk`. Runtime state such as `approvals.toml` or `config.toml.lock` should stay ignored via the directory-local `.gitignore`.
 - Neovim is installed by Home Manager, but the config is dotfile-style and lives in the repo-managed directory [`modules/shared/config/nvim`](modules/shared/config/nvim). [`modules/shared/files.nix`](modules/shared/files.nix) links that whole directory into `~/.config/nvim`, and plugins are bootstrapped inside the config via `lazy.nvim` rather than `programs.neovim.plugins`.
+- Keep `programs.neovim.sideloadInitLua = true` while the whole Neovim config directory is linked out of store. This lets Home Manager load generated provider setup through the wrapper without trying to create a second `~/.config/nvim/init.lua` inside the repo-owned directory.
 - Docker CLI comes from nixpkgs, Colima is managed as a Home Manager user service in [`modules/darwin/home-manager.nix`](modules/darwin/home-manager.nix), and [`modules/shared/files.nix`](modules/shared/files.nix) links the entire local Docker stack directory from [`modules/shared/config/dev-infra`](modules/shared/config/dev-infra) to `~/.config/dev-infra` as a writable repo-backed symlink when built through the helper commands.
 - Home Manager writes a regular `~/.colima/default/colima.yaml` during activation so direct `colima start` commands can save runtime flags without failing on an immutable Nix store symlink, but the persistent source of truth stays in [`modules/darwin/home-manager.nix`](modules/darwin/home-manager.nix). Expect manual edits under `~/.colima` to be replaced on the next switch.
 - The local Docker stack uses a single [`compose.yml`](modules/shared/config/dev-infra/compose.yml) to start Portainer, MySQL, PostgreSQL, Redis, and RustFS together, and it is meant to be run from the Home Manager symlink at `~/.config/dev-infra`.

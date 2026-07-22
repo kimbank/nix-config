@@ -94,6 +94,9 @@ in
             ANDROID_SDK_ROOT = "$HOME/Library/Android/sdk";
           };
           sessionPath = [
+            # pnpm 11 stores global command shims under PNPM_HOME/bin.
+            "$HOME/Library/pnpm/bin"
+            # Keep pnpm 10 shims reachable during the one-time v11 migration.
             "$HOME/Library/pnpm"
             "$HOME/Library/Android/sdk/platform-tools"
             "$HOME/Library/Android/sdk/emulator"

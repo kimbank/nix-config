@@ -172,7 +172,7 @@ JetBrains Toolbox users can keep IDE launchers such as `webstorm` and `datagrip`
 
 JavaScript and TypeScript runtime switching is managed through Home Manager's `programs.mise` integration rather than fixed `nodejs_*`, `bun`, or `deno` packages in Nix. Home Manager writes the global defaults to `~/.config/mise/config.toml`, so they apply across new shells for this user. This repo keeps global fallbacks on moving channels such as Node `lts` and Bun/Deno `latest`, while project-local `.mise.toml` and `.tool-versions` files can pin exact versions when needed. `.nvmrc` or `.node-version` remain enabled for Node projects. After entering a project with one of those files, run `mise install` once if that version is not already present.
 
-`pnpm` global binaries are managed declaratively through Home Manager with `PNPM_HOME=~/Library/pnpm`, so prefer that over running `pnpm setup` to edit shell dotfiles directly.
+`pnpm` global binaries use the Home Manager-managed `PNPM_HOME=~/Library/pnpm`. pnpm 11 writes new command shims under `~/Library/pnpm/bin`; both that directory and the legacy pnpm 10 root are kept on `PATH` during migration. Do not run `pnpm setup`, because it edits shell files that this repo manages declaratively. Run `bash ./scripts/update-pnpm-global-pacakges/main.sh` after switching to pnpm 11 to reinstall the tracked global CLIs into the new isolated `global/v11` layout.
 
 Android Studio itself is managed as a Homebrew cask, while Home Manager exports `ANDROID_HOME`, `ANDROID_SDK_ROOT`, and the Android SDK command-line paths for new shells. After installing the app, use Android Studio's SDK Manager to install the SDK contents under `~/Library/Android/sdk`, including the Android SDK Platform, Build-Tools, Platform-Tools, Command-line Tools, and side-by-side NDK needed for local Android or EAS builds.
 
@@ -215,7 +215,7 @@ exec zsh -l
 General workflow:
 
 1. Edit the Nix files.
-2. If you need newer nixpkgs-managed package versions such as `opencode`, run `nix flake update nixpkgs` to refresh the pinned `nixpkgs` input in `flake.lock`.
+2. To update the core Nix stack, run `nix flake update nixpkgs home-manager darwin`. Keep these inputs coordinated because Home Manager and nix-darwin modules are evaluated against the pinned nixpkgs package set.
 3. If you need newer Nix-managed Homebrew metadata, run `nix run .#update-homebrew` to refresh both `nix-homebrew` and the pinned official/third-party tap inputs in `flake.lock`.
 4. Run `git add .` if you created or changed tracked files, including app config under `modules/shared/config/`.
 5. Run `nix run .#build` to verify.

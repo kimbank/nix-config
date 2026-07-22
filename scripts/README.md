@@ -56,14 +56,16 @@ For convenience during the move to `scripts/github-local-auth/`, the script also
 
 ## update-pnpm-global-pacakges
 
-`update-pnpm-global-pacakges/` contains quick manual updates for pnpm global AI agent CLIs that should follow the latest npm release.
+`update-pnpm-global-pacakges/` contains the repeatable install/update list for CLI packages intentionally managed in pnpm's global directory.
 
 Files:
 
-- `update-pnpm-global-pacakges/main.sh`: runs the collected `pnpm up -g ... --latest` commands
+- `update-pnpm-global-pacakges/main.sh`: installs or updates each tracked CLI separately with `pnpm add --global <package>@latest`
 
 ```sh
 bash ./scripts/update-pnpm-global-pacakges/main.sh
 ```
 
-When another fast-moving pnpm global AI agent CLI needs the same treatment, add its update command to this script instead of leaving the command as a comment in Nix package or cask modules.
+The script currently tracks Biome, Codex, Bash Language Server, EAS CLI, and OpenCode. pnpm 11 uses a new `global/v11` layout and stores shims under `$PNPM_HOME/bin`, so using `add` instead of `update` also performs the one-time migration from pnpm 10. Each package is installed in a separate command to preserve pnpm 11's per-package isolation.
+
+OpenCode needs its install script to materialize bundled CLI assets, so the updater passes pnpm 11's package-scoped `--allow-build=opencode-ai` exception. When another fast-moving global CLI should use this path, add its package name to the script instead of leaving an ad hoc command in a package module. If it needs a lifecycle build, add a narrow package exception; do not enable all dependency builds globally just to bypass pnpm 11's safety check.
