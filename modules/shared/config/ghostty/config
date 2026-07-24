@@ -23,7 +23,7 @@ window-theme = system
 window-padding-x = 6
 window-padding-y = 6
 
-scrollback-limit = 50000
+scrollback-limit = 20000000
 
 # Send LF so terminal AI CLIs treat Shift+Enter as a multiline prompt break.
 keybind = shift+enter=text:\n
