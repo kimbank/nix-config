@@ -32,7 +32,6 @@ in
     brews = [
       "chojs23/tap/concord"
       "herdr"
-      "mattiapun/subtui/subtui"
     ];
     casks = pkgs.callPackage ./casks.nix { };
     masApps = { };

@@ -225,8 +225,6 @@ This repo manages both Homebrew itself and its taps through Nix. Add required ta
 
 CodexBar is installed from the pinned `steipete/tap` cask while the upstream `homebrew/cask` release is newer but crash-prone on this host. Its Sparkle auto-updater is disabled declaratively so app updates stay on the Nix/Homebrew path.
 
-SubTUI is installed from the pinned `MattiaPun/subtui` Homebrew tap. Its formula also installs the required `mpv` playback dependency, and both are applied through the normal `build-switch` workflow.
-
 That also applies to `claude-code@latest`: this repo tracks the latest Homebrew cask channel declaratively, but new Claude Code releases still arrive through the pinned Homebrew metadata in `flake.lock`.
 
 If `which claude` still points at an older native or npm install after switching, remove that copy so the Homebrew cask binary takes precedence on `PATH`.

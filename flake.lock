@@ -122,22 +122,6 @@
         "type": "github"
       }
     },
-    "mattiapun-homebrew-subtui": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1779367712,
-        "narHash": "sha256-cjtC6pcGwaBbMQpISKaSE9j2PcBe+KvqQQub9idh5WA=",
-        "owner": "MattiaPun",
-        "repo": "homebrew-subtui",
-        "rev": "e9c9e9858ccf97edc419a801b04c2ca6bc321ae6",
-        "type": "github"
-      },
-      "original": {
-        "owner": "MattiaPun",
-        "repo": "homebrew-subtui",
-        "type": "github"
-      }
-    },
     "nix-homebrew": {
       "inputs": {
         "brew-src": "brew-src"
@@ -180,7 +164,6 @@
         "homebrew-bundle": "homebrew-bundle",
         "homebrew-cask": "homebrew-cask",
         "homebrew-core": "homebrew-core",
-        "mattiapun-homebrew-subtui": "mattiapun-homebrew-subtui",
         "nix-homebrew": "nix-homebrew",
         "nixpkgs": "nixpkgs",
         "steipete-homebrew-tap": "steipete-homebrew-tap"

@@ -67,7 +67,6 @@ Important:
 - Shared CLI packages: [`modules/shared/packages.nix`](modules/shared/packages.nix)
 - macOS-only Nix packages: [`modules/darwin/packages.nix`](modules/darwin/packages.nix)
 - Homebrew CLI formulae: [`modules/darwin/home-manager.nix`](modules/darwin/home-manager.nix)
-- SubTUI Homebrew formula: [`modules/darwin/home-manager.nix`](modules/darwin/home-manager.nix)
 - Homebrew GUI apps: [`modules/darwin/casks.nix`](modules/darwin/casks.nix)
 - Claude Code CLI Homebrew cask: [`modules/darwin/casks.nix`](modules/darwin/casks.nix)
 - pnpm global CLI install/update script: [`scripts/update-pnpm-global-pacakges/main.sh`](scripts/update-pnpm-global-pacakges/main.sh)
@@ -108,7 +107,6 @@ Important:
 - Existing unmanaged dotfiles can block activation. This repo sets `home-manager.backupFileExtension = "hm-backup"` in [`modules/darwin/home-manager.nix`](modules/darwin/home-manager.nix), so first-time activation may move conflicting files aside instead of failing.
 - `homebrew.onActivation.autoUpdate` and `upgrade` are enabled, so `build-switch` may update managed casks.
 - Third-party Homebrew taps should be pinned through `nix-homebrew.taps`; do not rely on ad hoc `brew tap` for managed casks.
-- SubTUI is managed as the `mattiapun/subtui/subtui` Homebrew formula from the pinned `MattiaPun/homebrew-subtui` input. Its formula supplies the required `mpv` dependency, so do not add a separate ad hoc `mpv` installation for SubTUI.
 - CodexBar is currently installed as `steipete/tap/codexbar` from the pinned `steipete/homebrew-tap` input, and its Sparkle updater is disabled through Home Manager defaults so updates stay on the declarative Homebrew path.
 - Claude Code CLI is managed through the Homebrew cask `claude-code@latest` rather than nixpkgs, so use `nix run .#update-homebrew` when you want newer pinned Claude Code releases in this repo.
 - If `which claude` still resolves to an older native or npm installation after switching, remove that copy instead of changing this repo's PATH order just to prefer Claude Code.
