@@ -34,6 +34,10 @@
       url = "github:chojs23/homebrew-tap";
       flake = false;
     };
+    mattiapun-homebrew-subtui = {
+      url = "github:MattiaPun/homebrew-subtui";
+      flake = false;
+    };
   };
 
   outputs =
@@ -46,6 +50,7 @@
       homebrew-cask,
       steipete-homebrew-tap,
       chojs23-homebrew-tap,
+      mattiapun-homebrew-subtui,
       home-manager,
       nixpkgs,
     }@inputs:
@@ -144,6 +149,7 @@
                   "homebrew/homebrew-bundle" = homebrew-bundle;
                   "steipete/homebrew-tap" = steipete-homebrew-tap;
                   "chojs23/homebrew-tap" = chojs23-homebrew-tap;
+                  "mattiapun/homebrew-subtui" = mattiapun-homebrew-subtui;
                 };
                 mutableTaps = false;
                 autoMigrate = true;
