@@ -32,6 +32,9 @@ _:
   # L
   "libreoffice"
 
+  # N
+  "nextcloud"
+
   # O
   "obsidian"
   "opencode-desktop"

@@ -87,6 +87,7 @@ with pkgs;
   poppler-utils
 
   # R
+  rclone
   ripgrep
   rustc
   rustfmt
