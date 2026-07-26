@@ -98,6 +98,7 @@ in
       "ㅣㅣ" = "ll";
       "ㄷ턋" = "exit";
       "exot" = "exit";
+      pug = "pnpm_config_minimum_release_age=0 pnpm up -g";
       wd = "while true; do tput cup 0 0; command duf; sleep 2; done";
       dp = "watch -n 1 \"docker ps -a --format \\\"table {{.ID}}\\t{{.Names}}\\t{{.Status}}\\\"\"";
       we = "webstorm .";
