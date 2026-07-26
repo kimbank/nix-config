@@ -40,6 +40,7 @@ with pkgs;
 
   # C
   cargo
+  cliamp
   clippy
   coreutils
   curl

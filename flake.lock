@@ -1,5 +1,21 @@
 {
   "nodes": {
+    "acmagn-homebrew-ratune": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1785050245,
+        "narHash": "sha256-rwGf7HBD7ugtG0dozPfQmFnDQH/yWdzkEB7By2i4Wms=",
+        "owner": "acmagn",
+        "repo": "homebrew-ratune",
+        "rev": "ba224f88dc23dbc391ec5417a2aa52324ff7ad33",
+        "type": "github"
+      },
+      "original": {
+        "owner": "acmagn",
+        "repo": "homebrew-ratune",
+        "type": "github"
+      }
+    },
     "brew-src": {
       "flake": false,
       "locked": {
@@ -158,6 +174,7 @@
     },
     "root": {
       "inputs": {
+        "acmagn-homebrew-ratune": "acmagn-homebrew-ratune",
         "chojs23-homebrew-tap": "chojs23-homebrew-tap",
         "darwin": "darwin",
         "home-manager": "home-manager",

@@ -34,6 +34,10 @@
       url = "github:chojs23/homebrew-tap";
       flake = false;
     };
+    acmagn-homebrew-ratune = {
+      url = "github:acmagn/homebrew-ratune";
+      flake = false;
+    };
   };
 
   outputs =
@@ -46,6 +50,7 @@
       homebrew-cask,
       steipete-homebrew-tap,
       chojs23-homebrew-tap,
+      acmagn-homebrew-ratune,
       home-manager,
       nixpkgs,
     }@inputs:
@@ -144,6 +149,9 @@
                   "homebrew/homebrew-bundle" = homebrew-bundle;
                   "steipete/homebrew-tap" = steipete-homebrew-tap;
                   "chojs23/homebrew-tap" = chojs23-homebrew-tap;
+                  # The upstream repository was renamed to homebrew-ratune,
+                  # but Homebrew still exposes it through the acmagn/tap name.
+                  "acmagn/homebrew-tap" = acmagn-homebrew-ratune;
                 };
                 mutableTaps = false;
                 autoMigrate = true;
