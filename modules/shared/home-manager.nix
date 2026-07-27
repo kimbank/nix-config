@@ -106,6 +106,9 @@ in
       codexf = "codex --full-auto";
       codexd = "codex --dangerously-bypass-approvals-and-sandbox";
       ck = "colima kubernetes";
+    }
+    // lib.optionalAttrs pkgs.stdenv.isDarwin {
+      pwdc = "printf %s \"$PWD\" | pbcopy";
     };
   };
 
