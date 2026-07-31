@@ -24,6 +24,7 @@ _:
   "dockdoor" # for alt + tab
 
   # G
+  "ghostty"
   "google-chrome"
 
   # J

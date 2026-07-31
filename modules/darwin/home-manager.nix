@@ -160,11 +160,11 @@ in
     enable = true;
     username = loginUser;
     entries = [
-      { path = "/System/Applications/System Settings.app/"; }
+      # { path = "/System/Applications/System Settings.app/"; }
       # { path = "/System/Applications/Notes.app/"; }
       # { path = "/System/Applications/Utilities/Terminal.app/"; }
-      { path = "/Applications/Zen.app/"; }
-      { path = "/Applications/WezTerm.app/"; }
+      # { path = "/Applications/Zen.app/"; }
+      # { path = "/Applications/WezTerm.app/"; }
       {
         path = "${config.users.users.${loginUser}.home}/Downloads";
         section = "others";
