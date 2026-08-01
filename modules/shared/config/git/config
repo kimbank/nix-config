@@ -21,3 +21,4 @@
 
 [include]
     path = github/index.inc
+    path = gitlab/index.inc
