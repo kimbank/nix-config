@@ -66,6 +66,7 @@ Important:
 ## Where To Change Things
 
 - Shared CLI packages: [`modules/shared/packages.nix`](modules/shared/packages.nix)
+- GitHub CLI package and declarative settings: [`modules/shared/home-manager.nix`](modules/shared/home-manager.nix)
 - Small repo-local shared packages and package compositions: [`modules/shared/pkgs`](modules/shared/pkgs)
 - SSH Tresor CLI: upstream flake input and overlay wiring in [`flake.nix`](flake.nix), with the package entry in [`modules/shared/packages.nix`](modules/shared/packages.nix)
 - Interactive 1Password-to-ssh-tresor helper: [`scripts/ssh-tresor-from-1password/main.sh`](scripts/ssh-tresor-from-1password/main.sh)
@@ -117,6 +118,7 @@ Important:
 - Third-party Homebrew taps should be pinned through `nix-homebrew.taps`; do not rely on ad hoc `brew tap` for managed casks.
 - `cliamp` is managed from the pinned nixpkgs package set in [`modules/shared/packages.nix`](modules/shared/packages.nix). Its wrapper supplies `ffmpeg` and `yt-dlp`, so update it with nixpkgs and do not use the imperative `cliamp upgrade` command.
 - `ssh-tresor` is managed through its pinned upstream flake and overlay, then exposed from [`modules/shared/packages.nix`](modules/shared/packages.nix). Update it with `nix flake update ssh-tresor` rather than `cargo install` or an ad hoc Homebrew formula.
+- GitHub CLI is managed through Home Manager's `programs.gh` module in [`modules/shared/home-manager.nix`](modules/shared/home-manager.nix). Keep `git_protocol` declaratively set to SSH, leave the HTTPS credential helper disabled while authentication comes from `GH_TOKEN`, and do not place tokens in `programs.gh.hosts`.
 - Use [`scripts/ssh-tresor-from-1password/main.sh`](scripts/ssh-tresor-from-1password/main.sh) for the repeatable interactive flow that reads a 1Password secret, selects an agent fingerprint, and writes an armored tresor from either a local file name under `~/.config/secrets/tresor` or an absolute path. Keep the secret on the `op read` pipeline, create the destination through a same-directory temporary file, and preserve mode `0600` when maintaining this helper.
 - Ratune is managed as `acmagn/tap/ratune` from the pinned `acmagn/homebrew-ratune` input. The tap is mounted at its legacy Homebrew name `acmagn/homebrew-tap`, matching the upstream `acmagn/tap` install command.
 - CodexBar is currently installed as `steipete/tap/codexbar` from the pinned `steipete/homebrew-tap` input, and its Sparkle updater is disabled through Home Manager defaults so updates stay on the declarative Homebrew path.

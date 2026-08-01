@@ -114,6 +114,14 @@ in
     };
   };
 
+  gh = {
+    enable = true;
+    settings.git_protocol = "ssh";
+
+    # GitHub authentication comes from GH_TOKEN and Git remotes use SSH.
+    gitCredentialHelper.enable = false;
+  };
+
   git = {
     enable = true;
     lfs.enable = true;

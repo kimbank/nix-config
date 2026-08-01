@@ -28,7 +28,6 @@ with pkgs;
   fzf
 
   # G
-  gh
   git
 
   # I

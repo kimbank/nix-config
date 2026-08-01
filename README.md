@@ -162,6 +162,7 @@ Review these files:
 Current split:
 
 - Shared CLI packages: `modules/shared/packages.nix`
+- Home Manager-integrated CLI programs such as GitHub CLI: `modules/shared/home-manager.nix`
 - Small repo-local shared packages: `modules/shared/pkgs/`
 - macOS-specific Nix packages: `modules/darwin/packages.nix`
 - Upstream-flake CLI packages such as `ssh-tresor`: pin the input and wire its overlay through `upstreamOverlaysModule` in `flake.nix`, then list the package in `modules/shared/packages.nix`
