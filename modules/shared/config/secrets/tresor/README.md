@@ -26,31 +26,102 @@ offered by the agent. A fingerprint identifies the public key, not the device:
 the same 1Password SSH key has the same fingerprint on another device, although
 the set of keys exposed by each device or agent may differ.
 
-## Encrypt a GitHub token
+## Add a secret from 1Password
 
-Read the token without echoing it or placing it in shell history, then explicitly
-select the intended SSH key by fingerprint:
-
-```zsh
-read -rs 'github_token?GitHub token: '
-printf '\n'
-printf '%s' "$github_token" | ssh-tresor encrypt \
-  --armor \
-  --key 'SHA256:REPLACE_WITH_THE_KEY_FINGERPRINT' \
-  --output "$HOME/.config/secrets/tresor/kimbank-gh-token.tresor"
-unset github_token
-```
-
-`--armor` produces a text-safe representation. Omitting `--key` selects the
-first available key, so an explicit fingerprint is preferable when the
-1Password agent exposes multiple keys.
-
-Confirm which key slots were written without revealing the plaintext:
+When working from the full `nix-config` checkout, prefer the maintained helper:
 
 ```sh
-ssh-tresor list-slots \
-  "$HOME/.config/secrets/tresor/kimbank-gh-token.tresor"
+./scripts/ssh-tresor-from-1password/main.sh
 ```
+
+It performs the same interactive flow shown below while protecting an existing
+destination from a partially failed encryption. The inline version remains here
+so the standalone `.config` mirror is self-contained.
+
+Sign in to the 1Password CLI first. The following paste-ready zsh function asks
+for the 1Password secret reference, shows the SSH keys available from the agent,
+asks which fingerprint should decrypt the payload, and accepts either a local
+file name or an absolute output path:
+
+```zsh
+encrypt_op_tresor() {
+  setopt localoptions pipefail
+
+  local op_ref fingerprint output_name output
+
+  printf '1Password reference (op://...): '
+  IFS= read -r op_ref
+
+  if (( ${#op_ref} >= 2 )); then
+    local first="${op_ref[1]}"
+    local last="${op_ref[-1]}"
+    if [[ ( "$first" == '"' && "$last" == '"' ) || \
+          ( "$first" == "'" && "$last" == "'" ) ]]; then
+      op_ref="${op_ref[2,-2]}"
+    fi
+  fi
+
+  ssh-tresor list-keys || return 1
+  printf 'SSH key fingerprint (SHA256:...): '
+  IFS= read -r fingerprint
+
+  local output_dir="$HOME/.config/secrets/tresor"
+  printf 'Output filename under %s (Enter for absolute path): ' "$output_dir"
+  IFS= read -r output_name
+
+  if [[ -n "$output_name" ]]; then
+    if [[ "$output_name" == */* || "$output_name" == "." || \
+          "$output_name" == ".." ]]; then
+      print -u2 -- 'Error: output filename must not contain a slash.'
+      return 1
+    fi
+    [[ "$output_name" == *.tresor ]] || output_name+='.tresor'
+    output="$output_dir/$output_name"
+  else
+    printf 'Output path (absolute): '
+    IFS= read -r output
+  fi
+
+  if [[ "$output" != /* ]]; then
+    print -u2 -- 'Error: output path must be absolute.'
+    return 1
+  fi
+
+  (
+    umask 077
+    op read --no-newline "$op_ref" |
+      ssh-tresor encrypt \
+        --armor \
+        --key "$fingerprint" \
+        --output "$output"
+  ) || return 1
+
+  ssh-tresor list-slots "$output"
+}
+
+encrypt_op_tresor
+unset -f encrypt_op_tresor
+```
+
+Entering `github-token` at the file-name prompt writes
+`~/.config/secrets/tresor/github-token.tresor`. Press Enter there to enter a
+different absolute path. Text entered at the absolute-path prompt does not
+expand `~` or `$HOME`.
+
+An `op://` reference pasted as `"op://..."` or `'op://...'` is accepted; only
+one matching pair of surrounding quotes is removed.
+
+The token passes directly from `op read` to `ssh-tresor` without appearing in
+shell history or a shell variable. `--no-newline` avoids encrypting a trailing
+line break, while `--armor` stores text-safe base64 with headers and footers for
+easier copying and transfer between systems. Armor changes the representation,
+not the encryption strength. The local `umask` creates a new output file without
+group or other-user permissions.
+
+Omitting `--key` selects the first available key, so an explicit fingerprint is
+preferable when the 1Password agent exposes multiple keys. After encryption,
+`list-slots` confirms which fingerprints can decrypt the file without revealing
+the plaintext.
 
 ## Decrypt from direnv
 
@@ -60,7 +131,7 @@ available through 1Password:
 ```sh
 export GH_TOKEN="$(
   ssh-tresor decrypt \
-    "$HOME/.config/secrets/tresor/kimbank-gh-token.tresor"
+    "$HOME/.config/secrets/tresor/github-token.tresor"
 )"
 ```
 
@@ -76,7 +147,7 @@ after export.
 Add a replacement or recovery key before removing an old key:
 
 ```sh
-tresor="$HOME/.config/secrets/tresor/kimbank-gh-token.tresor"
+tresor="$HOME/.config/secrets/tresor/github-token.tresor"
 
 ssh-tresor add-key --in-place \
   --key 'SHA256:NEW_KEY_FINGERPRINT' "$tresor"

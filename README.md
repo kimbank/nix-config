@@ -57,8 +57,14 @@ macOS-first Nix configuration that follows the same high-level layout as the ref
 │       ├── files.nix
 │       ├── home-manager.nix
 │       └── packages.nix
-└── overlays/
-    └── README.md
+├── overlays/
+│   └── README.md
+└── scripts/                # Interactive setup and maintenance helpers
+    ├── README.md
+    ├── adb-shutter-sound-off/
+    ├── ssh-tresor-from-1password/
+    │   └── main.sh
+    └── update-pnpm-global-pacakges/
 ```
 
 ## For macOS
@@ -190,7 +196,7 @@ For iOS work, real-device development or debugging normally only needs Xcode plu
 
 Tracked app config under `modules/shared/config/` is linked back into the live app paths as writable symlinks when you use the helper commands from the repo root. That lets apps edit their own dotfiles while Git still sees the changes in this checkout. Directories that need selective tracking can keep a local `.gitignore`, while config trees you want backed up wholesale can just be tracked normally.
 
-Local SSH public keys and `ssh-tresor` payloads live under [`modules/shared/config/secrets/`](modules/shared/config/secrets/README.md), which is linked to `~/.config/secrets`. Its allowlist-style `.gitignore` tracks only documentation by default, so local payload files remain available through the writable symlink without entering this repository or the standalone `.config` mirror. Explicitly add a negation rule only when a particular public or encrypted file should be published.
+Local SSH public keys and `ssh-tresor` payloads live under [`modules/shared/config/secrets/`](modules/shared/config/secrets/README.md), which is linked to `~/.config/secrets`. Its allowlist-style `.gitignore` tracks only documentation by default, so local payload files remain available through the writable symlink without entering this repository or the standalone `.config` mirror. Explicitly add a negation rule only when a particular public or encrypted file should be published. Run [`scripts/ssh-tresor-from-1password/main.sh`](scripts/ssh-tresor-from-1password/main.sh) to interactively encrypt a 1Password secret into an armored `.tresor` file.
 
 Herdr uses the repo-backed `~/.config/herdr` directory for both tracked UI settings and ignored runtime state. Its popup delivery stays disabled so cmux remains the single source of agent notifications.
 
@@ -357,7 +363,6 @@ For the full command reference and reset workflow, see [`modules/shared/config/d
 
 ## Notes
 
-- For local-only GitHub bucket setup that should stay out of the Nix modules, use [`scripts/github-local-auth/setup-github-local-auth.sh`](scripts/github-local-auth/setup-github-local-auth.sh). It reads the configured 1Password items, writes local `~/.ssh` and `~/.gitconfig` state, and updates bucket-level `~/Github/*/.envrc` files. Pass `--danger` if you intentionally want plaintext `GH_TOKEN` values written into those `.envrc` files instead of `op://...` references.
 - The current target platform is `aarch64-darwin`, not `arm64-darwin`.
 - `nix run .#apply` is for initial personalization of the template.
 - `nix run .#update-homebrew` refreshes both the pinned Homebrew version and the official/third-party Homebrew tap pins stored in `flake.lock`.

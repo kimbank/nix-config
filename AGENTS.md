@@ -68,6 +68,7 @@ Important:
 - Shared CLI packages: [`modules/shared/packages.nix`](modules/shared/packages.nix)
 - Small repo-local shared packages and package compositions: [`modules/shared/pkgs`](modules/shared/pkgs)
 - SSH Tresor CLI: upstream flake input and overlay wiring in [`flake.nix`](flake.nix), with the package entry in [`modules/shared/packages.nix`](modules/shared/packages.nix)
+- Interactive 1Password-to-ssh-tresor helper: [`scripts/ssh-tresor-from-1password/main.sh`](scripts/ssh-tresor-from-1password/main.sh)
 - macOS-only Nix packages: [`modules/darwin/packages.nix`](modules/darwin/packages.nix)
 - Homebrew CLI formulae: [`modules/darwin/home-manager.nix`](modules/darwin/home-manager.nix)
 - Ratune Homebrew formula: [`modules/darwin/home-manager.nix`](modules/darwin/home-manager.nix)
@@ -116,6 +117,7 @@ Important:
 - Third-party Homebrew taps should be pinned through `nix-homebrew.taps`; do not rely on ad hoc `brew tap` for managed casks.
 - `cliamp` is managed from the pinned nixpkgs package set in [`modules/shared/packages.nix`](modules/shared/packages.nix). Its wrapper supplies `ffmpeg` and `yt-dlp`, so update it with nixpkgs and do not use the imperative `cliamp upgrade` command.
 - `ssh-tresor` is managed through its pinned upstream flake and overlay, then exposed from [`modules/shared/packages.nix`](modules/shared/packages.nix). Update it with `nix flake update ssh-tresor` rather than `cargo install` or an ad hoc Homebrew formula.
+- Use [`scripts/ssh-tresor-from-1password/main.sh`](scripts/ssh-tresor-from-1password/main.sh) for the repeatable interactive flow that reads a 1Password secret, selects an agent fingerprint, and writes an armored tresor from either a local file name under `~/.config/secrets/tresor` or an absolute path. Keep the secret on the `op read` pipeline, create the destination through a same-directory temporary file, and preserve mode `0600` when maintaining this helper.
 - Ratune is managed as `acmagn/tap/ratune` from the pinned `acmagn/homebrew-ratune` input. The tap is mounted at its legacy Homebrew name `acmagn/homebrew-tap`, matching the upstream `acmagn/tap` install command.
 - CodexBar is currently installed as `steipete/tap/codexbar` from the pinned `steipete/homebrew-tap` input, and its Sparkle updater is disabled through Home Manager defaults so updates stay on the declarative Homebrew path.
 - Claude Code CLI is managed through the Homebrew cask `claude-code@latest` rather than nixpkgs, so use `nix run .#update-homebrew` when you want newer pinned Claude Code releases in this repo.

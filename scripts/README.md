@@ -25,34 +25,43 @@ bash ./scripts/adb-shutter-sound-off/adb-shutter-sound-off.sh
 
 If the phone shows an `Allow USB debugging` prompt, approve it and the script will continue automatically.
 
-## github-local-auth
+## ssh-tresor-from-1password
 
-`github-local-auth/` contains the local GitHub bucket authentication bootstrap flow that reads from 1Password and writes machine-local Git and SSH setup.
-
-Files:
-
-- `github-local-auth/setup-github-local-auth.sh`: main entrypoint
-- `github-local-auth/.env.example`: tracked template for local config
-- `github-local-auth/.env`: ignored local copy used at runtime
-
-This task creates or updates:
-
-- `~/Github/*/.envrc` for bucket-level `GH_TOKEN` loading with `direnv`
-- `~/.ssh/*.pub` files from 1Password SSH key items
-- `~/.config/git/includes/*.inc` per-bucket Git include files
-- a managed include block in `~/.gitconfig`
+`ssh-tresor-from-1password/` contains an interactive helper that reads a secret
+from the 1Password CLI and encrypts it for a selected SSH-agent key. It always
+uses ssh-tresor's armored text format and writes a new destination with mode
+`0600`.
 
 ```sh
-cp ./scripts/github-local-auth/.env.example ./scripts/github-local-auth/.env
-# edit ./scripts/github-local-auth/.env
-bash ./scripts/github-local-auth/setup-github-local-auth.sh
+./scripts/ssh-tresor-from-1password/main.sh
 ```
 
-If you want each bucket's `.envrc` to contain a plaintext `GH_TOKEN` instead of an `op://...` reference, run `bash ./scripts/github-local-auth/setup-github-local-auth.sh --danger`.
+The helper prompts for an `op://` reference and accepts the surrounding single
+or double quotes included by some copy flows. It then lists the keys currently
+exposed by the SSH agent and prompts for a `SHA256:...` fingerprint.
 
-Use `--env-file /path/to/file` if you want to keep the local config somewhere else.
+For output, enter only a file name to write it under
+`~/.config/secrets/tresor`; a missing `.tresor` suffix is added automatically.
+Press Enter at the file-name prompt to provide an absolute path instead. The
+helper encrypts to a temporary file in the destination directory and only
+replaces the final path after the pipeline succeeds.
 
-For convenience during the move to `scripts/github-local-auth/`, the script also falls back to legacy local paths `scripts/github-local-auth/github-local-auth.env` and `scripts/github-local-auth.env` if the new default env file does not exist.
+The prompts can also be supplied as options:
+
+```sh
+./scripts/ssh-tresor-from-1password/main.sh \
+  --op-reference 'op://vault/item/field' \
+  --fingerprint 'SHA256:REPLACE_ME' \
+  --name 'github-token'
+```
+
+Use `--output '/absolute/path/to/secret.tresor'` instead of `--name` when the
+destination should live outside `~/.config/secrets/tresor`. The two options are
+mutually exclusive.
+
+Use `--force` only when an existing destination should be replaced without an
+interactive confirmation. The secret itself is streamed from `op read` to
+`ssh-tresor`; it is not accepted as an argument or stored in a shell variable.
 
 ## update-pnpm-global-pacakges
 
