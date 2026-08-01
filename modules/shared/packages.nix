@@ -29,6 +29,7 @@ with pkgs;
 
   # G
   git
+  git-lfs
 
   # I
   iperf3

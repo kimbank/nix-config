@@ -67,6 +67,7 @@ Important:
 
 - Shared CLI packages: [`modules/shared/packages.nix`](modules/shared/packages.nix)
 - GitHub CLI package and declarative settings: [`modules/shared/home-manager.nix`](modules/shared/home-manager.nix)
+- Local multi-account Git config policy: [`modules/shared/config/git/README.md`](modules/shared/config/git/README.md)
 - Small repo-local shared packages and package compositions: [`modules/shared/pkgs`](modules/shared/pkgs)
 - SSH Tresor CLI: upstream flake input and overlay wiring in [`flake.nix`](flake.nix), with the package entry in [`modules/shared/packages.nix`](modules/shared/packages.nix)
 - Interactive 1Password-to-ssh-tresor helper: [`scripts/ssh-tresor-from-1password/main.sh`](scripts/ssh-tresor-from-1password/main.sh)
@@ -91,6 +92,7 @@ Important:
   - Local MySQL init SQL: [`modules/shared/config/dev-infra/mysql-init/001-admin-superuser.sql`](modules/shared/config/dev-infra/mysql-init/001-admin-superuser.sql)
   - Ghostty/cmux terminal config: [`modules/shared/config/ghostty`](modules/shared/config/ghostty)
   - Herdr: [`modules/shared/config/herdr/config.toml`](modules/shared/config/herdr/config.toml)
+  - Local multi-account Git config guide: [`modules/shared/config/git/README.md`](modules/shared/config/git/README.md)
   - Neovim: [`modules/shared/config/nvim`](modules/shared/config/nvim)
   - Local secrets policy: [`modules/shared/config/secrets/README.md`](modules/shared/config/secrets/README.md)
   - Local SSH public-key storage guide: [`modules/shared/config/secrets/ssh/README.md`](modules/shared/config/secrets/ssh/README.md)
@@ -119,6 +121,7 @@ Important:
 - `cliamp` is managed from the pinned nixpkgs package set in [`modules/shared/packages.nix`](modules/shared/packages.nix). Its wrapper supplies `ffmpeg` and `yt-dlp`, so update it with nixpkgs and do not use the imperative `cliamp upgrade` command.
 - `ssh-tresor` is managed through its pinned upstream flake and overlay, then exposed from [`modules/shared/packages.nix`](modules/shared/packages.nix). Update it with `nix flake update ssh-tresor` rather than `cargo install` or an ad hoc Homebrew formula.
 - GitHub CLI is managed through Home Manager's `programs.gh` module in [`modules/shared/home-manager.nix`](modules/shared/home-manager.nix). Keep `git_protocol` declaratively set to SSH, leave the HTTPS credential helper disabled while authentication comes from `GH_TOKEN`, and do not place tokens in `programs.gh.hosts`.
+- Git and Git LFS are installed as shared packages from [`modules/shared/packages.nix`](modules/shared/packages.nix), while Home Manager's `programs.git` module intentionally stays disabled. [`modules/shared/files.nix`](modules/shared/files.nix) links [`modules/shared/config/git`](modules/shared/config/git) to `~/.config/git`; track the shared config with `user.useConfigOnly = true`, keep account-specific includes ignored, and avoid a fallback global identity so missing directory-account routing fails visibly.
 - Use [`scripts/ssh-tresor-from-1password/main.sh`](scripts/ssh-tresor-from-1password/main.sh) for the repeatable interactive flow that reads a 1Password secret, selects an agent fingerprint, and writes an armored tresor from either a local file name under `~/.config/secrets/tresor` or an absolute path. Keep the secret on the `op read` pipeline, create the destination through a same-directory temporary file, and preserve mode `0600` when maintaining this helper.
 - Ratune is managed as `acmagn/tap/ratune` from the pinned `acmagn/homebrew-ratune` input. The tap is mounted at its legacy Homebrew name `acmagn/homebrew-tap`, matching the upstream `acmagn/tap` install command.
 - CodexBar is currently installed as `steipete/tap/codexbar` from the pinned `steipete/homebrew-tap` input, and its Sparkle updater is disabled through Home Manager defaults so updates stay on the declarative Homebrew path.

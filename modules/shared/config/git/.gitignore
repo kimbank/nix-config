@@ -1,0 +1,5 @@
+# Keep machine-local Git identities, paths, and account routing out of Git.
+*
+!/.gitignore
+!/README.md
+!/config

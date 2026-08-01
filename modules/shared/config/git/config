@@ -1,0 +1,23 @@
+[core]
+    editor = nvim
+
+[filter "lfs"]
+    clean = git-lfs clean -- %f
+    process = git-lfs filter-process
+    required = true
+    smudge = git-lfs smudge -- %f
+
+[init]
+    defaultBranch = main
+
+[pull]
+    rebase = true
+
+[rebase]
+    autoStash = true
+
+[user]
+    useConfigOnly = true
+
+[include]
+    path = github/index.inc

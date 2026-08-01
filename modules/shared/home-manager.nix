@@ -1,9 +1,5 @@
 { lib, pkgs, ... }:
 
-let
-  name = "kimbank";
-  email = "kimeunhang@proton.me";
-in
 {
   zsh = {
     enable = true;
@@ -120,23 +116,6 @@ in
 
     # GitHub authentication comes from GH_TOKEN and Git remotes use SSH.
     gitCredentialHelper.enable = false;
-  };
-
-  git = {
-    enable = true;
-    lfs.enable = true;
-    signing.format = null;
-
-    settings = {
-      user = {
-        name = name;
-        email = email;
-      };
-      init.defaultBranch = "main";
-      pull.rebase = true;
-      rebase.autoStash = true;
-      core.editor = "nvim";
-    };
   };
 
   bat.enable = true;

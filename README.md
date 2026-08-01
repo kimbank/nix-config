@@ -199,6 +199,8 @@ Tracked app config under `modules/shared/config/` is linked back into the live a
 
 Local SSH public keys and `ssh-tresor` payloads live under [`modules/shared/config/secrets/`](modules/shared/config/secrets/README.md), which is linked to `~/.config/secrets`. Its allowlist-style `.gitignore` tracks only documentation by default, so local payload files remain available through the writable symlink without entering this repository or the standalone `.config` mirror. Explicitly add a negation rule only when a particular public or encrypted file should be published. Run [`scripts/ssh-tresor-from-1password/main.sh`](scripts/ssh-tresor-from-1password/main.sh) to interactively encrypt a 1Password secret into an armored `.tresor` file.
 
+Multi-account Git configuration lives under [`modules/shared/config/git/`](modules/shared/config/git/README.md), which is linked to `~/.config/git`. Its shared `config`, documentation, and ignore policy are tracked, while account include files stay local so identities, checkout paths, and SSH key metadata do not enter Git or the `.config` mirror. The shared config enables `user.useConfigOnly` so a missing local account rule fails clearly instead of producing commits with a guessed identity. Git and Git LFS remain declarative packages, but Home Manager's `programs.git` module is intentionally disabled so it cannot inject a fallback identity that masks a missing account rule.
+
 Herdr uses the repo-backed `~/.config/herdr` directory for both tracked UI settings and ignored runtime state. Its popup delivery stays disabled so cmux remains the single source of agent notifications.
 
 ### 9. Stage the repo before building
