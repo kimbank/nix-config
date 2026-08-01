@@ -1,0 +1,6 @@
+# Track the portable SSH Agent selector and ignore any other local state.
+*
+!/.gitignore
+!/README.md
+!/ssh/
+!/ssh/agent.toml

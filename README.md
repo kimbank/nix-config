@@ -201,6 +201,10 @@ Local SSH public keys and `ssh-tresor` payloads live under [`modules/shared/conf
 
 Multi-account Git configuration lives under [`modules/shared/config/git/`](modules/shared/config/git/README.md), which is linked to `~/.config/git`. Its shared `config`, documentation, and ignore policy are tracked, while account include files stay local so identities, checkout paths, and SSH key metadata do not enter Git or the `.config` mirror. The shared config enables `user.useConfigOnly` so a missing local account rule fails clearly instead of producing commits with a guessed identity. Git and Git LFS remain declarative packages, but Home Manager's `programs.git` module is intentionally disabled so it cannot inject a fallback identity that masks a missing account rule.
 
+OpenSSH client configuration uses the tracked [`modules/shared/config/ssh/`](modules/shared/config/ssh/README.md) tree, linked to `~/.config/ssh`. Home Manager deliberately leaves `~/.ssh/config` unmanaged; opt in by adding `Include ~/.config/ssh/index.conf` there. Shared Colima and 1Password Agent defaults are tracked in `index.conf`, while host-specific names, addresses, users, and checkout paths stay in ignored local fragments. The entire `~/.ssh` directory, including `known_hosts`, remains outside the repo-backed link.
+
+The optional 1Password SSH Agent configuration lives under [`modules/shared/config/1Password/`](modules/shared/config/1Password/README.md), linked to the official `~/.config/1Password` path. Its tracked `ssh/agent.toml` selects the `my.1password.com` account so eligible SSH keys from every vault are available without publishing individual vault or item names. Other local 1Password state remains ignored.
+
 Herdr uses the repo-backed `~/.config/herdr` directory for both tracked UI settings and ignored runtime state. Its popup delivery stays disabled so cmux remains the single source of agent notifications.
 
 ### 9. Stage the repo before building

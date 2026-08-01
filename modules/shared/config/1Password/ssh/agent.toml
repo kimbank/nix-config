@@ -1,0 +1,3 @@
+# Make every eligible SSH key from every vault in this account available.
+[[ssh-keys]]
+account = "my.1password.com"

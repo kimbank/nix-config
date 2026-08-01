@@ -1,0 +1,5 @@
+# Keep machine-local SSH hosts, addresses, and paths out of Git.
+*
+!/.gitignore
+!/README.md
+!/index.conf
