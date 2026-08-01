@@ -93,6 +93,7 @@ in
             # declarative so local Android/EAS tooling sees a stable path.
             ANDROID_HOME = "$HOME/Library/Android/sdk";
             ANDROID_SDK_ROOT = "$HOME/Library/Android/sdk";
+            SSH_AUTH_SOCK = "${config.home.homeDirectory}/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock";
           };
           sessionPath = [
             # pnpm 11 stores global command shims under PNPM_HOME/bin.
