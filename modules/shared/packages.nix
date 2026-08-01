@@ -1,31 +1,5 @@
 { pkgs }:
 
-let
-  pnpmForHost =
-    if pkgs.stdenv.isDarwin && pkgs.stdenv.hostPlatform.isAarch64 then
-      # TODO: Remove this override once the pinned nixpkgs includes the Node 24
-      # Darwin fd-tracking fix. The affected Node build can make pnpm 11 emit
-      # unmanaged-fd warnings and abort in libuv after a successful install.
-      # https://github.com/NixOS/nixpkgs/issues/536039
-      # https://github.com/NixOS/nixpkgs/issues/525627
-      pkgs.pnpm.override { nodejs-slim = pkgs.nodejs-slim_22; }
-    else
-      pkgs.pnpm;
-  resumeTexLive = pkgs.texliveSmall.withPackages (
-    ps: with ps; [
-      latexmk
-      collection-langkorean
-      fontspec
-      luatexko
-      polyglossia
-      titlesec
-      marvosym
-      enumitem
-      pgf
-      preprint
-    ]
-  );
-in
 with pkgs;
 [
   # A
@@ -71,9 +45,6 @@ with pkgs;
   kubeseal
   kubernetes-helm
 
-  # L
-  resumeTexLive
-
   # N
   nixd
   nixfmt
@@ -83,14 +54,18 @@ with pkgs;
   opentofu
 
   # P
-  pnpmForHost
+  (callPackage ./pkgs/pnpm-for-host.nix { })
   poppler-utils
 
   # R
   rclone
+  (callPackage ./pkgs/resume-texlive.nix { })
   ripgrep
   rustc
   rustfmt
+
+  # S
+  ssh-tresor
 
   # T
   tmux
@@ -105,7 +80,7 @@ with pkgs;
   worktrunk
 
   # Y
-  ytsurf
+  (callPackage ./pkgs/ytsurf.nix { })
 
   # Z
   zip

@@ -43,14 +43,16 @@ macOS-first Nix configuration that follows the same high-level layout as the ref
 │       │   ├── vscode/
 │       │   └── wezterm/
 │       ├── pkgs/             # Small repo-local packages missing from nixpkgs
-│       │   └── im-select.nix
+│       │   ├── im-select.nix
+│       │   ├── pnpm-for-host.nix
+│       │   ├── resume-texlive.nix
+│       │   └── ytsurf.nix
 │       ├── default.nix
 │       ├── files.nix
 │       ├── home-manager.nix
 │       └── packages.nix
 └── overlays/
-    ├── README.md
-    └── ytsurf.nix
+    └── README.md
 ```
 
 ## For macOS
@@ -150,6 +152,7 @@ Current split:
 - Shared CLI packages: `modules/shared/packages.nix`
 - Small repo-local shared packages: `modules/shared/pkgs/`
 - macOS-specific Nix packages: `modules/darwin/packages.nix`
+- Upstream-flake CLI packages such as `ssh-tresor`: pin the input and wire its overlay through `upstreamOverlaysModule` in `flake.nix`, then list the package in `modules/shared/packages.nix`
 - Homebrew formulae: `modules/darwin/home-manager.nix`
 - Homebrew casks: `modules/darwin/casks.nix`
 - Ghostty: `ghostty` Homebrew cask in `modules/darwin/casks.nix`
@@ -173,7 +176,7 @@ JetBrains Toolbox users can keep IDE launchers such as `webstorm` and `datagrip`
 
 JavaScript and TypeScript runtime switching is managed through Home Manager's `programs.mise` integration rather than fixed `nodejs_*`, `bun`, or `deno` packages in Nix. Home Manager writes the global defaults to `~/.config/mise/config.toml`, so they apply across new shells for this user. This repo keeps global fallbacks on moving channels such as Node `lts` and Bun/Deno `latest`, while project-local `.mise.toml` and `.tool-versions` files can pin exact versions when needed. `.nvmrc` or `.node-version` remain enabled for Node projects. After entering a project with one of those files, run `mise install` once if that version is not already present.
 
-`pnpm` global binaries use the Home Manager-managed `PNPM_HOME=~/Library/pnpm`, with pnpm 11 command shims under `~/Library/pnpm/bin`. Do not run `pnpm setup`, because it edits shell files that this repo manages declaratively. Run `bash ./scripts/update-pnpm-global-pacakges/main.sh` after switching to pnpm 11: the script disables pnpm's 24-hour release-age delay for these fast-moving global CLIs only, installs tracked CLIs missing from the isolated `global/v11` layout, applies OpenCode's narrow lifecycle-build exception, and then runs pnpm's native global update with other lifecycle scripts disabled. This deliberately skips EAS CLI's optional DTrace addon. Once every tracked package is present in v11 and no unknown v10 globals remain, the script removes the obsolete pnpm 10 `global/5` layout and its top-level shims; `openclaw` is intentionally removed rather than migrated. On Apple Silicon Darwin, the Nix pnpm package temporarily uses Node 22 internally to avoid the known nixpkgs Node 24 file-descriptor crash; the workaround is marked with a removal TODO in `modules/shared/packages.nix`.
+`pnpm` global binaries use the Home Manager-managed `PNPM_HOME=~/Library/pnpm`, with pnpm 11 command shims under `~/Library/pnpm/bin`. Do not run `pnpm setup`, because it edits shell files that this repo manages declaratively. Run `bash ./scripts/update-pnpm-global-pacakges/main.sh` after switching to pnpm 11: the script disables pnpm's 24-hour release-age delay for these fast-moving global CLIs only, installs tracked CLIs missing from the isolated `global/v11` layout, applies OpenCode's narrow lifecycle-build exception, and then runs pnpm's native global update with other lifecycle scripts disabled. This deliberately skips EAS CLI's optional DTrace addon. Once every tracked package is present in v11 and no unknown v10 globals remain, the script removes the obsolete pnpm 10 `global/5` layout and its top-level shims; `openclaw` is intentionally removed rather than migrated. On Apple Silicon Darwin, the Nix pnpm package temporarily uses Node 22 internally to avoid the known nixpkgs Node 24 file-descriptor crash; the workaround is marked with a removal TODO in `modules/shared/pkgs/pnpm-for-host.nix`.
 
 Android Studio itself is managed as a Homebrew cask, while Home Manager exports `ANDROID_HOME`, `ANDROID_SDK_ROOT`, and the Android SDK command-line paths for new shells. After installing the app, use Android Studio's SDK Manager to install the SDK contents under `~/Library/Android/sdk`, including the Android SDK Platform, Build-Tools, Platform-Tools, Command-line Tools, and side-by-side NDK needed for local Android or EAS builds.
 
@@ -217,10 +220,11 @@ General workflow:
 
 1. Edit the Nix files.
 2. To update the core Nix stack, run `nix flake update nixpkgs home-manager darwin`. Keep these inputs coordinated because Home Manager and nix-darwin modules are evaluated against the pinned nixpkgs package set.
-3. If you need newer Nix-managed Homebrew metadata, run `nix run .#update-homebrew` to refresh both `nix-homebrew` and the pinned official/third-party tap inputs in `flake.lock`.
-4. Run `git add .` if you created or changed tracked files, including app config under `modules/shared/config/`.
-5. Run `nix run .#build` to verify.
-6. Run `nix run .#build-switch` to apply.
+3. To update the separately pinned `ssh-tresor` CLI, run `nix flake update ssh-tresor`, then verify it with `nix run .#build`.
+4. If you need newer Nix-managed Homebrew metadata, run `nix run .#update-homebrew` to refresh both `nix-homebrew` and the pinned official/third-party tap inputs in `flake.lock`.
+5. Run `git add .` if you created or changed tracked files, including app config under `modules/shared/config/`.
+6. Run `nix run .#build` to verify.
+7. Run `nix run .#build-switch` to apply.
 
 This repo manages both Homebrew itself and its taps through Nix. Add required taps as `flake = false` inputs in `flake.nix`, wire them through `nix-homebrew.taps` using Homebrew's on-disk tap directory names such as `owner/homebrew-name`, and use `nix run .#update-homebrew` instead of `brew update` when you want newer Homebrew package metadata.
 

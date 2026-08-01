@@ -11,6 +11,10 @@
       url = "github:LnL7/nix-darwin/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    ssh-tresor = {
+      url = "github:haraldh/ssh-tresor";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nix-homebrew = {
       # TODO: Return to the default branch after upstream PR #164 is merged.
       # Homebrew 6.0.13 is required by install-step DSL used in current taps.
@@ -55,6 +59,7 @@
       acmagn-homebrew-ratune,
       home-manager,
       nixpkgs,
+      ssh-tresor,
     }@inputs:
     let
       loginUser = "kimbank";
@@ -69,6 +74,9 @@
         "aarch64-linux"
       ];
       forAllSystems = f: nixpkgs.lib.genAttrs (darwinSystems ++ linuxSystems) f;
+      upstreamOverlaysModule = {
+        nixpkgs.overlays = [ ssh-tresor.overlays.default ];
+      };
 
       devShell =
         system:
@@ -125,6 +133,7 @@
 
           modules = [
             home-manager.nixosModules.home-manager
+            upstreamOverlaysModule
             ./hosts/nixos
           ];
         }
@@ -140,6 +149,7 @@
 
           modules = [
             home-manager.darwinModules.home-manager
+            upstreamOverlaysModule
             nix-homebrew.darwinModules.nix-homebrew
             {
               nix-homebrew = {
