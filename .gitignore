@@ -3,3 +3,5 @@ result
 .env
 
 .DS_Store
+
+*.blog.md
