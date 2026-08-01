@@ -18,6 +18,7 @@ in
   ".config/ghostty".source = configPath "ghostty";
   ".config/herdr".source = configPath "herdr";
   ".config/nvim".source = configPath "nvim";
+  ".config/secrets".source = configPath "secrets";
   ".config/wezterm".source = configPath "wezterm";
   ".config/worktrunk".source = configPath "worktrunk";
   # Prefer ` over won-sign in Korean input for Cocoa text-system apps.

@@ -90,6 +90,9 @@ Important:
   - Ghostty/cmux terminal config: [`modules/shared/config/ghostty`](modules/shared/config/ghostty)
   - Herdr: [`modules/shared/config/herdr/config.toml`](modules/shared/config/herdr/config.toml)
   - Neovim: [`modules/shared/config/nvim`](modules/shared/config/nvim)
+  - Local secrets policy: [`modules/shared/config/secrets/README.md`](modules/shared/config/secrets/README.md)
+  - Local SSH public-key storage guide: [`modules/shared/config/secrets/ssh/README.md`](modules/shared/config/secrets/ssh/README.md)
+  - Local ssh-tresor payload guide: [`modules/shared/config/secrets/tresor/README.md`](modules/shared/config/secrets/tresor/README.md)
   - WezTerm: [`modules/shared/config/wezterm`](modules/shared/config/wezterm)
   - Worktrunk user config: [`modules/shared/config/worktrunk/config.toml`](modules/shared/config/worktrunk/config.toml)
   - VS Code user config: [`modules/shared/config/vscode`](modules/shared/config/vscode)
@@ -126,6 +129,7 @@ Important:
 - Keep the primary Ghostty config file named `config` for `cmux` compatibility, and use `config.ghostty` only as a shim when you need Ghostty tooling to resolve the same settings.
 - WezTerm is installed via Homebrew cask, and [`modules/shared/files.nix`](modules/shared/files.nix) links the whole [`modules/shared/config/wezterm`](modules/shared/config/wezterm) directory into `~/.config/wezterm` as a writable repo-backed symlink when built through the helper commands.
 - The standalone `kimbank/.config` repository is a mirror publish target for [`modules/shared/config`](modules/shared/config), not the source of truth.
+- Local secret payloads live under [`modules/shared/config/secrets`](modules/shared/config/secrets), which [`modules/shared/files.nix`](modules/shared/files.nix) links to `~/.config/secrets`. Keep payloads ignored by default, track only the documentation allowlist, never place plaintext credentials there, and add an explicit negation rule only when a specific public or `ssh-tresor`-encrypted file is intentionally meant to enter Git and the `.config` mirror.
 - Worktrunk user config lives under [`modules/shared/config/worktrunk`](modules/shared/config/worktrunk) and [`modules/shared/files.nix`](modules/shared/files.nix) links that whole directory into `~/.config/worktrunk`. Runtime state such as `approvals.toml` or `config.toml.lock` should stay ignored via the directory-local `.gitignore`.
 - Neovim is installed by Home Manager, but the config is dotfile-style and lives in the repo-managed directory [`modules/shared/config/nvim`](modules/shared/config/nvim). [`modules/shared/files.nix`](modules/shared/files.nix) links that whole directory into `~/.config/nvim`, and plugins are bootstrapped inside the config via `lazy.nvim` rather than `programs.neovim.plugins`.
 - Keep `programs.neovim.sideloadInitLua = true` while the whole Neovim config directory is linked out of store. This lets Home Manager load generated provider setup through the wrapper without trying to create a second `~/.config/nvim/init.lua` inside the repo-owned directory.
