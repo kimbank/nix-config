@@ -1,3 +1,16 @@
+local function copy_node_path(mode)
+  return function(state)
+    local path = state.tree:get_node():get_id()
+
+    if mode == "relative" then
+      path = vim.fn.fnamemodify(path, ":.")
+    end
+
+    vim.fn.setreg("+", path, "c")
+    vim.notify(("Copied %s path: %s"):format(mode, path))
+  end
+end
+
 return {
   {
     "nvim-neo-tree/neo-tree.nvim",
@@ -28,6 +41,16 @@ return {
       window = {
         position = "left",
         width = 32,
+        mappings = {
+          ["gy"] = {
+            copy_node_path("relative"),
+            desc = "Copy CWD-relative path",
+          },
+          ["gY"] = {
+            copy_node_path("absolute"),
+            desc = "Copy absolute path",
+          },
+        },
       },
     },
   },
