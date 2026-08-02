@@ -39,6 +39,7 @@
       "ㅣㅣ" = "ll";
       "ㄷ턋" = "exit";
       "nvim." = "nvim .";
+      "nvim~" = "nvim ~";
       "code." = "code .";
       exot = "exit";
       pug = "pnpm_config_minimum_release_age=0 pnpm up -g";
