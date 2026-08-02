@@ -17,7 +17,7 @@ _:
   "claude-code@latest"
   "cmux"
   "codex-app"
-  "steipete/tap/codexbar"
+  "codexbar"
   "cursor"
 
   # D

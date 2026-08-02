@@ -202,8 +202,7 @@
         "homebrew-core": "homebrew-core",
         "nix-homebrew": "nix-homebrew",
         "nixpkgs": "nixpkgs",
-        "ssh-tresor": "ssh-tresor",
-        "steipete-homebrew-tap": "steipete-homebrew-tap"
+        "ssh-tresor": "ssh-tresor"
       }
     },
     "rust-overlay": {
@@ -246,22 +245,6 @@
       "original": {
         "owner": "haraldh",
         "repo": "ssh-tresor",
-        "type": "github"
-      }
-    },
-    "steipete-homebrew-tap": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1785333658,
-        "narHash": "sha256-i9fzWlCe4AE09GlkuIz47uqpHhPyvyeef33RUyxEZi0=",
-        "owner": "steipete",
-        "repo": "homebrew-tap",
-        "rev": "1e4cffebed40c7dcbe6ef0a537b46c67f00e8609",
-        "type": "github"
-      },
-      "original": {
-        "owner": "steipete",
-        "repo": "homebrew-tap",
         "type": "github"
       }
     },

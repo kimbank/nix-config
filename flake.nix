@@ -32,10 +32,6 @@
       url = "github:homebrew/homebrew-cask";
       flake = false;
     };
-    steipete-homebrew-tap = {
-      url = "github:steipete/homebrew-tap";
-      flake = false;
-    };
     chojs23-homebrew-tap = {
       url = "github:chojs23/homebrew-tap";
       flake = false;
@@ -54,7 +50,6 @@
       homebrew-bundle,
       homebrew-core,
       homebrew-cask,
-      steipete-homebrew-tap,
       chojs23-homebrew-tap,
       acmagn-homebrew-ratune,
       home-manager,
@@ -159,7 +154,6 @@
                   "homebrew/homebrew-core" = homebrew-core;
                   "homebrew/homebrew-cask" = homebrew-cask;
                   "homebrew/homebrew-bundle" = homebrew-bundle;
-                  "steipete/homebrew-tap" = steipete-homebrew-tap;
                   "chojs23/homebrew-tap" = chojs23-homebrew-tap;
                   # The upstream repository was renamed to homebrew-ratune,
                   # but Homebrew still exposes it through the acmagn/tap name.

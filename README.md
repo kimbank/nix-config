@@ -251,7 +251,7 @@ This repo manages both Homebrew itself and its taps through Nix. Add required ta
 
 The `nix-homebrew` input is temporarily pinned to upstream PR #164 so its Homebrew 6.0.13 runtime can read the install-step DSL used by the current `homebrew/core` and `homebrew/cask` pins. Return that input to the default branch after the PR is merged. When updating Homebrew inputs, keep the runtime and tap pins compatible; a Nix build alone does not parse formula or cask definitions because `brew bundle` runs during activation.
 
-CodexBar is installed from the pinned `steipete/tap` cask while the upstream `homebrew/cask` release is newer but crash-prone on this host. Its Sparkle auto-updater is disabled declaratively so app updates stay on the Nix/Homebrew path.
+CodexBar is installed from the pinned official `homebrew/cask` input. Its Sparkle auto-updater is disabled declaratively so app updates stay on the Nix/Homebrew path; interactive provider and credential preferences remain user-managed in CodexBar.
 
 That also applies to `claude-code@latest`: this repo tracks the latest Homebrew cask channel declaratively, but new Claude Code releases still arrive through the pinned Homebrew metadata in `flake.lock`.
 
