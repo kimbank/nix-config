@@ -152,7 +152,15 @@
   mpv = {
     enable = true;
 
-    config.hwdec = "auto";
+    config = {
+      hwdec = "auto";
+      osd-fractions = true;
+      osd-font-size = 48;
+      osd-level = 1;
+      osd-msg2 = "Timestamp: \${playback-time/full}";
+    };
+
+    bindings.t = "cycle-values osd-level 1 2";
 
     # Keep URL playback on the pinned nixpkgs yt-dlp regardless of shell/app PATH.
     scriptOpts.ytdl_hook.ytdl_path = lib.getExe pkgs.yt-dlp;
