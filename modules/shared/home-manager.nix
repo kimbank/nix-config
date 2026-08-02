@@ -149,6 +149,15 @@
     enableZshIntegration = true;
   };
 
+  mpv = {
+    enable = true;
+
+    config.hwdec = "auto";
+
+    # Keep URL playback on the pinned nixpkgs yt-dlp regardless of shell/app PATH.
+    scriptOpts.ytdl_hook.ytdl_path = lib.getExe pkgs.yt-dlp;
+  };
+
   neovim = {
     enable = true;
     defaultEditor = true;

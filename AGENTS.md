@@ -81,6 +81,7 @@ Important:
 - pnpm global CLI install/update script: [`scripts/update-pnpm-global-pacakges/main.sh`](scripts/update-pnpm-global-pacakges/main.sh)
 - PF-based inbound firewall rules for Screen Sharing/VNC: [`modules/darwin/pf.nix`](modules/darwin/pf.nix)
 - Shell behavior, aliases, and `oh-my-zsh`: [`modules/shared/home-manager.nix`](modules/shared/home-manager.nix)
+- mpv playback, hardware decoding, and `yt-dlp` integration: [`modules/shared/home-manager.nix`](modules/shared/home-manager.nix)
 - JavaScript/TypeScript runtime defaults and `mise` shell integration: [`modules/shared/home-manager.nix`](modules/shared/home-manager.nix)
 - Android SDK shell environment for local builds: [`modules/darwin/home-manager.nix`](modules/darwin/home-manager.nix)
 - Docker/Colima user services and persistent profile defaults: [`modules/darwin/home-manager.nix`](modules/darwin/home-manager.nix)
@@ -123,6 +124,7 @@ Important:
 - `homebrew.onActivation.autoUpdate` and `upgrade` are enabled, so `build-switch` may update managed casks.
 - Third-party Homebrew taps should be pinned through `nix-homebrew.taps`; do not rely on ad hoc `brew tap` for managed casks.
 - `cliamp` is managed from the pinned nixpkgs package set in [`modules/shared/packages.nix`](modules/shared/packages.nix). Its wrapper supplies `ffmpeg` and `yt-dlp`, so update it with nixpkgs and do not use the imperative `cliamp upgrade` command.
+- `mpv` is managed through Home Manager's `programs.mpv` module in [`modules/shared/home-manager.nix`](modules/shared/home-manager.nix), not Homebrew. Keep `hwdec = "auto"` for Apple Silicon hardware decoding and keep `scriptOpts.ytdl_hook.ytdl_path` pinned to `lib.getExe pkgs.yt-dlp` so shell and app-bundle launches use the same nixpkgs executable.
 - `ssh-tresor` is managed through its pinned upstream flake and overlay, then exposed from [`modules/shared/packages.nix`](modules/shared/packages.nix). Update it with `nix flake update ssh-tresor` rather than `cargo install` or an ad hoc Homebrew formula.
 - GitHub CLI is managed through Home Manager's `programs.gh` module in [`modules/shared/home-manager.nix`](modules/shared/home-manager.nix). Keep `git_protocol` declaratively set to SSH, leave the HTTPS credential helper disabled while authentication comes from `GH_TOKEN`, and do not place tokens in `programs.gh.hosts`.
 - Git and Git LFS are installed as shared packages from [`modules/shared/packages.nix`](modules/shared/packages.nix), while Home Manager's `programs.git` module intentionally stays disabled. [`modules/shared/files.nix`](modules/shared/files.nix) links [`modules/shared/config/git`](modules/shared/config/git) to `~/.config/git`; track the shared config with `user.useConfigOnly = true`, keep account-specific includes ignored, and avoid a fallback global identity so missing directory-account routing fails visibly.

@@ -162,7 +162,7 @@ Review these files:
 Current split:
 
 - Shared CLI packages: `modules/shared/packages.nix`
-- Home Manager-integrated CLI programs such as GitHub CLI: `modules/shared/home-manager.nix`
+- Home Manager-integrated programs such as GitHub CLI and mpv: `modules/shared/home-manager.nix`
 - Small repo-local shared packages: `modules/shared/pkgs/`
 - macOS-specific Nix packages: `modules/darwin/packages.nix`
 - Upstream-flake CLI packages such as `ssh-tresor`: pin the input and wire its overlay through `upstreamOverlaysModule` in `flake.nix`, then list the package in `modules/shared/packages.nix`
@@ -258,6 +258,8 @@ That also applies to `claude-code@latest`: this repo tracks the latest Homebrew 
 If `which claude` still points at an older native or npm install after switching, remove that copy so the Homebrew cask binary takes precedence on `PATH`.
 
 `cliamp` is installed from the pinned nixpkgs package set for terminal access to Navidrome, YouTube Music, and local audio. Its Nix wrapper supplies `ffmpeg` and `yt-dlp`; use nixpkgs updates rather than `cliamp upgrade`. Ratune is also available as a Navidrome-focused alternative through the pinned `acmagn/tap` Homebrew tap.
+
+`mpv` is installed through Home Manager's `programs.mpv` module rather than Homebrew. Its configuration enables automatic hardware decoding and points the built-in `ytdl_hook` at the pinned nixpkgs `yt-dlp`, so URL playback uses the same executable whether mpv starts from a shell or its macOS app bundle.
 
 For Node, Bun, or Deno projects, use `mise` to inspect or install runtime versions:
 

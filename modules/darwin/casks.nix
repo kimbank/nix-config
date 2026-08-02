@@ -58,7 +58,6 @@ _:
 
   # V
   "visual-studio-code"
-  "vlc"
 
   # W
   "wezterm"
