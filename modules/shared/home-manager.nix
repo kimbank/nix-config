@@ -7,76 +7,21 @@
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
 
+    # Keep separate dumps for Apple's zsh and the Nix-provided zsh while
+    # storing both alongside oh-my-zsh's other cache files.
+    localVariables.ZSH_COMPDUMP = "$ZSH_CACHE_DIR/zcompdump-$ZSH_VERSION";
+
     oh-my-zsh = {
       enable = true;
       theme = "simple";
       plugins = [ "git" ];
     };
 
-    initContent = lib.mkMerge [
-      (lib.mkOrder 500 ''
-        if [[ -f /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh ]]; then
-          . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-          . /nix/var/nix/profiles/default/etc/profile.d/nix.sh
-        fi
-
-        # Keep newly spawned shells on ABC so terminal editing starts in English.
-        # if command -v im-select >/dev/null 2>&1; then
-        #   im-select com.apple.keylayout.ABC >/dev/null 2>&1 || true
-        # fi
-
-        # Keep Toolbox-generated IDE launchers available from new shells.
-        export PATH="$HOME/.local/bin:$HOME/Library/Application Support/JetBrains/Toolbox/scripts:$PATH"
-
-        # Let worktrunk switch worktrees and change the current shell directory.
-        if command -v wt >/dev/null 2>&1; then
-          eval "$(wt config shell init zsh)"
-        fi
-      '')
-
-      (lib.mkOrder 525 ''
-        if command -v openclaw >/dev/null 2>&1; then
-          # Cache pnpm-managed completions outside the Nix store and refresh
-          # them when the global CLI wrapper changes.
-          openclaw_completion_dir="''${XDG_CACHE_HOME:-$HOME/.cache}/zsh/completions"
-          openclaw_completion_file="$openclaw_completion_dir/openclaw.zsh"
-          openclaw_completion_tmp="$openclaw_completion_file.tmp"
-
-          mkdir -p -- "$openclaw_completion_dir"
-          if [[ ! -s "$openclaw_completion_file" || "$openclaw_completion_file" -ot "$(command -v openclaw)" ]]; then
-            if openclaw completion --shell zsh >| "$openclaw_completion_tmp" 2>/dev/null; then
-              mv -f -- "$openclaw_completion_tmp" "$openclaw_completion_file"
-            else
-              rm -f -- "$openclaw_completion_tmp"
-            fi
-          fi
-
-          if [[ -r "$openclaw_completion_file" ]]; then
-            source "$openclaw_completion_file"
-          fi
-          unset openclaw_completion_dir openclaw_completion_file openclaw_completion_tmp
-        fi
-
-        # Home Manager adds completion paths for each active profile even when a
-        # profile doesn't ship every completion directory. Keep only the paths
-        # that actually exist so oh-my-zsh doesn't keep rebuilding a bad dump.
-        fpath=(''${^fpath}(N-/))
-
-        expected_zcompdump_fpath="#omz fpath: $fpath"
-        for dump in ''${ZDOTDIR:-$HOME}/.zcompdump(N) ''${ZDOTDIR:-$HOME}/.zcompdump-*(N); do
-          [[ $dump == *.zwc ]] && continue
-          if ! command grep -Fqx -- "$expected_zcompdump_fpath" "$dump" 2>/dev/null; then
-            if [[ -d $dump ]]; then
-              rm -rf -- "$dump"
-            else
-              rm -f -- "$dump"
-            fi
-            rm -f -- "$dump.zwc"
-          fi
-        done
-        unset expected_zcompdump_fpath
-      '')
-    ];
+    # Worktrunk defines a shell function so worktree switches can change the
+    # current shell directory. Load it after oh-my-zsh has initialized compdef.
+    initContent = lib.mkOrder 850 ''
+      eval "$(${pkgs.worktrunk}/bin/wt config shell init zsh)"
+    '';
 
     # custom alias
     shellAliases = {

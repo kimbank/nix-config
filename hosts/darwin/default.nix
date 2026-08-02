@@ -21,6 +21,14 @@ in
   programs._1password.enable = true;
   programs._1password-gui.enable = false;
 
+  programs.zsh = {
+    # Home Manager's oh-my-zsh owns completion initialization. Keep nix-darwin
+    # from creating ~/.zcompdump and traversing fpath a second time.
+    enableCompletion = true;
+    enableGlobalCompInit = false;
+    enableBashCompletion = false;
+  };
+
   services.openssh = {
     enable = true;
     extraConfig = ''

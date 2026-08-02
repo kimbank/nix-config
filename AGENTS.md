@@ -119,6 +119,7 @@ Important:
 - For iOS real-device development or debugging, prefer project-local scripts such as `pnpm dev:ios` or `pnpm preflight`; do not add extra global tooling just for that workflow.
 - If local EAS iOS builds are required on this Mac, manage `fastlane` declaratively in [`modules/darwin/packages.nix`](modules/darwin/packages.nix) rather than relying on an ad hoc `brew install fastlane`.
 - `zsh` uses Home Manager's `oh-my-zsh` integration. Do not assume a user-managed `~/.oh-my-zsh` tree exists or should be edited.
+- Home Manager's `oh-my-zsh` owns `compinit` and `bashcompinit`. Keep nix-darwin's `programs.zsh.enableGlobalCompInit` and `programs.zsh.enableBashCompletion` disabled while leaving Home Manager's `programs.zsh.enableCompletion` enabled so completion definitions and `fpath` links remain available without duplicate initialization.
 - Worktrunk shell integration for zsh should be managed declaratively in [`modules/shared/home-manager.nix`](modules/shared/home-manager.nix); prefer that over running `wt config shell install`, because this repo treats shell startup as Home Manager-managed state.
 - Existing unmanaged dotfiles can block activation. This repo sets `home-manager.backupFileExtension = "hm-backup"` in [`modules/darwin/home-manager.nix`](modules/darwin/home-manager.nix), so first-time activation may move conflicting files aside instead of failing.
 - `homebrew.onActivation.autoUpdate` and `upgrade` are enabled, so `build-switch` may update managed casks.

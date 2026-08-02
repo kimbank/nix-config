@@ -96,6 +96,9 @@ in
             SSH_AUTH_SOCK = "${config.home.homeDirectory}/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock";
           };
           sessionPath = [
+            "$HOME/.local/bin"
+            # Keep Toolbox-generated IDE launchers available from new shells.
+            "$HOME/Library/Application Support/JetBrains/Toolbox/scripts"
             # pnpm 11 stores global command shims under PNPM_HOME/bin.
             "$HOME/Library/pnpm/bin"
             "$HOME/Library/Android/sdk/platform-tools"
