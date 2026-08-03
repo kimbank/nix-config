@@ -89,6 +89,8 @@ in
             # Keep pnpm global binaries outside mise-managed Node installs.
             PNPM_HOME = "$HOME/Library/pnpm";
             JAVA_HOME = pkgs.jdk17_headless.home;
+            # Let Cargo build scripts discover the Nix-provided Opus library.
+            PKG_CONFIG_PATH = "${pkgs.opus}/lib/pkgconfig";
             # Android Studio installs the SDK here on macOS; keep the CLI env
             # declarative so local Android/EAS tooling sees a stable path.
             ANDROID_HOME = "$HOME/Library/Android/sdk";
