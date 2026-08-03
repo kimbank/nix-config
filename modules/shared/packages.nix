@@ -16,6 +16,7 @@ with pkgs;
   cargo
   cliamp
   clippy
+  cmake
   coreutils
   curl
 
@@ -53,10 +54,12 @@ with pkgs;
   # O
   oci-cli
   opentofu
+  opus
 
   # P
   (callPackage ./pkgs/pnpm-for-host.nix { })
   poppler-utils
+  pkg-config
 
   # R
   rclone
