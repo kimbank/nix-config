@@ -56,7 +56,7 @@ Important:
 - `build-switch` runs `darwin-rebuild switch` via [`apps/aarch64-darwin/build-switch`](apps/aarch64-darwin/build-switch)
 - Use the helper commands from the repo root when you need writable app-config links, because they set `NIX_CONFIG_REPO_ROOT` for the current checkout before evaluation.
 - Because this repo manages both Homebrew itself and its taps through `nix-homebrew` with immutable tap pins, use `update-homebrew` instead of `brew update` when you need newer Homebrew metadata. Add extra taps as `flake = false` inputs in `flake.nix` and wire them through `nix-homebrew.taps` using Homebrew's on-disk tap directory names such as `owner/homebrew-name`.
-- Keep the Homebrew runtime pin compatible with the current `homebrew/core` and `homebrew/cask` pins. A Nix build does not parse formula or cask DSL because `brew bundle` runs during activation, so validate newly coordinated pins with the pinned runtime when Homebrew adds DSL. The `nix-homebrew` input is temporarily pinned to upstream PR #164 for Homebrew 6.0.13; return it to the default branch after that PR is merged.
+- Keep the Homebrew runtime pin compatible with the current `homebrew/core` and `homebrew/cask` pins. A Nix build does not parse formula or cask DSL because `brew bundle` runs during activation, so validate newly coordinated pins with the pinned runtime when Homebrew adds DSL. The `nix-homebrew` input is temporarily pinned to upstream PR #167 for Homebrew 6.0.15; return it to the default branch after that PR is merged.
 - Update `nixpkgs`, `home-manager`, and `darwin` together with `nix flake update nixpkgs home-manager darwin`; their module and package APIs need to stay coordinated.
 - Keep pnpm-managed global CLI package names in [`scripts/update-pnpm-global-pacakges/main.sh`](scripts/update-pnpm-global-pacakges/main.sh) instead of scattering ad hoc update commands through package modules.
 - `apply` rewrites placeholder values like `loginUser`, git name, and git email across repo files; do not run it for normal day-to-day edits
@@ -95,7 +95,6 @@ Important:
   - Local MySQL init SQL: [`modules/shared/config/dev-infra/mysql-init/001-admin-superuser.sql`](modules/shared/config/dev-infra/mysql-init/001-admin-superuser.sql)
   - Local 1Password SSH Agent config guide: [`modules/shared/config/1Password/README.md`](modules/shared/config/1Password/README.md)
   - Ghostty/cmux terminal config: [`modules/shared/config/ghostty`](modules/shared/config/ghostty)
-  - Herdr: [`modules/shared/config/herdr/config.toml`](modules/shared/config/herdr/config.toml)
   - Local multi-account Git config guide: [`modules/shared/config/git/README.md`](modules/shared/config/git/README.md)
   - Neovim: [`modules/shared/config/nvim`](modules/shared/config/nvim)
   - Local secrets policy: [`modules/shared/config/secrets/README.md`](modules/shared/config/secrets/README.md)
@@ -141,7 +140,6 @@ Important:
 - Zen is installed via Homebrew cask, not via a Zen flake.
 - cmux-owned app settings live under [`modules/shared/config/cmux`](modules/shared/config/cmux), and [`modules/shared/files.nix`](modules/shared/files.nix) links that directory into `~/.config/cmux`. Keep `app.reorderOnNotification` disabled so notification badges do not change workspace ordering.
 - Ghostty-compatible config for Ghostty and `cmux` lives in [`modules/shared/config/ghostty`](modules/shared/config/ghostty), and [`modules/shared/files.nix`](modules/shared/files.nix) links that whole directory into `~/.config/ghostty` as a writable repo-backed symlink when built through the helper commands.
-- Herdr UI config lives under [`modules/shared/config/herdr`](modules/shared/config/herdr), and [`modules/shared/files.nix`](modules/shared/files.nix) links that whole directory into `~/.config/herdr`. Track `config.toml` while keeping runtime files such as sockets, logs, release notes, and session state ignored through the directory-local `.gitignore`. Keep Herdr popup delivery disabled when cmux is responsible for agent notifications so the same state change is not reported twice.
 - Keep the primary Ghostty config file named `config` for `cmux` compatibility, and use `config.ghostty` only as a shim when you need Ghostty tooling to resolve the same settings.
 - WezTerm is installed via Homebrew cask, and [`modules/shared/files.nix`](modules/shared/files.nix) links the whole [`modules/shared/config/wezterm`](modules/shared/config/wezterm) directory into `~/.config/wezterm` as a writable repo-backed symlink when built through the helper commands.
 - The standalone `kimbank/.config` repository is a mirror publish target for [`modules/shared/config`](modules/shared/config), not the source of truth.

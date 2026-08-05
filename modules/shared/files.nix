@@ -18,7 +18,6 @@ in
   ".config/dev-infra".source = configPath "dev-infra";
   ".config/git".source = configPath "git";
   ".config/ghostty".source = configPath "ghostty";
-  ".config/herdr".source = configPath "herdr";
   ".config/nvim".source = configPath "nvim";
   ".config/secrets".source = configPath "secrets";
   ".config/ssh".source = configPath "ssh";

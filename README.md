@@ -38,7 +38,6 @@ macOS-first Nix configuration that follows the same high-level layout as the ref
 │       │   │   └── mysql-init/
 │       │   │   │   └── 001-admin-superuser.sql
 │       │   ├── ghostty/
-│       │   ├── herdr/
 │       │   ├── nvim/
 │       │   ├── secrets/
 │       │   │   ├── README.md
@@ -181,7 +180,6 @@ This config manages your shell through Home Manager. Review:
 - `modules/darwin/home-manager.nix`
 - `modules/shared/config/ghostty` for Ghostty-compatible terminal appearance that `cmux` reads from `~/.config/ghostty/config`
 - `modules/shared/config/cmux` for cmux-owned app settings, including stable workspace ordering when notifications arrive
-- `modules/shared/config/herdr` for the Herdr sidebar layout and notification behavior
 
 Like the reference `nixos-config`, this setup assumes your Nix-managed shell config replaces the previous one. Bring over anything important before switching.
 
@@ -204,8 +202,6 @@ Multi-account Git configuration lives under [`modules/shared/config/git/`](modul
 OpenSSH client configuration uses the tracked [`modules/shared/config/ssh/`](modules/shared/config/ssh/README.md) tree, linked to `~/.config/ssh`. Home Manager deliberately leaves `~/.ssh/config` unmanaged; opt in by adding `Include ~/.config/ssh/index.conf` there. Shared Colima and 1Password Agent defaults are tracked in `index.conf`, while host-specific names, addresses, users, and checkout paths stay in ignored local fragments. The entire `~/.ssh` directory, including `known_hosts`, remains outside the repo-backed link.
 
 The optional 1Password SSH Agent configuration lives under [`modules/shared/config/1Password/`](modules/shared/config/1Password/README.md), linked to the official `~/.config/1Password` path. Its tracked `ssh/agent.toml` selects the `my.1password.com` account so eligible SSH keys from every vault are available without publishing individual vault or item names. Other local 1Password state remains ignored.
-
-Herdr uses the repo-backed `~/.config/herdr` directory for both tracked UI settings and ignored runtime state. Its popup delivery stays disabled so cmux remains the single source of agent notifications.
 
 ### 9. Stage the repo before building
 
@@ -249,7 +245,7 @@ General workflow:
 
 This repo manages both Homebrew itself and its taps through Nix. Add required taps as `flake = false` inputs in `flake.nix`, wire them through `nix-homebrew.taps` using Homebrew's on-disk tap directory names such as `owner/homebrew-name`, and use `nix run .#update-homebrew` instead of `brew update` when you want newer Homebrew package metadata.
 
-The `nix-homebrew` input is temporarily pinned to upstream PR #164 so its Homebrew 6.0.13 runtime can read the install-step DSL used by the current `homebrew/core` and `homebrew/cask` pins. Return that input to the default branch after the PR is merged. When updating Homebrew inputs, keep the runtime and tap pins compatible; a Nix build alone does not parse formula or cask definitions because `brew bundle` runs during activation.
+The `nix-homebrew` input is temporarily pinned to upstream PR #167 so its Homebrew 6.0.15 runtime can read the install-step DSL used by the current `homebrew/core` and `homebrew/cask` pins. Return that input to the default branch after the PR is merged. When updating Homebrew inputs, keep the runtime and tap pins compatible; a Nix build alone does not parse formula or cask definitions because `brew bundle` runs during activation.
 
 CodexBar is installed from the pinned official `homebrew/cask` input. Its Sparkle auto-updater is disabled declaratively so app updates stay on the Nix/Homebrew path; interactive provider and credential preferences remain user-managed in CodexBar.
 

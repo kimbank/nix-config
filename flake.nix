@@ -16,9 +16,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-homebrew = {
-      # TODO: Return to the default branch after upstream PR #164 is merged.
-      # Homebrew 6.0.13 is required by install-step DSL used in current taps.
-      url = "github:zhaofengli-wip/nix-homebrew?ref=refs/pull/164/head";
+      # TODO: Return to the default branch after upstream PR #167 is merged.
+      # Homebrew 6.0.15 is required by install-step DSL used in current taps.
+      url = "github:zhaofengli-wip/nix-homebrew?ref=refs/pull/167/head";
     };
     homebrew-bundle = {
       url = "github:homebrew/homebrew-bundle";
