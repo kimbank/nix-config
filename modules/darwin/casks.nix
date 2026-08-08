@@ -30,6 +30,9 @@ _:
   # J
   "jetbrains-toolbox"
 
+  # K
+  "keka"
+
   # L
   "libreoffice"
 
