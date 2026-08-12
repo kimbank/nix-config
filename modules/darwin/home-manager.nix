@@ -98,6 +98,8 @@ in
           };
           sessionPath = [
             "$HOME/.local/bin"
+            # `go install` defaults to $GOPATH/bin, with GOPATH=$HOME/go on macOS.
+            "$HOME/go/bin"
             # Keep Toolbox-generated IDE launchers available from new shells.
             "$HOME/Library/Application Support/JetBrains/Toolbox/scripts"
             # pnpm 11 stores global command shims under PNPM_HOME/bin.

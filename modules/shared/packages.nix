@@ -32,6 +32,7 @@ with pkgs;
   git
   git-lfs
   glab
+  go
 
   # I
   iperf3

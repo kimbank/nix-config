@@ -187,6 +187,8 @@ JetBrains Toolbox users can keep IDE launchers such as `webstorm` and `datagrip`
 
 JavaScript and TypeScript runtime switching is managed through Home Manager's `programs.mise` integration rather than fixed `nodejs_*`, `bun`, or `deno` packages in Nix. Home Manager writes the global defaults to `~/.config/mise/config.toml`, so they apply across new shells for this user. This repo keeps global fallbacks on moving channels such as Node `lts` and Bun/Deno `latest`, while project-local `.mise.toml` and `.tool-versions` files can pin exact versions when needed. `.nvmrc` or `.node-version` remain enabled for Node projects. After entering a project with one of those files, run `mise install` once if that version is not already present.
 
+Go uses the nixpkgs toolchain as the machine-wide default. A project can override it with `go = "<version>"` in its local `mise.toml`; the existing mise zsh integration puts that project toolchain ahead of the Nix default while the project is active. Leave `GOPATH` unset to use Go's `$HOME/go` default. `$HOME/go/bin` is included in the Home Manager-managed PATH so commands installed with `go install package@version` are available in new shells.
+
 `pnpm` global binaries use the Home Manager-managed `PNPM_HOME=~/Library/pnpm`, with pnpm 11 command shims under `~/Library/pnpm/bin`. Do not run `pnpm setup`, because it edits shell files that this repo manages declaratively. Run `bash ./scripts/update-pnpm-global-pacakges/main.sh` after switching to pnpm 11: the script disables pnpm's 24-hour release-age delay for these fast-moving global CLIs only, installs tracked CLIs missing from the isolated `global/v11` layout, applies OpenCode's narrow lifecycle-build exception, and then runs pnpm's native global update with other lifecycle scripts disabled. This deliberately skips EAS CLI's optional DTrace addon. Once every tracked package is present in v11 and no unknown v10 globals remain, the script removes the obsolete pnpm 10 `global/5` layout and its top-level shims; `openclaw` is intentionally removed rather than migrated. On Apple Silicon Darwin, the Nix pnpm package temporarily uses Node 22 internally to avoid the known nixpkgs Node 24 file-descriptor crash; the workaround is marked with a removal TODO in `modules/shared/pkgs/pnpm-for-host.nix`.
 
 Android Studio itself is managed as a Homebrew cask, while Home Manager exports `ANDROID_HOME`, `ANDROID_SDK_ROOT`, and the Android SDK command-line paths for new shells. After installing the app, use Android Studio's SDK Manager to install the SDK contents under `~/Library/Android/sdk`, including the Android SDK Platform, Build-Tools, Platform-Tools, Command-line Tools, and side-by-side NDK needed for local Android or EAS builds.
@@ -257,7 +259,7 @@ If `which claude` still points at an older native or npm install after switching
 
 `mpv` is installed through Home Manager's `programs.mpv` module rather than Homebrew. Its configuration enables automatic hardware decoding and points the built-in `ytdl_hook` at the pinned nixpkgs `yt-dlp`, so URL playback uses the same executable whether mpv starts from a shell or its macOS app bundle.
 
-For Node, Bun, or Deno projects, use `mise` to inspect or install runtime versions:
+For project-local Node, Bun, Deno, or Go versions, use `mise` to inspect or install runtime versions:
 
 ```sh
 mise ls --current
