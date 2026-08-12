@@ -5,12 +5,13 @@
   "workbench.preferredLightColorTheme": "Light Modern",
   "window.autoDetectColorScheme": true,
   "material-icon-theme.activeIconPack": "nest",
-  "gitlens.ai.model": "vscode",
-  "gitlens.ai.vscode.model": "copilot:gpt-4.1",
   "gitlens.ai.generateCommitMessage.customInstructions": "<type>: <description>\\n<body> 구조에서 type 에는 적절한 태그 붙이고, description 은 한국어로 잘 작성 (단, 용어는 영어로 표기해도 됨, 억지 번역 지양)",
   "chat.viewSessions.orientation": "stacked",
   "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.detectIndentation": false,
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2
   },
   "git.autofetch": true,
   "files.exclude": {
@@ -39,10 +40,22 @@
   },
   "terminal.external.osxExec": "WezTerm.app",
   "[javascript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.detectIndentation": false,
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.detectIndentation": false,
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2
   },
   "[typescriptreact]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.detectIndentation": false,
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2
   },
   "terminal.integrated.initialHint": false,
   "[css]": {
@@ -51,5 +64,6 @@
   "[html]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "claudeCode.preferredLocation": "panel"
+  "claudeCode.preferredLocation": "panel",
+  "workbench.experimental.modernUI": true
 }
