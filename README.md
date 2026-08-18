@@ -247,7 +247,7 @@ General workflow:
 
 This repo manages both Homebrew itself and its taps through Nix. Add required taps as `flake = false` inputs in `flake.nix`, wire them through `nix-homebrew.taps` using Homebrew's on-disk tap directory names such as `owner/homebrew-name`, and use `nix run .#update-homebrew` instead of `brew update` when you want newer Homebrew package metadata.
 
-The `nix-homebrew` input is temporarily pinned to upstream PR #167 so its Homebrew 6.0.15 runtime can read the install-step DSL used by the current `homebrew/core` and `homebrew/cask` pins. Return that input to the default branch after the PR is merged. When updating Homebrew inputs, keep the runtime and tap pins compatible; a Nix build alone does not parse formula or cask definitions because `brew bundle` runs during activation.
+The `nix-homebrew` input follows its upstream default branch. When updating Homebrew inputs, keep the runtime and tap pins compatible; a Nix build alone does not parse formula or cask definitions because `brew bundle` runs during activation.
 
 CodexBar is installed from the pinned official `homebrew/cask` input. Its Sparkle auto-updater is disabled declaratively so app updates stay on the Nix/Homebrew path; interactive provider and credential preferences remain user-managed in CodexBar.
 
