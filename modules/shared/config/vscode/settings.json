@@ -38,7 +38,7 @@
     "markdown": false,
     "scminput": false
   },
-  "terminal.external.osxExec": "WezTerm.app",
+  "terminal.external.osxExec": "Ghostty.app",
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.detectIndentation": false,
