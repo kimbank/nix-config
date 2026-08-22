@@ -174,6 +174,13 @@ docker compose -f ~/.config/dev-infra/compose.yml restart portainer
 docker compose -f ~/.config/dev-infra/compose.yml restart rustfs
 ```
 
+Connect to PostgreSQL from the macOS host with the `psql` client provided by
+the shared `postgresql_18` Nix package:
+
+```sh
+psql -h 127.0.0.1 -p 5432 -U admin -d playground
+```
+
 ## Reset Everything
 
 If you change initial usernames, passwords, or database names, recreate the stack with volumes removed so Docker reruns the init logic.

@@ -60,6 +60,7 @@ with pkgs;
   # P
   (callPackage ./pkgs/pnpm-for-host.nix { })
   poppler-utils
+  postgresql_18
   pkg-config
 
   # R
