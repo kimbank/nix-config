@@ -65,5 +65,7 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "claudeCode.preferredLocation": "panel",
-  "workbench.experimental.modernUI": true
+  "workbench.experimental.modernUI": true,
+  "intellij.region": "apac",
+  "intellij.dataSharing": "none"
 }

@@ -74,6 +74,7 @@ with pkgs;
   ssh-tresor
 
   # T
+  terraform
   tmux
   tree
 
