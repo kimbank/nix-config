@@ -75,6 +75,7 @@ with pkgs;
 
   # T
   terraform
+  terragrunt
   tmux
   tree
 
