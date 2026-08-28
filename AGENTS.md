@@ -66,6 +66,7 @@ Important:
 ## Where To Change Things
 
 - Shared CLI packages: [`modules/shared/packages.nix`](modules/shared/packages.nix)
+- Cloudflare Tunnel CLI: [`modules/shared/packages.nix`](modules/shared/packages.nix), with login and tunnel usage documented in [`README.md`](README.md#cloudflare-tunnel)
 - GitHub CLI package and declarative settings: [`modules/shared/home-manager.nix`](modules/shared/home-manager.nix)
 - Local multi-account Git config policy: [`modules/shared/config/git/README.md`](modules/shared/config/git/README.md)
 - OpenSSH client config policy: [`modules/shared/config/ssh/README.md`](modules/shared/config/ssh/README.md)
@@ -125,6 +126,7 @@ Important:
 - `homebrew.onActivation.autoUpdate` and `upgrade` are enabled, so `build-switch` may update managed casks.
 - Third-party Homebrew taps should be pinned through `nix-homebrew.taps`; do not rely on ad hoc `brew tap` for managed casks.
 - `cliamp` is managed from the pinned nixpkgs package set in [`modules/shared/packages.nix`](modules/shared/packages.nix). Its wrapper supplies `ffmpeg` and `yt-dlp`, so update it with nixpkgs and do not use the imperative `cliamp upgrade` command.
+- `cloudflared` is managed from the pinned nixpkgs package set in [`modules/shared/packages.nix`](modules/shared/packages.nix). Quick Tunnels do not require login; keep locally managed tunnel credentials (`cert.pem` and `<TUNNEL-UUID>.json`) under `~/.cloudflared` and never track them in this repository.
 - `mpv` is managed through Home Manager's `programs.mpv` module in [`modules/shared/home-manager.nix`](modules/shared/home-manager.nix), not Homebrew. Keep `hwdec = "auto"` for Apple Silicon hardware decoding and keep `scriptOpts.ytdl_hook.ytdl_path` pinned to `lib.getExe pkgs.yt-dlp` so shell and app-bundle launches use the same nixpkgs executable.
 - `ssh-tresor` is managed through its pinned upstream flake and overlay, then exposed from [`modules/shared/packages.nix`](modules/shared/packages.nix). Update it with `nix flake update ssh-tresor` rather than `cargo install` or an ad hoc Homebrew formula.
 - GitHub CLI is managed through Home Manager's `programs.gh` module in [`modules/shared/home-manager.nix`](modules/shared/home-manager.nix). Keep `git_protocol` declaratively set to SSH, leave the HTTPS credential helper disabled while authentication comes from `GH_TOKEN`, and do not place tokens in `programs.gh.hosts`.

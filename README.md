@@ -332,6 +332,57 @@ Examples:
 - Adjust shell settings in `modules/shared/home-manager.nix`
 - Adjust macOS defaults in `hosts/darwin/default.nix`
 
+## Cloudflare Tunnel
+
+`cloudflared` is installed from the pinned nixpkgs package set. Apply the configuration with `nix run .#build-switch`, start a new login shell, and verify it with:
+
+```sh
+cloudflared --version
+```
+
+For a short-lived external test, a Quick Tunnel is the simplest option. It does not require a Cloudflare login, account, or domain:
+
+```sh
+# Replace 3000 with the local service port.
+cloudflared tunnel --url http://localhost:3000
+```
+
+The command prints a random `https://<random>.trycloudflare.com` URL. Keep the process running while testing and press `Ctrl-C` to close the tunnel. Anyone with that URL can reach the local service, so do not expose admin consoles, credentials, or sensitive test data without application-level authentication. Quick Tunnels are for development only: the URL changes whenever the process restarts, they have a 200 concurrent-request limit, and they do not support Server-Sent Events (SSE). If `~/.cloudflared/config.yaml` already exists, temporarily move it aside because Quick Tunnels do not support that file being present.
+
+Use a named tunnel when the public hostname must remain stable. This CLI-managed flow requires a domain whose DNS is managed by Cloudflare:
+
+```sh
+# Opens a browser, asks you to choose the Cloudflare zone, and writes
+# ~/.cloudflared/cert.pem.
+cloudflared tunnel login
+
+# Creates ~/.cloudflared/<TUNNEL-UUID>.json and prints its path.
+cloudflared tunnel create local-test
+cloudflared tunnel list
+```
+
+Create `~/.cloudflared/config.yml`, replacing the placeholders and using the absolute credentials path printed by `tunnel create`:
+
+```yaml
+tunnel: <TUNNEL-UUID>
+credentials-file: /Users/<macOS-user>/.cloudflared/<TUNNEL-UUID>.json
+
+ingress:
+  - hostname: test.example.com
+    service: http://localhost:3000
+  - service: http_status:404
+```
+
+Then create the Cloudflare DNS route, validate the ingress rules, and open the tunnel:
+
+```sh
+cloudflared tunnel route dns local-test test.example.com
+cloudflared tunnel ingress validate
+cloudflared tunnel run local-test
+```
+
+Press `Ctrl-C` to stop the foreground tunnel. `cert.pem` grants account-wide tunnel-management access, while `<TUNNEL-UUID>.json` can run that specific tunnel. Keep both files under `~/.cloudflared`, never commit them to this repository, and do not paste their contents into issues or logs. Cloudflare recommends [dashboard-managed tunnels](https://developers.cloudflare.com/tunnel/setup/) for persistent deployments; the local CLI flow above is intended for development, testing, and legacy configurations. See the official [Quick Tunnel guide](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/do-more-with-tunnels/trycloudflare/) and [locally managed tunnel guide](https://developers.cloudflare.com/tunnel/advanced/local-management/) for current details.
+
 ## Screen Sharing Over Tailscale
 
 Inbound Screen Sharing/VNC filtering is managed declaratively in

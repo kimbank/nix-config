@@ -15,6 +15,7 @@ with pkgs;
   # C
   cargo
   cliamp
+  cloudflared
   clippy
   cmake
   coreutils
