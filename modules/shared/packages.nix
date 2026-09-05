@@ -82,6 +82,7 @@ with pkgs;
 
   # U
   unzip
+  uv
 
   # W
   wget

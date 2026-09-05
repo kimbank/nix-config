@@ -40,7 +40,14 @@
       "ㄷ턋" = "exit";
       "nvim." = "nvim .";
       "nvim~" = "nvim ~";
+      "n" = "nvim";
+      "n." = "nvim .";
+      "n~" = "nvim ~";
       "code." = "code .";
+      "code~" = "code ~";
+      "c" = "code";
+      "c." = "code .";
+      "c~" = "code ~";
       exot = "exit";
       pug = "pnpm_config_minimum_release_age=0 pnpm up -g";
       wd = "while true; do tput cup 0 0; command duf; sleep 2; done";
