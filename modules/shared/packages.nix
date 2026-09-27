@@ -34,6 +34,7 @@ with pkgs;
   git-lfs
   glab
   go
+  google-cloud-sdk
 
   # I
   iperf3
