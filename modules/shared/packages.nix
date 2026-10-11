@@ -56,7 +56,6 @@ with pkgs;
 
   # O
   oci-cli
-  opentofu
   opus
 
   # P
