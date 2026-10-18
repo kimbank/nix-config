@@ -94,6 +94,7 @@ Important:
   - Local Docker stack: [`modules/shared/config/dev-infra/compose.yml`](modules/shared/config/dev-infra/compose.yml)
   - Local MySQL image build: [`modules/shared/config/dev-infra/mysql/Dockerfile`](modules/shared/config/dev-infra/mysql/Dockerfile)
   - Local MySQL init SQL: [`modules/shared/config/dev-infra/mysql-init/001-admin-superuser.sql`](modules/shared/config/dev-infra/mysql-init/001-admin-superuser.sql)
+  - Local PostgreSQL extension image: [`modules/shared/config/dev-infra/postgres/Dockerfile`](modules/shared/config/dev-infra/postgres/Dockerfile)
   - Local 1Password SSH Agent config guide: [`modules/shared/config/1Password/README.md`](modules/shared/config/1Password/README.md)
   - Ghostty/cmux terminal config: [`modules/shared/config/ghostty`](modules/shared/config/ghostty)
   - Local multi-account Git config guide: [`modules/shared/config/git/README.md`](modules/shared/config/git/README.md)
@@ -156,6 +157,7 @@ Important:
 - The local Docker stack publishes service ports on `${DEV_INFRA_BIND_ADDRESS:-0.0.0.0}` so Bonjour hostnames such as `kimbank.local` and `ehkim.local` work by default; set `DEV_INFRA_BIND_ADDRESS=127.0.0.1` for loopback-only runs. RustFS CORS defaults to `*` in [`compose.yml`](modules/shared/config/dev-infra/compose.yml) because this is local development infrastructure.
 - Because `~/.config/dev-infra` resolves back to the live repo checkout when built through the helper commands, relative bind mounts can target real working-tree files. Keep secrets in ignored files such as `modules/shared/config/dev-infra/.env` instead of tracked Compose YAML.
 - MySQL bootstrap SQL is stored under [`mysql-init/`](modules/shared/config/dev-infra/mysql-init/001-admin-superuser.sql) and baked into the local MySQL image via [`mysql/Dockerfile`](modules/shared/config/dev-infra/mysql/Dockerfile).
+- PostgreSQL extensions belong in [`postgres/Dockerfile`](modules/shared/config/dev-infra/postgres/Dockerfile); enable preloading only after the image installs the library. Preserve the PostgreSQL major version, base-image family, Compose project name, and existing data volume when adding extensions, and rebuild/recreate only the PostgreSQL service without removing volumes.
 - Portainer's initial admin password is configured directly in [`compose.yml`](modules/shared/config/dev-infra/compose.yml) as a bcrypt hash for the local dev password `adminadmin!!`.
 - If the dev stack behavior, credentials, ports, or daily workflow changes, update [`modules/shared/config/dev-infra/README.md`](modules/shared/config/dev-infra/README.md) in the same task.
 - VS Code is managed declaratively through Home Manager with `package = null`, which means the actual GUI app is expected to come from outside the HM package install path.

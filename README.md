@@ -331,6 +331,7 @@ Examples:
 - Adjust Colima auto-start and Docker/Kubernetes profile settings in `modules/darwin/home-manager.nix`
 - Adjust PF-based inbound VNC allowlists in `modules/darwin/pf.nix`
 - Adjust the local MySQL image bootstrap in `modules/shared/config/dev-infra/mysql/Dockerfile`
+- Adjust local PostgreSQL extensions in `modules/shared/config/dev-infra/postgres/Dockerfile`
 - Adjust shell settings in `modules/shared/home-manager.nix`
 - Adjust macOS defaults in `hosts/darwin/default.nix`
 
@@ -405,6 +406,7 @@ This repo installs Docker tooling with a split that matches the existing package
 - `modules/shared/packages.nix`: Docker CLI, `kubectl`, and Helm from nixpkgs
 - `modules/darwin/home-manager.nix`: Colima login-time service plus the persistent default Docker and Kubernetes profile settings
 - `modules/shared/config/dev-infra/compose.yml`: Portainer, MySQL, PostgreSQL, Redis, RustFS stack linked under `~/.config/dev-infra/`
+- `modules/shared/config/dev-infra/postgres/Dockerfile`: PostgreSQL 18 image with `pg_bigm` preloaded through Compose
 - `modules/shared/config/dev-infra/README.md`: detailed usage guide for the local stack
 
 Typical first run after `nix run .#build-switch`:

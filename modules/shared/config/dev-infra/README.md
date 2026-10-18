@@ -20,6 +20,7 @@ All services are defined in [`compose.yml`](compose.yml).
 - [`compose.yml`](compose.yml): main Docker Compose stack
 - [`mysql/Dockerfile`](mysql/Dockerfile): builds the local MySQL image with bootstrap SQL baked in
 - [`mysql-init/001-admin-superuser.sql`](mysql-init/001-admin-superuser.sql): grants the MySQL `admin` user full privileges for local development
+- [`postgres/Dockerfile`](postgres/Dockerfile): builds the PostgreSQL 18 image with the pinned `pg_bigm` extension
 
 ## Default Access
 
@@ -44,7 +45,8 @@ All services are defined in [`compose.yml`](compose.yml).
 
 - Host: `127.0.0.1`, `kimbank.local`, or `ehkim.local`
 - Port: `5432`
-- Image: `postgres:18`
+- Image: `local-postgres-dev:18` (built from the Debian-based `postgres:18` image)
+- Available extension: `pg_bigm` 1.2 (`v1.2-20250903`), preloaded at server startup
 - Default database: `playground`
 - User: `admin`
 - Password: `adminadmin!!`
@@ -180,6 +182,44 @@ the shared `postgresql_18` Nix package:
 ```sh
 psql -h 127.0.0.1 -p 5432 -U admin -d playground
 ```
+
+### PostgreSQL Image Updates And pg_bigm
+
+The PostgreSQL image includes `pg_bigm` files and Compose preloads the library.
+Keep PostgreSQL extensions in the image build so they survive container recreation.
+To rebuild and recreate only PostgreSQL, including recovery from
+`FATAL: could not access file "pg_bigm": No such file or directory`, run:
+
+```sh
+docker compose -f ~/.config/dev-infra/compose.yml up -d --build --no-deps postgres
+docker compose -f ~/.config/dev-infra/compose.yml logs --tail 50 postgres
+```
+
+The existing `postgres_data_v18` volume is reused. Do not use `down -v` for this
+update. A plain `restart postgres` does not rebuild or replace the image.
+The new image supplies the library requested by an existing
+`ALTER SYSTEM SET shared_preload_libraries = 'pg_bigm'` setting as well.
+
+Check library availability after PostgreSQL reports that it is ready:
+
+```sh
+docker compose -f ~/.config/dev-infra/compose.yml exec postgres \
+  psql -U admin -d playground -c "SHOW shared_preload_libraries;"
+docker compose -f ~/.config/dev-infra/compose.yml exec postgres \
+  psql -U admin -d playground \
+  -c "SELECT name, default_version, installed_version FROM pg_available_extensions WHERE name = 'pg_bigm';"
+```
+
+Extension files are available server-wide, but the extension must be created in
+each application database with `CREATE EXTENSION IF NOT EXISTS pg_bigm;` by an
+authorized database administrator or application migration. An empty
+`installed_version` means it has not yet been created in the database being queried.
+SQL cannot install the server library files.
+
+These changes only require the Compose rebuild; a Nix `build-switch` is not needed
+when using the repo-backed `~/.config/dev-infra` link. If applying on another Docker
+host, first copy or pull the updated config directory there and use the same Compose
+project and volume names.
 
 ## Reset Everything
 
