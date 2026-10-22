@@ -42,6 +42,7 @@ _:
   # O
   "obsidian"
   "opencode-desktop"
+  "open-design"
 
   # P
   "postman"
