@@ -37,6 +37,7 @@ with pkgs;
   google-cloud-sdk
 
   # I
+  iftop
   iperf3
   (callPackage ./pkgs/im-select.nix { })
 
