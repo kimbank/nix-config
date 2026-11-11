@@ -168,6 +168,7 @@ Current split:
 - Homebrew formulae: `modules/darwin/home-manager.nix`
 - Homebrew casks: `modules/darwin/casks.nix`
 - Ghostty: `ghostty` Homebrew cask in `modules/darwin/casks.nix`
+- Rectangle: `rectangle` Homebrew cask in `modules/darwin/casks.nix`; grant Accessibility permission on first launch for window shortcuts and drag-to-edge snapping. Keep its shortcuts distinct from Raycast's window commands.
 - Claude Code CLI: `claude-code@latest` in `modules/darwin/casks.nix`
 - macOS PF rules for Screen Sharing/VNC: `modules/darwin/pf.nix`
 - JetBrains IDEs: install `jetbrains-toolbox` as a cask, then let Toolbox manage IDE installs and updates

@@ -50,6 +50,7 @@ _:
 
   # R
   "raycast"
+  "rectangle"
 
   # S
   "shottr"
