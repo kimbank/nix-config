@@ -27,7 +27,6 @@
     shellAliases = {
       ll = "ls -lah";
       cls = "clear";
-      grep = "rg";
       sg = "ast-grep";
       glf = "gl && gf";
       "친" = "clear";
