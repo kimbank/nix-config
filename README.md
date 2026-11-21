@@ -241,8 +241,8 @@ exec zsh -l
 General workflow:
 
 1. Edit the Nix files.
-2. To update the core Nix stack, run `nix flake update nixpkgs home-manager darwin`. Keep these inputs coordinated because Home Manager and nix-darwin modules are evaluated against the pinned nixpkgs package set.
-3. To update the separately pinned `ssh-tresor` CLI, run `nix flake update ssh-tresor`, then verify it with `nix run .#build`.
+2. To update Nix packages, Home Manager, nix-darwin, and the upstream CLIs together, run `nix flake update nixpkgs home-manager darwin ssh-tresor ratune`.
+3. For a single upstream CLI, run `nix flake update ratune` or `nix flake update ssh-tresor`.
 4. If you need newer Nix-managed Homebrew metadata, run `nix run .#update-homebrew` to refresh both `nix-homebrew` and the pinned official tap inputs in `flake.lock`.
 5. Run `git add .` if you created or changed tracked files, including app config under `modules/shared/config/`.
 6. Run `nix run .#build` to verify.
@@ -258,7 +258,7 @@ That also applies to `claude-code@latest`: this repo tracks the latest Homebrew 
 
 If `which claude` still points at an older native or npm install after switching, remove that copy so the Homebrew cask binary takes precedence on `PATH`.
 
-`cliamp` is installed from the pinned nixpkgs package set for terminal access to Navidrome, YouTube Music, and local audio. Its Nix wrapper supplies `ffmpeg` and `yt-dlp`; use nixpkgs updates rather than `cliamp upgrade`. Ratune is available as a Navidrome-focused alternative from its upstream Nix flake. To upgrade, change the Ratune release tag in `flake.nix`, run `nix flake lock`, then build and switch.
+`cliamp` is installed from the pinned nixpkgs package set for terminal access to Navidrome, YouTube Music, and local audio. Its Nix wrapper supplies `ffmpeg` and `yt-dlp`; use nixpkgs updates rather than `cliamp upgrade`. Ratune is available as a Navidrome-focused alternative from its upstream Nix flake. Updates follow the upstream default branch, with the selected revision recorded in `flake.lock`.
 
 `mpv` is installed through Home Manager's `programs.mpv` module rather than Homebrew. Its configuration enables automatic hardware decoding and points the built-in `ytdl_hook` at the pinned nixpkgs `yt-dlp`, so URL playback uses the same executable whether mpv starts from a shell or its macOS app bundle.
 

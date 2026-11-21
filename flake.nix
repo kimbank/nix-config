@@ -29,7 +29,7 @@
       flake = false;
     };
     ratune = {
-      url = "github:acmagn/ratune/v0.17.0";
+      url = "github:acmagn/ratune";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
