@@ -66,6 +66,7 @@ with pkgs;
   pkg-config
 
   # R
+  ratune
   rclone
   (callPackage ./pkgs/resume-texlive.nix { })
   ripgrep

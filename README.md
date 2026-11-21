@@ -243,7 +243,7 @@ General workflow:
 1. Edit the Nix files.
 2. To update the core Nix stack, run `nix flake update nixpkgs home-manager darwin`. Keep these inputs coordinated because Home Manager and nix-darwin modules are evaluated against the pinned nixpkgs package set.
 3. To update the separately pinned `ssh-tresor` CLI, run `nix flake update ssh-tresor`, then verify it with `nix run .#build`.
-4. If you need newer Nix-managed Homebrew metadata, run `nix run .#update-homebrew` to refresh both `nix-homebrew` and the pinned official/third-party tap inputs in `flake.lock`.
+4. If you need newer Nix-managed Homebrew metadata, run `nix run .#update-homebrew` to refresh both `nix-homebrew` and the pinned official tap inputs in `flake.lock`.
 5. Run `git add .` if you created or changed tracked files, including app config under `modules/shared/config/`.
 6. Run `nix run .#build` to verify.
 7. Run `nix run .#build-switch` to apply.
@@ -258,7 +258,7 @@ That also applies to `claude-code@latest`: this repo tracks the latest Homebrew 
 
 If `which claude` still points at an older native or npm install after switching, remove that copy so the Homebrew cask binary takes precedence on `PATH`.
 
-`cliamp` is installed from the pinned nixpkgs package set for terminal access to Navidrome, YouTube Music, and local audio. Its Nix wrapper supplies `ffmpeg` and `yt-dlp`; use nixpkgs updates rather than `cliamp upgrade`. Ratune is also available as a Navidrome-focused alternative through the pinned `acmagn/tap` Homebrew tap.
+`cliamp` is installed from the pinned nixpkgs package set for terminal access to Navidrome, YouTube Music, and local audio. Its Nix wrapper supplies `ffmpeg` and `yt-dlp`; use nixpkgs updates rather than `cliamp upgrade`. Ratune is available as a Navidrome-focused alternative from its upstream Nix flake. To upgrade, change the Ratune release tag in `flake.nix`, run `nix flake lock`, then build and switch.
 
 `mpv` is installed through Home Manager's `programs.mpv` module rather than Homebrew. Its configuration enables automatic hardware decoding and points the built-in `ytdl_hook` at the pinned nixpkgs `yt-dlp`, so URL playback uses the same executable whether mpv starts from a shell or its macOS app bundle.
 
@@ -428,7 +428,7 @@ For the full command reference and reset workflow, see [`modules/shared/config/d
 
 - The current target platform is `aarch64-darwin`, not `arm64-darwin`.
 - `nix run .#apply` is for initial personalization of the template.
-- `nix run .#update-homebrew` refreshes both the pinned Homebrew version and the official/third-party Homebrew tap pins stored in `flake.lock`.
+- `nix run .#update-homebrew` refreshes both the pinned Homebrew version and the official Homebrew tap pins stored in `flake.lock`.
 - Day-to-day changes are applied with `nix run .#build-switch`.
 - If you change repo structure, workflow, or user-visible behavior, update this README alongside the code so the documented layout and commands stay current.
 - On a fresh Mac this should be straightforward. On an already-used Mac, existing `/etc` files, old Homebrew state, or existing shell dotfiles can still conflict during first activation.

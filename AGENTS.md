@@ -48,7 +48,7 @@ Use these commands from the repo root:
 - `nix run .#build-switch`: build and switch to the new generation
 - `nix run .#rollback`: switch to a previous generation
 - `nix run .#clean`: garbage-collect old generations
-- `nix run .#update-homebrew`: refresh pinned `nix-homebrew`, official Homebrew tap inputs, and declared third-party Homebrew tap inputs in `flake.lock`
+- `nix run .#update-homebrew`: refresh pinned `nix-homebrew`, and official Homebrew tap inputs in `flake.lock`
 
 Important:
 
@@ -76,7 +76,7 @@ Important:
 - Interactive 1Password-to-ssh-tresor helper: [`scripts/ssh-tresor-from-1password/main.sh`](scripts/ssh-tresor-from-1password/main.sh)
 - macOS-only Nix packages: [`modules/darwin/packages.nix`](modules/darwin/packages.nix)
 - Homebrew CLI formulae: [`modules/darwin/home-manager.nix`](modules/darwin/home-manager.nix)
-- Ratune Homebrew formula: [`modules/darwin/home-manager.nix`](modules/darwin/home-manager.nix)
+- Ratune CLI: upstream release tag and overlay in [`flake.nix`](flake.nix), package in [`modules/shared/packages.nix`](modules/shared/packages.nix)
 - Homebrew GUI apps: [`modules/darwin/casks.nix`](modules/darwin/casks.nix)
 - Claude Code CLI Homebrew cask: [`modules/darwin/casks.nix`](modules/darwin/casks.nix)
 - pnpm global CLI install/update script: [`scripts/update-pnpm-global-pacakges/main.sh`](scripts/update-pnpm-global-pacakges/main.sh)
@@ -135,7 +135,7 @@ Important:
 - [`modules/shared/files.nix`](modules/shared/files.nix) links [`modules/shared/config/ssh`](modules/shared/config/ssh) to `~/.config/ssh`, while Home Manager intentionally leaves `~/.ssh/config` unmanaged. Users opt in with `Include ~/.config/ssh/index.conf`; track shared defaults, keep host-specific fragments ignored under `local/`, put specific hosts before `Host *`, and do not link the whole `~/.ssh` directory because it also contains `known_hosts`, private keys, and runtime files.
 - [`modules/shared/files.nix`](modules/shared/files.nix) links [`modules/shared/config/1Password`](modules/shared/config/1Password) to the official `~/.config/1Password` path. The tracked `ssh/agent.toml` intentionally publishes the `my.1password.com` account selector to expose eligible SSH keys from all its vaults; keep other local 1Password state ignored and use host-specific `IdentityFile` plus `IdentitiesOnly yes` when Agent key ordering must not choose authentication identity.
 - Use [`scripts/ssh-tresor-from-1password/main.sh`](scripts/ssh-tresor-from-1password/main.sh) for the repeatable interactive flow that reads a 1Password secret, selects an agent fingerprint, and writes an armored tresor from either a local file name under `~/.config/secrets/tresor` or an absolute path. Keep the secret on the `op read` pipeline, create the destination through a same-directory temporary file, and preserve mode `0600` when maintaining this helper.
-- Ratune is managed as `acmagn/tap/ratune` from the pinned `acmagn/homebrew-ratune` input. The tap is mounted at its legacy Homebrew name `acmagn/homebrew-tap`, matching the upstream `acmagn/tap` install command.
+- Pin the Ratune input to a published upstream release tag. When upgrading, change the tag and refresh `flake.lock` with `nix flake lock`.
 - CodexBar is installed from the pinned official `homebrew/cask` input, and its Sparkle updater is disabled through Home Manager defaults so updates stay on the declarative Homebrew path. Leave interactive provider and credential preferences user-managed in CodexBar.
 - Claude Code CLI is managed through the Homebrew cask `claude-code@latest` rather than nixpkgs, so use `nix run .#update-homebrew` when you want newer pinned Claude Code releases in this repo.
 - If `which claude` still resolves to an older native or npm installation after switching, remove that copy instead of changing this repo's PATH order just to prefer Claude Code.

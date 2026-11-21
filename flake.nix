@@ -28,13 +28,9 @@
       url = "github:homebrew/homebrew-cask";
       flake = false;
     };
-    chojs23-homebrew-tap = {
-      url = "github:chojs23/homebrew-tap";
-      flake = false;
-    };
-    acmagn-homebrew-ratune = {
-      url = "github:acmagn/homebrew-ratune";
-      flake = false;
+    ratune = {
+      url = "github:acmagn/ratune/v0.17.0";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
@@ -46,8 +42,7 @@
       homebrew-bundle,
       homebrew-core,
       homebrew-cask,
-      chojs23-homebrew-tap,
-      acmagn-homebrew-ratune,
+      ratune,
       home-manager,
       nixpkgs,
       ssh-tresor,
@@ -66,7 +61,10 @@
       ];
       forAllSystems = f: nixpkgs.lib.genAttrs (darwinSystems ++ linuxSystems) f;
       upstreamOverlaysModule = {
-        nixpkgs.overlays = [ ssh-tresor.overlays.default ];
+        nixpkgs.overlays = [
+          ratune.overlays.default
+          ssh-tresor.overlays.default
+        ];
       };
 
       devShell =
@@ -150,10 +148,6 @@
                   "homebrew/homebrew-core" = homebrew-core;
                   "homebrew/homebrew-cask" = homebrew-cask;
                   "homebrew/homebrew-bundle" = homebrew-bundle;
-                  "chojs23/homebrew-tap" = chojs23-homebrew-tap;
-                  # The upstream repository was renamed to homebrew-ratune,
-                  # but Homebrew still exposes it through the acmagn/tap name.
-                  "acmagn/homebrew-tap" = acmagn-homebrew-ratune;
                 };
                 mutableTaps = false;
                 autoMigrate = true;
