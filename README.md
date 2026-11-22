@@ -179,7 +179,9 @@ This config manages your shell through Home Manager. Review:
 
 - `modules/shared/home-manager.nix`
 - `modules/darwin/home-manager.nix`
-- `modules/shared/config/ghostty` for Ghostty-compatible terminal appearance that `cmux` reads from `~/.config/ghostty/config`
+- `modules/shared/config/btop/btop.conf` for btop’s terminal palette and background
+- Ghostty, cmux, and WezTerm share the light and dark palettes in `modules/shared/config/ghostty/themes/kimbank-ashes-*`. WezTerm reads the palette matching the current macOS appearance.
+- Terminal text uses JetBrains Mono at 14 pt. WezTerm uses D2Coding ligature as a fallback to match Ghostty’s Hangul on this Mac. Keep `modules/shared/config/ghostty/config` and `modules/shared/config/wezterm/wezterm.lua` in sync when changing the font or size.
 - `modules/shared/config/cmux` for cmux-owned app settings, including stable workspace ordering when notifications arrive
 
 Like the reference `nixos-config`, this setup assumes your Nix-managed shell config replaces the previous one. Bring over anything important before switching.

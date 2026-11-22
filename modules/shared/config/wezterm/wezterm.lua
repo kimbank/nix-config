@@ -12,22 +12,39 @@ local function get_appearance()
   return "Dark"
 end
 
-local function scheme_for_appearance(appearance)
-  if appearance:find("Dark") then
-    return "Ashes (dark) (terminal.sexy)"
-    -- return "Ayu Dark (Gogh)"
-  end
+local function load_palette(appearance)
+  local variant = appearance:find("Dark") and "dark" or "light"
+  local path = wezterm.config_dir .. "/../ghostty/themes/kimbank-ashes-" .. variant
+  wezterm.add_to_config_reload_watch_list(path)
 
-  return "Ashes (light) (terminal.sexy)"
-  -- return "Ayu Light (Gogh)"
+  local scheme = { ansi = {}, brights = {} }
+  local fields = {
+    foreground = "foreground",
+    background = "background",
+    ["cursor-color"] = "cursor_bg",
+    ["cursor-text"] = "cursor_fg",
+    ["selection-background"] = "selection_bg",
+    ["selection-foreground"] = "selection_fg",
+    ["split-divider-color"] = "split",
+  }
+  for line in io.lines(path) do
+    local key, value = line:match("^%s*([%w%-]+)%s*=%s*(%S+)")
+    if fields[key] then
+      scheme[fields[key]] = value
+    elseif key == "palette" then
+      local index, color = value:match("^(%d+)=(#%x+)$")
+      index = tonumber(index)
+      if index and index < 16 then
+        local colors = index < 8 and scheme.ansi or scheme.brights
+        colors[index % 8 + 1] = color
+      end
+    end
+  end
+  scheme.cursor_border = scheme.cursor_bg
+  return scheme
 end
 
-local function tab_bar_colors_for_scheme(scheme_name)
-  local scheme = wezterm.get_builtin_color_schemes()[scheme_name]
-  if not scheme then
-    return nil, nil
-  end
-
+local function tab_bar_colors_for_scheme(scheme)
   local bg = wezterm.color.parse(scheme.background)
   local fg = wezterm.color.parse(scheme.foreground)
   local _, _, lightness, _ = bg:hsla()
@@ -75,23 +92,19 @@ local function tab_bar_colors_for_scheme(scheme_name)
   }
 end
 
-local appearance = get_appearance()
-local scheme_name = scheme_for_appearance(appearance)
-
-config.color_scheme = scheme_name
+local scheme = load_palette(get_appearance())
+-- Match the terminal text settings in ../ghostty/config (also used by cmux).
+config.font = wezterm.font_with_fallback({ "JetBrains Mono", "D2Coding ligature" })
+config.font_size = 14
 config.enable_kitty_keyboard = true
 config.keys = {
   -- Send LF so terminal AI CLIs treat Shift+Enter as a multiline prompt break.
   { key = "Enter", mods = "SHIFT", action = act.SendString("\x0a") },
 }
 
-local colors, window_frame = tab_bar_colors_for_scheme(scheme_name)
-if colors then
-  config.colors = colors
-end
-
-if window_frame then
-  config.window_frame = window_frame
-end
+local colors, window_frame = tab_bar_colors_for_scheme(scheme)
+scheme.tab_bar = colors.tab_bar
+config.colors = scheme
+config.window_frame = window_frame
 
 return config

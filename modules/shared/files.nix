@@ -14,6 +14,7 @@ let
 in
 {
   ".config/1Password".source = configPath "1Password";
+  ".config/btop".source = configPath "btop";
   ".config/cmux".source = configPath "cmux";
   ".config/dev-infra".source = configPath "dev-infra";
   ".config/git".source = configPath "git";
