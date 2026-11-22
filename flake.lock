@@ -184,11 +184,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1794597900,
-        "narHash": "sha256-lEaAqXDLTlSYrjkYpQwK0UWlARCwl/odrAKb3kvjM5o=",
+        "lastModified": 1795329402,
+        "narHash": "sha256-vEJyqRPsA3ExbugKpMcOp8+D1TCHfBjzXM+zil6LRDo=",
         "owner": "acmagn",
         "repo": "ratune",
-        "rev": "82552377e1be1a00d6091ee5869e351d9fe7da2b",
+        "rev": "114cad0065bf74c72b6c28c43b4b9ce6459c2d43",
         "type": "github"
       },
       "original": {
