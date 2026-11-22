@@ -94,7 +94,7 @@ end
 
 local scheme = load_palette(get_appearance())
 -- Match the terminal text settings in ../ghostty/config (also used by cmux).
-config.font = wezterm.font_with_fallback({ "JetBrains Mono", "D2Coding ligature" })
+config.font = wezterm.font("Sarasa Term J")
 config.font_size = 14
 config.enable_kitty_keyboard = true
 config.keys = {

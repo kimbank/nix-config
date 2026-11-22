@@ -70,6 +70,7 @@ in
     pkgs.d2coding
     pkgs."jetbrains-mono"
     pkgs.nanum
+    pkgs.sarasa-gothic
     pkgs.pretendard
   ];
 
