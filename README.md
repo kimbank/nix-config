@@ -181,7 +181,7 @@ This config manages your shell through Home Manager. Review:
 - `modules/darwin/home-manager.nix`
 - `modules/shared/config/btop/btop.conf` for btop’s terminal palette and panel defaults. Edit this file to persist changes. In-session adjustments are discarded on exit.
 - Ghostty, cmux, and WezTerm share the light and dark palettes in `modules/shared/config/ghostty/themes/kimbank-ashes-*`. WezTerm reads the palette matching the current macOS appearance.
-- Ghostty, cmux, and WezTerm use Sarasa Term J at 14 pt for Latin, Korean, and Japanese terminal text, with Japanese regional forms for shared Han characters. nix-darwin installs the font through `fonts.packages`. Keep `modules/shared/config/ghostty/config` and `modules/shared/config/wezterm/wezterm.lua` in sync when changing the font or size.
+- Ghostty, cmux, and WezTerm use Sarasa Term J at 14 pt for Latin, Korean, and Japanese terminal text, with Japanese regional forms for shared Han characters. nix-darwin also installs Monoplex CJK as an alternative through `fonts.packages`. Keep `modules/shared/config/ghostty/config` and `modules/shared/config/wezterm/wezterm.lua` in sync when changing the font or size.
 - `modules/shared/config/cmux` for cmux-owned app settings, including stable workspace ordering when notifications arrive
 
 Like the reference `nixos-config`, this setup assumes your Nix-managed shell config replaces the previous one. Bring over anything important before switching.

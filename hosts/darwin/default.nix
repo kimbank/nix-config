@@ -71,6 +71,7 @@ in
     pkgs."jetbrains-mono"
     pkgs.nanum
     pkgs.sarasa-gothic
+    (pkgs.callPackage ../../modules/shared/pkgs/monoplex-cjk.nix { })
     pkgs.pretendard
   ];
 
