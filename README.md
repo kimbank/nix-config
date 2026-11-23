@@ -183,6 +183,7 @@ This config manages your shell through Home Manager. Review:
 - Ghostty, cmux, and WezTerm share the light and dark palettes in `modules/shared/config/ghostty/themes/kimbank-ashes-*`. WezTerm reads the palette matching the current macOS appearance.
 - In WezTerm, press `Ctrl+A` followed within one second by `h`, `j`, `k`, or `l` to focus the pane to the left, below, above, or right. Press `Ctrl+A` then `r` to resize with those same keys one cell at a time. Press `Esc` or `Enter` to exit resize mode. Press `Ctrl+A` twice to send a single `Ctrl+A` to the shell.
 - After `Ctrl+A`, press `\` to split to the right, `Shift+\` to split to the left, `-` to split below, or `Shift+-` to split above. The leader and pane shortcuts match physical key positions across keyboard layouts.
+- Press `Ctrl+A` then `x` to close the focused pane after confirmation. Closing the pane can interrupt commands running in it.
 - Ghostty, cmux, and WezTerm use Sarasa Term J at 14 pt for Latin, Korean, and Japanese terminal text, with Japanese regional forms for shared Han characters. nix-darwin also installs Monoplex CJK as an alternative through `fonts.packages`. Keep `modules/shared/config/ghostty/config` and `modules/shared/config/wezterm/wezterm.lua` in sync when changing the font or size.
 - `modules/shared/config/cmux` for cmux-owned app settings, including stable workspace ordering when notifications arrive
 

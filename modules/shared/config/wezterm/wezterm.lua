@@ -103,6 +103,7 @@ config.keys = {
   -- Send LF so terminal AI CLIs treat Shift+Enter as a multiline prompt break.
   { key = "Enter", mods = "SHIFT", action = act.SendString("\x0a") },
   { key = "phys:A", mods = "LEADER|CTRL", action = act.SendKey({ key = "a", mods = "CTRL" }) },
+  { key = "phys:X", mods = "LEADER", action = act.CloseCurrentPane({ confirm = true }) },
   { key = "phys:Backslash", mods = "LEADER", action = act.SplitPane({ direction = "Right" }) },
   { key = "phys:Backslash", mods = "LEADER|SHIFT", action = act.SplitPane({ direction = "Left" }) },
   { key = "phys:Minus", mods = "LEADER", action = act.SplitPane({ direction = "Down" }) },
