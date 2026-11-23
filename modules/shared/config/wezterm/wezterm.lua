@@ -97,12 +97,17 @@ local scheme = load_palette(get_appearance())
 config.font = wezterm.font("Sarasa Term J")
 config.font_size = 14
 config.enable_kitty_keyboard = true
-config.leader = { key = "a", mods = "CTRL", timeout_milliseconds = 1000 }
+-- Match key positions independently of the active input source.
+config.leader = { key = "phys:A", mods = "CTRL", timeout_milliseconds = 1000 }
 config.keys = {
   -- Send LF so terminal AI CLIs treat Shift+Enter as a multiline prompt break.
   { key = "Enter", mods = "SHIFT", action = act.SendString("\x0a") },
-  { key = "a", mods = "LEADER|CTRL", action = act.SendKey({ key = "a", mods = "CTRL" }) },
-  { key = "r", mods = "LEADER", action = act.ActivateKeyTable({ name = "resize_pane", one_shot = false }) },
+  { key = "phys:A", mods = "LEADER|CTRL", action = act.SendKey({ key = "a", mods = "CTRL" }) },
+  { key = "phys:Backslash", mods = "LEADER", action = act.SplitPane({ direction = "Right" }) },
+  { key = "phys:Backslash", mods = "LEADER|SHIFT", action = act.SplitPane({ direction = "Left" }) },
+  { key = "phys:Minus", mods = "LEADER", action = act.SplitPane({ direction = "Down" }) },
+  { key = "phys:Minus", mods = "LEADER|SHIFT", action = act.SplitPane({ direction = "Up" }) },
+  { key = "phys:R", mods = "LEADER", action = act.ActivateKeyTable({ name = "resize_pane", one_shot = false }) },
 }
 config.key_tables = {
   resize_pane = {
@@ -111,7 +116,7 @@ config.key_tables = {
   },
 }
 
-local pane_directions = { h = "Left", j = "Down", k = "Up", l = "Right" }
+local pane_directions = { ["phys:H"] = "Left", ["phys:J"] = "Down", ["phys:K"] = "Up", ["phys:L"] = "Right" }
 for key, direction in pairs(pane_directions) do
   table.insert(config.keys, { key = key, mods = "LEADER", action = act.ActivatePaneDirection(direction) })
   table.insert(config.key_tables.resize_pane, { key = key, action = act.AdjustPaneSize({ direction, 1 }) })
