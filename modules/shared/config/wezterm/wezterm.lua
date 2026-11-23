@@ -97,10 +97,25 @@ local scheme = load_palette(get_appearance())
 config.font = wezterm.font("Sarasa Term J")
 config.font_size = 14
 config.enable_kitty_keyboard = true
+config.leader = { key = "a", mods = "CTRL", timeout_milliseconds = 1000 }
 config.keys = {
   -- Send LF so terminal AI CLIs treat Shift+Enter as a multiline prompt break.
   { key = "Enter", mods = "SHIFT", action = act.SendString("\x0a") },
+  { key = "a", mods = "LEADER|CTRL", action = act.SendKey({ key = "a", mods = "CTRL" }) },
+  { key = "r", mods = "LEADER", action = act.ActivateKeyTable({ name = "resize_pane", one_shot = false }) },
 }
+config.key_tables = {
+  resize_pane = {
+    { key = "Escape", action = act.PopKeyTable },
+    { key = "Enter", action = act.PopKeyTable },
+  },
+}
+
+local pane_directions = { h = "Left", j = "Down", k = "Up", l = "Right" }
+for key, direction in pairs(pane_directions) do
+  table.insert(config.keys, { key = key, mods = "LEADER", action = act.ActivatePaneDirection(direction) })
+  table.insert(config.key_tables.resize_pane, { key = key, action = act.AdjustPaneSize({ direction, 1 }) })
+end
 
 local colors, window_frame = tab_bar_colors_for_scheme(scheme)
 scheme.tab_bar = colors.tab_bar
