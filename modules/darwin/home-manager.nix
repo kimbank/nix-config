@@ -141,6 +141,8 @@ in
           };
         };
 
+        services.syncthing.enable = true;
+
         services.colima = {
           enable = true;
           profiles.default = {

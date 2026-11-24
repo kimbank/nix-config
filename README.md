@@ -393,6 +393,21 @@ cloudflared tunnel run local-test
 
 Press `Ctrl-C` to stop the foreground tunnel. `cert.pem` grants account-wide tunnel-management access, while `<TUNNEL-UUID>.json` can run that specific tunnel. Keep both files under `~/.cloudflared`, never commit them to this repository, and do not paste their contents into issues or logs. Cloudflare recommends [dashboard-managed tunnels](https://developers.cloudflare.com/tunnel/setup/) for persistent deployments; the local CLI flow above is intended for development, testing, and legacy configurations. See the official [Quick Tunnel guide](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/do-more-with-tunnels/trycloudflare/) and [locally managed tunnel guide](https://developers.cloudflare.com/tunnel/advanced/local-management/) for current details.
 
+## Syncthing Over Tailscale
+
+Home Manager runs Syncthing as a macOS user service. After `nix run .#build-switch`,
+open the [local management UI](http://127.0.0.1:8384) and set a username and
+password under **Settings → GUI**. Device pairing uses each peer's Syncthing
+Device ID. Keep the GUI address on `127.0.0.1:8384`.
+
+On each peer, register the other device and replace its `dynamic` address with
+`tcp://<peer-tailscale-ip>:22000`. Under **Settings → Connections**, disable
+Global Discovery, Local Discovery, Relaying, and NAT Traversal. Set **Sync
+Protocol Listen Addresses** to `tcp4://<own-tailscale-ip>:22000` to listen on
+the device's Tailscale IPv4 address. Then share the desired folder with the peer
+and accept it on the receiving device. See the [Syncthing network settings](https://docs.syncthing.net/users/tuning.html)
+and [Tailscale connection guide](https://tailscale.com/docs/how-to/connect-to-devices).
+
 ## Screen Sharing Over Tailscale
 
 Inbound Screen Sharing/VNC filtering is managed declaratively in
