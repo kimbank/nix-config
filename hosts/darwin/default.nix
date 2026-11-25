@@ -71,6 +71,7 @@ in
     pkgs."jetbrains-mono"
     pkgs.nanum
     pkgs.sarasa-gothic
+    pkgs.nerd-fonts.symbols-only
     (pkgs.callPackage ../../modules/shared/pkgs/monoplex-cjk.nix { })
     pkgs.pretendard
   ];

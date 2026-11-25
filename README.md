@@ -185,7 +185,7 @@ This config manages your shell through Home Manager. Review:
 - After `Ctrl+A`, press `\` to split to the right, `Shift+\` to split to the left, `-` to split below, or `Shift+-` to split above. The leader and pane shortcuts match physical key positions across keyboard layouts.
 - Press `Ctrl+A` then `x` to close the focused pane after confirmation. Closing the pane can interrupt commands running in it.
 - Press `Ctrl+A` then `z` to expand the focused pane to fill the tab or restore the split layout. Press `Ctrl+A` then `o` to rotate panes clockwise through the existing split positions.
-- Ghostty, cmux, and WezTerm use Sarasa Term J at 14 pt for Latin, Korean, and Japanese terminal text, with Japanese regional forms for shared Han characters. nix-darwin also installs Monoplex CJK as an alternative through `fonts.packages`. Keep `modules/shared/config/ghostty/config` and `modules/shared/config/wezterm/wezterm.lua` in sync when changing the font or size.
+- Ghostty, cmux, and WezTerm use Sarasa Term J at 14 pt for Latin, Korean, and Japanese terminal text, with Japanese regional forms for shared Han characters. WezTerm uses Symbols Nerd Font Mono from nix-darwin's `fonts.packages` as an icon fallback. nix-darwin also installs Monoplex CJK as an alternative through `fonts.packages`. Keep `modules/shared/config/ghostty/config` and `modules/shared/config/wezterm/wezterm.lua` in sync when changing the font or size.
 - `modules/shared/config/cmux` for cmux-owned app settings, including stable workspace ordering when notifications arrive
 
 Like the reference `nixos-config`, this setup assumes your Nix-managed shell config replaces the previous one. Bring over anything important before switching.
