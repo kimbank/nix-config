@@ -67,5 +67,8 @@
   "claudeCode.preferredLocation": "panel",
   "workbench.experimental.modernUI": true,
   "intellij.region": "apac",
-  "intellij.dataSharing": "none"
+  "intellij.dataSharing": "none",
+  "[graphql]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }
