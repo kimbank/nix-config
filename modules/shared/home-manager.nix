@@ -55,6 +55,7 @@
       clauded = "claude --dangerously-skip-permissions";
       codexf = "codex --full-auto";
       codexd = "codex --dangerously-bypass-approvals-and-sandbox";
+      agyd = "agy --dangerously-skip-permissions";
       ck = "colima kubernetes";
     }
     // lib.optionalAttrs pkgs.stdenv.isDarwin {
