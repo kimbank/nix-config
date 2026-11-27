@@ -167,6 +167,7 @@ Current split:
 - Upstream-flake CLI packages such as `ssh-tresor`: pin the input and wire its overlay through `upstreamOverlaysModule` in `flake.nix`, then list the package in `modules/shared/packages.nix`
 - Homebrew formulae: `modules/darwin/home-manager.nix`
 - Homebrew casks: `modules/darwin/casks.nix`
+- Antigravity CLI (`agy`) is managed by the `antigravity-cli` Homebrew cask. Refresh its pin with `nix run .#update-homebrew` and apply it with `nix run .#build-switch`.
 - Ghostty: `ghostty` Homebrew cask in `modules/darwin/casks.nix`
 - Rectangle: `rectangle` Homebrew cask in `modules/darwin/casks.nix`; grant Accessibility permission on first launch for window shortcuts and drag-to-edge snapping. Keep its shortcuts distinct from Raycast's window commands.
 - Claude Code CLI: `claude-code@latest` in `modules/darwin/casks.nix`

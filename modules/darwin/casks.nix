@@ -5,6 +5,7 @@ _:
 
   # A
   "antigravity"
+  "antigravity-cli"
   "android-studio"
 
   # B
